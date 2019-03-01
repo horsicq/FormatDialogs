@@ -80,7 +80,7 @@ void Dump::process()
             if(_nFileOffset>((_nCurrentProcent+1)*_nProcent))
             {
                 _nCurrentProcent++;
-                emit progressBarValue(_nCurrentProcent);
+                emit progressValue(_nCurrentProcent);
             }
         }
 

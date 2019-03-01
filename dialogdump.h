@@ -39,12 +39,13 @@ public:
     explicit DialogDump(QWidget *parent = nullptr);
     void dumpToFile(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName);
     ~DialogDump();
-
+    
 private slots:
     void on_pushButtonCancel_clicked();
     void errorMessage(QString sText);
     void onCompleted(qint64 nElapsed);
-    void progressBarValue(qint32 nValue);
+    void progressValue(qint32 nValue);
+    
 private:
     Ui::DialogDump *ui;
     Dump *pDump;

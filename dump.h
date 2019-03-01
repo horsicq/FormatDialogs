@@ -14,7 +14,7 @@ public:
 signals:
     void errorMessage(QString sText);
     void completed(qint64 nElapsed);
-    void progressBarValue(qint32 nValue);
+    void progressValue(qint32 nValue);
 public slots:
     void stop();
     void process();
