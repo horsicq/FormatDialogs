@@ -36,11 +36,11 @@ void Dump::process()
         bool bWriteError=false;
 
         qint64 _nOffset=this->nOffset;
-        qint64 _nFileOffset=0;
+        qint64 _nRawOffset=0;
         qint64 _nSize=this->nSize;
         qint32 _nCurrentProcent=0;
 
-        char *pBuffer=new char[0x1000];
+        char *pBuffer=new char[N_BUFFER_SIZE];
         while(_nSize>0)
         {
             qint64 nCurrentSize=qMin(N_BUFFER_SIZE,_nSize);
@@ -59,7 +59,7 @@ void Dump::process()
                 break;
             }
 
-            if(file.seek(_nFileOffset))
+            if(file.seek(_nRawOffset))
             {
                 if(file.write(pBuffer,nCurrentSize)!=nCurrentSize)
                 {
@@ -75,9 +75,9 @@ void Dump::process()
 
             _nSize-=nCurrentSize;
             _nOffset+=nCurrentSize;
-            _nFileOffset+=nCurrentSize;
+            _nRawOffset+=nCurrentSize;
 
-            if(_nFileOffset>((_nCurrentProcent+1)*_nProcent))
+            if(_nRawOffset>((_nCurrentProcent+1)*_nProcent))
             {
                 _nCurrentProcent++;
                 emit progressValue(_nCurrentProcent);

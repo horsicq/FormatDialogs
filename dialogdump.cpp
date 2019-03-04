@@ -72,6 +72,8 @@ void DialogDump::errorMessage(QString sText)
 
 void DialogDump::onCompleted(qint64 nElapsed)
 {
+    Q_UNUSED(nElapsed)
+
     this->close();
 }
 
