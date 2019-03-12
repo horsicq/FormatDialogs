@@ -38,7 +38,7 @@ class DialogSearchStrings : public QDialog
 public:
     explicit DialogSearchStrings(QWidget *parent = nullptr);
     ~DialogSearchStrings();
-    void process(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QList<SearchStrings::RECORD> *pListRecords);
+    void process(QIODevice *pDevice,QList<SearchStrings::RECORD> *pListRecords,SearchStrings::OPTIONS *pOptions);
 
 private slots:
     void on_pushButtonCancel_clicked();

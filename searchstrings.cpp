@@ -23,14 +23,14 @@
 SearchStrings::SearchStrings(QObject *parent) : QObject(parent)
 {
     bIsStop=false;
+    pOptions=nullptr;
 }
 
-void SearchStrings::setData(QIODevice *pDevice,qint64 nOffset, qint64 nSize, QList<RECORD> *pListRecords)
+void SearchStrings::setData(QIODevice *pDevice, QList<RECORD> *pListRecords, OPTIONS *pOptions)
 {
     this->pDevice=pDevice;
-    this->nOffset=nOffset;
-    this->nSize=nSize;
     this->pListRecords=pListRecords;
+    this->pOptions=pOptions;
 }
 
 void SearchStrings::stop()
@@ -42,11 +42,18 @@ void SearchStrings::process()
 {
     pListRecords->clear();
 
+    qint64 nBaseAddress=0;
+
+    if(pOptions)
+    {
+        nBaseAddress=pOptions->nBaseAddress;
+    }
+
     const qint64 N_BUFFER_SIZE=0x1000;
     const qint64 N_MAX_STRING_SIZE=128;
 
-    qint64 _nSize=this->nSize;
-    qint64 _nOffset=this->nOffset;
+    qint64 _nSize=pDevice->size();
+    qint64 _nOffset=0;
     qint64 _nRawOffset=0;
     qint64 _nProcent=_nSize/100;
     qint32 _nCurrentProcent=0;
@@ -94,7 +101,7 @@ void SearchStrings::process()
 
             char cSymbol=*(pBuffer+i);
 
-            bool bIsAnsiSymbol=isAnsiSymbol(cSymbol);
+            bool bIsAnsiSymbol=isAnsiSymbol((unsigned char)cSymbol);
             if(bIsAnsiSymbol)
             {
                 if(nCurrentAnsiSize==0)
@@ -125,7 +132,7 @@ void SearchStrings::process()
 
                     RECORD record;
                     record.recordType=RECORD_TYPE_ANSI;
-                    record.nOffset=nCurrentAnsiOffset;
+                    record.nOffset=nCurrentAnsiOffset+nBaseAddress;
                     record.nSize=nCurrentAnsiSize;
                     record.sString=pAnsiBuffer;
 
@@ -145,7 +152,7 @@ void SearchStrings::process()
                 {
                     if(nCurrentUnicodeSize[nParity]==0)
                     {
-                        nCurrentUnicodeOffset[nParity]=_nOffset+i;
+                        nCurrentUnicodeOffset[nParity]=_nOffset-1+i;
                     }
 
                     if(nCurrentUnicodeSize[nParity]<N_MAX_STRING_SIZE)
@@ -171,7 +178,7 @@ void SearchStrings::process()
 
                         RECORD record;
                         record.recordType=RECORD_TYPE_UNICODE;
-                        record.nOffset=nCurrentUnicodeOffset[nParity];
+                        record.nOffset=nCurrentUnicodeOffset[nParity]+nBaseAddress;
                         record.nSize=nCurrentUnicodeSize[nParity];
                         record.sString=QString::fromUtf16(pUnicodeBuffer[nParity]);
 
@@ -195,7 +202,7 @@ void SearchStrings::process()
 
                             RECORD record;
                             record.recordType=RECORD_TYPE_UNICODE;
-                            record.nOffset=nCurrentUnicodeOffset[nO];
+                            record.nOffset=nCurrentUnicodeOffset[nO]+nBaseAddress;
                             record.nSize=nCurrentUnicodeSize[nO];
                             record.sString=QString::fromUtf16(pUnicodeBuffer[nO]);
 
@@ -239,7 +246,7 @@ void SearchStrings::process()
     emit completed(scanTimer.elapsed());
 }
 
-bool SearchStrings::isAnsiSymbol(char cCode)
+bool SearchStrings::isAnsiSymbol(unsigned char cCode)
 {
     bool bResult=false;
 

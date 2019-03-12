@@ -54,9 +54,9 @@ DialogSearchStrings::~DialogSearchStrings()
     delete pSearchStrings;
 }
 
-void DialogSearchStrings::process(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QList<SearchStrings::RECORD> *pListRecords)
+void DialogSearchStrings::process(QIODevice *pDevice, QList<SearchStrings::RECORD> *pListRecords, SearchStrings::OPTIONS *pOptions)
 {
-    pSearchStrings->setData(pDevice,nOffset,nSize,pListRecords);
+    pSearchStrings->setData(pDevice,pListRecords,pOptions);
     pThread->start();
 }
 

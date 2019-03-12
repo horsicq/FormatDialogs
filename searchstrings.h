@@ -44,8 +44,12 @@ public:
         qint64 nSize;
         RECORD_TYPE recordType;
     };
+    struct OPTIONS
+    {
+        qint64 nBaseAddress;
+    };
     explicit SearchStrings(QObject *parent = nullptr);
-    void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QList<RECORD> *pListRecords);
+    void setData(QIODevice *pDevice,QList<RECORD> *pListRecords, OPTIONS *pOptions=nullptr);
 signals:
     void errorMessage(QString sText);
     void completed(qint64 nElapsed);
@@ -54,14 +58,13 @@ public slots:
     void stop();
     void process();
 private:
-    bool isAnsiSymbol(char cCode);
+    bool isAnsiSymbol(unsigned char cCode);
     bool isUnicodeSymbol(quint16 nCode);
 
 private:
     QIODevice *pDevice;
-    qint64 nOffset;
-    qint64 nSize;
     QList<RECORD> *pListRecords;
+    OPTIONS *pOptions;
     bool bIsStop;
 };
 
