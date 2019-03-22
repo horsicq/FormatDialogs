@@ -36,7 +36,7 @@ class DialogSearchStrings : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogSearchStrings(QWidget *parent = nullptr);
+    explicit DialogSearchStrings(QWidget *parent=nullptr);
     ~DialogSearchStrings();
     void process(QIODevice *pDevice,QList<SearchStrings::RECORD> *pListRecords,SearchStrings::OPTIONS *pOptions);
 

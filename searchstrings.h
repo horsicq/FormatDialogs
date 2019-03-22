@@ -48,7 +48,7 @@ public:
     {
         qint64 nBaseAddress;
     };
-    explicit SearchStrings(QObject *parent = nullptr);
+    explicit SearchStrings(QObject *parent=nullptr);
     void setData(QIODevice *pDevice,QList<RECORD> *pListRecords, OPTIONS *pOptions=nullptr);
 signals:
     void errorMessage(QString sText);
