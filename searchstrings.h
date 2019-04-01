@@ -47,6 +47,8 @@ public:
     struct OPTIONS
     {
         qint64 nBaseAddress;
+        bool bSearchAnsi;
+        bool bSearchUnicode;
     };
     explicit SearchStrings(QObject *parent=nullptr);
     void setData(QIODevice *pDevice,QList<RECORD> *pListRecords, OPTIONS *pOptions=nullptr);

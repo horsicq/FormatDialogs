@@ -130,13 +130,16 @@ void SearchStrings::process()
                         pAnsiBuffer[N_MAX_STRING_SIZE]=0;
                     }
 
-                    RECORD record;
-                    record.recordType=RECORD_TYPE_ANSI;
-                    record.nOffset=nCurrentAnsiOffset+nBaseAddress;
-                    record.nSize=nCurrentAnsiSize;
-                    record.sString=pAnsiBuffer;
+                    if(pOptions->bSearchAnsi)
+                    {
+                        RECORD record;
+                        record.recordType=RECORD_TYPE_ANSI;
+                        record.nOffset=nCurrentAnsiOffset+nBaseAddress;
+                        record.nSize=nCurrentAnsiSize;
+                        record.sString=pAnsiBuffer;
 
-                    pListRecords->append(record);
+                        pListRecords->append(record);
+                    }
                 }
 
                 nCurrentAnsiSize=0;
@@ -176,13 +179,16 @@ void SearchStrings::process()
                             pUnicodeBuffer[nParity][N_MAX_STRING_SIZE]=0;
                         }
 
-                        RECORD record;
-                        record.recordType=RECORD_TYPE_UNICODE;
-                        record.nOffset=nCurrentUnicodeOffset[nParity]+nBaseAddress;
-                        record.nSize=nCurrentUnicodeSize[nParity];
-                        record.sString=QString::fromUtf16(pUnicodeBuffer[nParity]);
+                        if(pOptions->bSearchUnicode)
+                        {
+                            RECORD record;
+                            record.recordType=RECORD_TYPE_UNICODE;
+                            record.nOffset=nCurrentUnicodeOffset[nParity]+nBaseAddress;
+                            record.nSize=nCurrentUnicodeSize[nParity];
+                            record.sString=QString::fromUtf16(pUnicodeBuffer[nParity]);
 
-                        pListRecords->append(record);
+                            pListRecords->append(record);
+                        }
                     }
 
                     if(bIsEnd)
@@ -200,13 +206,16 @@ void SearchStrings::process()
                                 pUnicodeBuffer[nO][N_MAX_STRING_SIZE]=0;
                             }
 
-                            RECORD record;
-                            record.recordType=RECORD_TYPE_UNICODE;
-                            record.nOffset=nCurrentUnicodeOffset[nO]+nBaseAddress;
-                            record.nSize=nCurrentUnicodeSize[nO];
-                            record.sString=QString::fromUtf16(pUnicodeBuffer[nO]);
+                            if(pOptions->bSearchUnicode)
+                            {
+                                RECORD record;
+                                record.recordType=RECORD_TYPE_UNICODE;
+                                record.nOffset=nCurrentUnicodeOffset[nO]+nBaseAddress;
+                                record.nSize=nCurrentUnicodeSize[nO];
+                                record.sString=QString::fromUtf16(pUnicodeBuffer[nO]);
 
-                            pListRecords->append(record);
+                                pListRecords->append(record);
+                            }
                         }
                     }
 
