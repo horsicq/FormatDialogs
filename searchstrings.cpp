@@ -24,12 +24,20 @@ SearchStrings::SearchStrings(QObject *parent) : QObject(parent)
 {
     bIsStop=false;
     pOptions=nullptr;
+    ppModel=nullptr;
 }
 
-void SearchStrings::setData(QIODevice *pDevice, QList<RECORD> *pListRecords, OPTIONS *pOptions)
+void SearchStrings::setSearchData(QIODevice *pDevice, QList<RECORD> *pListRecords, OPTIONS *pOptions)
 {
     this->pDevice=pDevice;
     this->pListRecords=pListRecords;
+    this->pOptions=pOptions;
+}
+
+void SearchStrings::setModelData(QList<SearchStrings::RECORD> *pListRecords, QStandardItemModel **ppModel, OPTIONS *pOptions)
+{
+    this->pListRecords=pListRecords;
+    this->ppModel=ppModel;
     this->pOptions=pOptions;
 }
 
@@ -38,8 +46,11 @@ void SearchStrings::stop()
     bIsStop=true;
 }
 
-void SearchStrings::process()
+void SearchStrings::processSearch()
 {
+    QElapsedTimer scanTimer;
+    scanTimer.start();
+
     pListRecords->clear();
 
     qint64 nBaseAddress=0;
@@ -60,9 +71,6 @@ void SearchStrings::process()
 
     bool bReadError=false;
 
-    QElapsedTimer scanTimer;
-    scanTimer.start();
-
     char *pBuffer=new char[N_BUFFER_SIZE];
     char *pAnsiBuffer=new char[N_MAX_STRING_SIZE+1];
 
@@ -75,6 +83,8 @@ void SearchStrings::process()
 
     bool bIsStart=true;
     char cPrevSymbol=0;
+
+    emit progressValue(_nCurrentProcent);
 
     while(_nSize>0)
     {
@@ -251,6 +261,71 @@ void SearchStrings::process()
     delete [] pAnsiBuffer;
     delete [] pUnicodeBuffer[0];
     delete [] pUnicodeBuffer[1];
+
+    emit completed(scanTimer.elapsed());
+}
+
+void SearchStrings::processModel()
+{
+    QElapsedTimer scanTimer;
+    scanTimer.start();
+
+    int nCount=pListRecords->count();
+    *ppModel=new QStandardItemModel(nCount,4);
+
+    qint64 nBaseAddress=0;
+    qint32 nAddressWidth=0;
+
+    qint64 _nProcent=nCount/100;
+    qint32 _nCurrentProcent=0;
+
+    emit progressValue(_nCurrentProcent);
+
+    if(pOptions)
+    {
+        nBaseAddress=pOptions->nBaseAddress;
+        nAddressWidth=pOptions->nAddressWidth;
+    }
+
+    (*ppModel)->setHeaderData(0,Qt::Horizontal,nBaseAddress?(tr("Address")):(tr("Offset")));
+    (*ppModel)->setHeaderData(1,Qt::Horizontal,tr("Size"));
+    (*ppModel)->setHeaderData(2,Qt::Horizontal,tr("Type"));
+    (*ppModel)->setHeaderData(3,Qt::Horizontal,tr("String"));
+
+    emit progressValue(0);
+
+    for(int i=0;i<nCount;i++)
+    {
+        SearchStrings::RECORD record=pListRecords->at(i);
+
+        QStandardItem *pTypeAddress=new QStandardItem;
+        pTypeAddress->setText(QString("%1").arg(record.nOffset,nAddressWidth,16,QChar('0')));
+        pTypeAddress->setTextAlignment(Qt::AlignRight);
+        (*ppModel)->setItem(i,0,pTypeAddress);
+
+        QStandardItem *pTypeSize=new QStandardItem;
+        pTypeSize->setText(QString("%1").arg(record.nSize,8,16,QChar('0')));
+        pTypeSize->setTextAlignment(Qt::AlignRight);
+        (*ppModel)->setItem(i,1,pTypeSize);
+
+        QStandardItem *pTypeItem=new QStandardItem;
+        if(record.recordType==SearchStrings::RECORD_TYPE_ANSI)
+        {
+            pTypeItem->setText("A");
+        }
+        else if(record.recordType==SearchStrings::RECORD_TYPE_UNICODE)
+        {
+            pTypeItem->setText("U");
+        }
+        (*ppModel)->setItem(i,2,pTypeItem);
+        (*ppModel)->setItem(i,3,new QStandardItem(record.sString));
+
+        if(i>((_nCurrentProcent+1)*_nProcent))
+        {
+            _nCurrentProcent++;
+            emit progressValue(_nCurrentProcent);
+        }
+    }
 
     emit completed(scanTimer.elapsed());
 }

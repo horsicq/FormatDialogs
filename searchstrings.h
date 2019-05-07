@@ -24,10 +24,12 @@
 #include <QObject>
 #include <QIODevice>
 #include <QElapsedTimer>
+#include <QStandardItemModel>
 
 class SearchStrings : public QObject
 {
     Q_OBJECT
+
 public:
 
     enum RECORD_TYPE
@@ -47,18 +49,25 @@ public:
     struct OPTIONS
     {
         qint64 nBaseAddress;
+        qint32 nAddressWidth;
         bool bSearchAnsi;
         bool bSearchUnicode;
     };
+
     explicit SearchStrings(QObject *parent=nullptr);
-    void setData(QIODevice *pDevice,QList<RECORD> *pListRecords, OPTIONS *pOptions=nullptr);
+    void setSearchData(QIODevice *pDevice,QList<RECORD> *pListRecords, OPTIONS *pOptions=nullptr);
+    void setModelData(QList<SearchStrings::RECORD> *pListRecords, QStandardItemModel **ppModel, OPTIONS *pOptions=nullptr);
+
 signals:
     void errorMessage(QString sText);
     void completed(qint64 nElapsed);
     void progressValue(qint32 nValue);
+
 public slots:
     void stop();
-    void process();
+    void processSearch();
+    void processModel();
+
 private:
     bool isAnsiSymbol(unsigned char cCode);
     bool isUnicodeSymbol(quint16 nCode);
@@ -67,6 +76,7 @@ private:
     QIODevice *pDevice;
     QList<RECORD> *pListRecords;
     OPTIONS *pOptions;
+    QStandardItemModel **ppModel;
     bool bIsStop;
 };
 

@@ -27,15 +27,23 @@ DialogSearchStrings::DialogSearchStrings(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    pSearchStrings=new SearchStrings;
-    pThread=new QThread;
+    pHandleStrings=new SearchStrings;
+    pHandleModel=new SearchStrings;
+    pThreadSearch=new QThread;
+    pThreadModel=new QThread;
 
-    pSearchStrings->moveToThread(pThread);
+    pHandleStrings->moveToThread(pThreadSearch);
+    pHandleModel->moveToThread(pThreadModel);
 
-    connect(pThread, SIGNAL(started()), pSearchStrings, SLOT(process()));
-    connect(pSearchStrings, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
-    connect(pSearchStrings, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
-    connect(pSearchStrings, SIGNAL(progressValue(qint32)), this, SLOT(progressValue(qint32)));
+    connect(pThreadSearch, SIGNAL(started()), pHandleStrings, SLOT(processSearch()));
+    connect(pHandleStrings, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(pHandleStrings, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+    connect(pHandleStrings, SIGNAL(progressValue(qint32)), this, SLOT(progressValue(qint32)));
+
+    connect(pThreadModel, SIGNAL(started()), pHandleModel, SLOT(processModel()));
+    connect(pHandleModel, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(pHandleModel, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+    connect(pHandleModel, SIGNAL(progressValue(qint32)), this, SLOT(progressValue(qint32)));
 
     ui->progressBar->setMaximum(100);
     ui->progressBar->setMinimum(0);
@@ -43,26 +51,40 @@ DialogSearchStrings::DialogSearchStrings(QWidget *parent) :
 
 DialogSearchStrings::~DialogSearchStrings()
 {
-    pSearchStrings->stop();
+    pHandleStrings->stop();
 
-    pThread->quit();
-    pThread->wait();
+    pThreadSearch->quit();
+    pThreadSearch->wait();
+
+    pThreadModel->quit();
+    pThreadModel->wait();
 
     delete ui;
 
-    delete pThread;
-    delete pSearchStrings;
+    delete pThreadSearch;
+    delete pThreadModel;
+    delete pHandleStrings;
 }
 
-void DialogSearchStrings::process(QIODevice *pDevice, QList<SearchStrings::RECORD> *pListRecords, SearchStrings::OPTIONS *pOptions)
+void DialogSearchStrings::processSearch(QIODevice *pDevice, QList<SearchStrings::RECORD> *pListRecords, SearchStrings::OPTIONS *pOptions)
 {
-    pSearchStrings->setData(pDevice,pListRecords,pOptions);
-    pThread->start();
+    setWindowTitle(tr("Search strings"));
+
+    pHandleStrings->setSearchData(pDevice,pListRecords,pOptions);
+    pThreadSearch->start();
+}
+
+void DialogSearchStrings::processModel(QList<SearchStrings::RECORD> *pListRecords, QStandardItemModel **ppModel, SearchStrings::OPTIONS *pOptions)
+{
+    setWindowTitle(tr("Create view model"));
+
+    pHandleModel->setModelData(pListRecords,ppModel,pOptions);
+    pThreadModel->start();
 }
 
 void DialogSearchStrings::on_pushButtonCancel_clicked()
 {
-    pSearchStrings->stop();
+    pHandleStrings->stop();
 }
 
 void DialogSearchStrings::errorMessage(QString sText)

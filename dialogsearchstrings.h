@@ -38,7 +38,8 @@ class DialogSearchStrings : public QDialog
 public:
     explicit DialogSearchStrings(QWidget *parent=nullptr);
     ~DialogSearchStrings();
-    void process(QIODevice *pDevice,QList<SearchStrings::RECORD> *pListRecords,SearchStrings::OPTIONS *pOptions);
+    void processSearch(QIODevice *pDevice,QList<SearchStrings::RECORD> *pListRecords,SearchStrings::OPTIONS *pOptions);
+    void processModel(QList<SearchStrings::RECORD> *pListRecords,QStandardItemModel **ppModel, SearchStrings::OPTIONS *pOptions);
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -48,8 +49,10 @@ private slots:
 private:
 
     Ui::DialogSearchStrings *ui;
-    SearchStrings *pSearchStrings;
-    QThread *pThread;
+    SearchStrings *pHandleStrings;
+    SearchStrings *pHandleModel;
+    QThread *pThreadSearch;
+    QThread *pThreadModel;
 };
 
 #endif // DIALOGSEARCHSTRINGS_H
