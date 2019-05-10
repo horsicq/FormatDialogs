@@ -27,7 +27,8 @@
 #include <QMessageBox>
 #include "dump.h"
 
-namespace Ui {
+namespace Ui
+{
 class DialogDump;
 }
 
@@ -39,13 +40,13 @@ public:
     explicit DialogDump(QWidget *parent = nullptr);
     void dumpToFile(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName);
     ~DialogDump();
-    
+
 private slots:
     void on_pushButtonCancel_clicked();
     void errorMessage(QString sText);
     void onCompleted(qint64 nElapsed);
     void progressValue(qint32 nValue);
-    
+
 private:
     Ui::DialogDump *ui;
     Dump *pDump;

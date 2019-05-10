@@ -41,6 +41,7 @@ void Dump::process()
         qint32 _nCurrentProcent=0;
 
         char *pBuffer=new char[N_BUFFER_SIZE];
+
         while(_nSize>0)
         {
             qint64 nCurrentSize=qMin(N_BUFFER_SIZE,_nSize);
@@ -92,6 +93,7 @@ void Dump::process()
         {
             emit errorMessage(tr("Read error"));
         }
+
         if(bWriteError)
         {
             emit errorMessage(tr("Write error"));

@@ -74,9 +74,9 @@ void SearchStrings::processSearch()
     char *pBuffer=new char[N_BUFFER_SIZE];
     char *pAnsiBuffer=new char[N_MAX_STRING_SIZE+1];
 
-    quint16 *pUnicodeBuffer[2]={new quint16[N_MAX_STRING_SIZE+1],new quint16[N_MAX_STRING_SIZE+1]};
-    qint64 nCurrentUnicodeSize[2]={0,0};
-    qint64 nCurrentUnicodeOffset[2]={0,0};
+    quint16 *pUnicodeBuffer[2]= {new quint16[N_MAX_STRING_SIZE+1],new quint16[N_MAX_STRING_SIZE+1]};
+    qint64 nCurrentUnicodeSize[2]= {0,0};
+    qint64 nCurrentUnicodeOffset[2]= {0,0};
 
     qint64 nCurrentAnsiSize=0;
     qint64 nCurrentAnsiOffset=0;
@@ -104,7 +104,7 @@ void SearchStrings::processSearch()
             break;
         }
 
-        for(qint64 i=0;i<nCurrentSize;i++)
+        for(qint64 i=0; i<nCurrentSize; i++)
         {
             bool bIsEnd=((i==(nCurrentSize-1))&&(_nSize==nCurrentSize));
             int nParity=(_nOffset+i)%2;
@@ -112,6 +112,7 @@ void SearchStrings::processSearch()
             char cSymbol=*(pBuffer+i);
 
             bool bIsAnsiSymbol=isAnsiSymbol((unsigned char)cSymbol);
+
             if(bIsAnsiSymbol)
             {
                 if(nCurrentAnsiSize==0)
@@ -294,7 +295,7 @@ void SearchStrings::processModel()
 
     emit progressValue(0);
 
-    for(int i=0;i<nCount;i++)
+    for(int i=0; i<nCount; i++)
     {
         SearchStrings::RECORD record=pListRecords->at(i);
 
@@ -309,6 +310,7 @@ void SearchStrings::processModel()
         (*ppModel)->setItem(i,1,pTypeSize);
 
         QStandardItem *pTypeItem=new QStandardItem;
+
         if(record.recordType==SearchStrings::RECORD_TYPE_ANSI)
         {
             pTypeItem->setText("A");
@@ -317,6 +319,7 @@ void SearchStrings::processModel()
         {
             pTypeItem->setText("U");
         }
+
         (*ppModel)->setItem(i,2,pTypeItem);
         (*ppModel)->setItem(i,3,new QStandardItem(record.sString));
 

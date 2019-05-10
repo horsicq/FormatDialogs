@@ -27,7 +27,8 @@
 #include <QMessageBox>
 #include "searchstrings.h"
 
-namespace Ui {
+namespace Ui
+{
 class DialogSearchStrings;
 }
 
