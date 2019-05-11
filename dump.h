@@ -9,7 +9,7 @@ class Dump : public QObject
 {
     Q_OBJECT
 public:
-    explicit Dump(QObject *parent = nullptr);
+    explicit Dump(QObject *parent=nullptr);
     void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName);
 signals:
     void errorMessage(QString sText);
