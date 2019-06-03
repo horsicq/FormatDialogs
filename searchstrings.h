@@ -75,7 +75,7 @@ private:
 private:
     QIODevice *pDevice;
     QList<RECORD> *pListRecords;
-    OPTIONS *pOptions;
+    OPTIONS options;
     QStandardItemModel **ppModel;
     bool bIsStop;
 };

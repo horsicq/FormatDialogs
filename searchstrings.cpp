@@ -23,7 +23,7 @@
 SearchStrings::SearchStrings(QObject *parent) : QObject(parent)
 {
     bIsStop=false;
-    pOptions=nullptr;
+    options={};
     ppModel=nullptr;
 }
 
@@ -31,14 +31,22 @@ void SearchStrings::setSearchData(QIODevice *pDevice, QList<RECORD> *pListRecord
 {
     this->pDevice=pDevice;
     this->pListRecords=pListRecords;
-    this->pOptions=pOptions;
+
+    if(pOptions)
+    {
+        options=*pOptions;
+    }
 }
 
 void SearchStrings::setModelData(QList<SearchStrings::RECORD> *pListRecords, QStandardItemModel **ppModel, OPTIONS *pOptions)
 {
     this->pListRecords=pListRecords;
     this->ppModel=ppModel;
-    this->pOptions=pOptions;
+
+    if(pOptions)
+    {
+        options=*pOptions;
+    }
 }
 
 void SearchStrings::stop()
@@ -53,12 +61,7 @@ void SearchStrings::processSearch()
 
     pListRecords->clear();
 
-    qint64 nBaseAddress=0;
-
-    if(pOptions)
-    {
-        nBaseAddress=pOptions->nBaseAddress;
-    }
+    qint64 nBaseAddress=options.nBaseAddress;
 
     const qint64 N_BUFFER_SIZE=0x1000;
     const qint64 N_MAX_STRING_SIZE=128;
@@ -141,7 +144,7 @@ void SearchStrings::processSearch()
                         pAnsiBuffer[N_MAX_STRING_SIZE]=0;
                     }
 
-                    if(pOptions->bSearchAnsi)
+                    if(options.bSearchAnsi)
                     {
                         RECORD record;
                         record.recordType=RECORD_TYPE_ANSI;
@@ -190,7 +193,7 @@ void SearchStrings::processSearch()
                             pUnicodeBuffer[nParity][N_MAX_STRING_SIZE]=0;
                         }
 
-                        if(pOptions->bSearchUnicode)
+                        if(options.bSearchUnicode)
                         {
                             RECORD record;
                             record.recordType=RECORD_TYPE_UNICODE;
@@ -217,7 +220,7 @@ void SearchStrings::processSearch()
                                 pUnicodeBuffer[nO][N_MAX_STRING_SIZE]=0;
                             }
 
-                            if(pOptions->bSearchUnicode)
+                            if(options.bSearchUnicode)
                             {
                                 RECORD record;
                                 record.recordType=RECORD_TYPE_UNICODE;
@@ -274,19 +277,13 @@ void SearchStrings::processModel()
     int nCount=pListRecords->count();
     *ppModel=new QStandardItemModel(nCount,4);
 
-    qint64 nBaseAddress=0;
-    qint32 nAddressWidth=0;
+    qint64 nBaseAddress=options.nBaseAddress;
+    qint32 nAddressWidth=options.nAddressWidth;
 
     qint64 _nProcent=nCount/100;
     qint32 _nCurrentProcent=0;
 
     emit progressValue(_nCurrentProcent);
-
-    if(pOptions)
-    {
-        nBaseAddress=pOptions->nBaseAddress;
-        nAddressWidth=pOptions->nAddressWidth;
-    }
 
     (*ppModel)->setHeaderData(0,Qt::Horizontal,nBaseAddress?(tr("Address")):(tr("Offset")));
     (*ppModel)->setHeaderData(1,Qt::Horizontal,tr("Size"));
