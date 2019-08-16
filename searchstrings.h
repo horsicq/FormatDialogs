@@ -31,7 +31,6 @@ class SearchStrings : public QObject
     Q_OBJECT
 
 public:
-
     enum RECORD_TYPE
     {
         RECORD_TYPE_UNKNOWN=0,
