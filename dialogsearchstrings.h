@@ -47,8 +47,8 @@ private slots:
     void errorMessage(QString sText);
     void onCompleted(qint64 nElapsed);
     void progressValue(qint32 nValue);
-private:
 
+private:
     Ui::DialogSearchStrings *ui;
     SearchStrings *pHandleStrings;
     SearchStrings *pHandleModel;

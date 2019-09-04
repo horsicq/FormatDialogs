@@ -45,6 +45,7 @@ public:
         qint64 nSize;
         RECORD_TYPE recordType;
     };
+
     struct OPTIONS
     {
         qint64 nBaseAddress;

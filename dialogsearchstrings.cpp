@@ -94,6 +94,8 @@ void DialogSearchStrings::errorMessage(QString sText)
 
 void DialogSearchStrings::onCompleted(qint64 nElapsed)
 {
+    Q_UNUSED(nElapsed)
+
     this->close();
 }
 
