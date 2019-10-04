@@ -89,7 +89,9 @@ void SearchStrings::processSearch()
 
     emit progressValue(_nCurrentProcent);
 
-    while(_nSize>0)
+    bIsStop=false;
+
+    while((_nSize>0)&&(!bIsStop))
     {
         qint64 nCurrentSize=qMin(N_BUFFER_SIZE,_nSize);
 
@@ -261,6 +263,8 @@ void SearchStrings::processSearch()
         emit errorMessage(tr("Read error"));
     }
 
+    bIsStop=false;
+
     delete [] pBuffer;
     delete [] pAnsiBuffer;
     delete [] pUnicodeBuffer[0];
@@ -292,7 +296,9 @@ void SearchStrings::processModel()
 
     emit progressValue(0);
 
-    for(int i=0; i<nCount; i++)
+    bIsStop=false;
+
+    for(int i=0; (i<nCount)&&(!bIsStop); i++)
     {
         SearchStrings::RECORD record=pListRecords->at(i);
 
@@ -326,6 +332,8 @@ void SearchStrings::processModel()
             emit progressValue(_nCurrentProcent);
         }
     }
+
+    bIsStop=false;
 
     emit completed(scanTimer.elapsed());
 }

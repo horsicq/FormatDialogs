@@ -85,6 +85,7 @@ void DialogSearchStrings::processModel(QList<SearchStrings::RECORD> *pListRecord
 void DialogSearchStrings::on_pushButtonCancel_clicked()
 {
     pHandleStrings->stop();
+    pHandleModel->stop();
 }
 
 void DialogSearchStrings::errorMessage(QString sText)
