@@ -77,9 +77,9 @@ void SearchStrings::processSearch()
     char *pBuffer=new char[N_BUFFER_SIZE];
     char *pAnsiBuffer=new char[N_MAX_STRING_SIZE+1];
 
-    quint16 *pUnicodeBuffer[2]= {new quint16[N_MAX_STRING_SIZE+1],new quint16[N_MAX_STRING_SIZE+1]};
-    qint64 nCurrentUnicodeSize[2]= {0,0};
-    qint64 nCurrentUnicodeOffset[2]= {0,0};
+    quint16 *pUnicodeBuffer[2]={new quint16[N_MAX_STRING_SIZE+1],new quint16[N_MAX_STRING_SIZE+1]};
+    qint64 nCurrentUnicodeSize[2]={0,0};
+    qint64 nCurrentUnicodeOffset[2]={0,0};
 
     qint64 nCurrentAnsiSize=0;
     qint64 nCurrentAnsiOffset=0;
