@@ -116,7 +116,7 @@ void SearchStrings::processSearch()
 
             char cSymbol=*(pBuffer+i);
 
-            bool bIsAnsiSymbol=isAnsiSymbol((unsigned char)cSymbol);
+            bool bIsAnsiSymbol=isAnsiSymbol((quint8)cSymbol);
 
             if(bIsAnsiSymbol)
             {
@@ -338,7 +338,7 @@ void SearchStrings::processModel()
     emit completed(scanTimer.elapsed());
 }
 
-bool SearchStrings::isAnsiSymbol(unsigned char cCode)
+bool SearchStrings::isAnsiSymbol(quint8 cCode)
 {
     bool bResult=false;
 

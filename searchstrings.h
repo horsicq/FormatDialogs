@@ -69,7 +69,7 @@ public slots:
     void processModel();
 
 private:
-    bool isAnsiSymbol(unsigned char cCode);
+    bool isAnsiSymbol(quint8 cCode);
     bool isUnicodeSymbol(quint16 nCode);
 
 private:
