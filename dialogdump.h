@@ -37,8 +37,7 @@ class DialogDump : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogDump(QWidget *parent=nullptr);
-    void dumpToFile(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName);
+    explicit DialogDump(QWidget *parent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName);
     ~DialogDump();
 
 private slots:
