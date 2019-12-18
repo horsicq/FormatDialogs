@@ -2,12 +2,15 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 FORMS += \
-    $$PWD/dialogsearch.ui
+    $$PWD/dialogsearch.ui \
+    $$PWD/dialogsearchprocess.ui
 
 HEADERS += \
     $$PWD/dialogsearch.h \
-    $$PWD/search.h
+    $$PWD/dialogsearchprocess.h \
+    $$PWD/searchprocess.h
 
 SOURCES += \
     $$PWD/dialogsearch.cpp \
-    $$PWD/search.cpp
+    $$PWD/dialogsearchprocess.cpp \
+    $$PWD/searchprocess.cpp

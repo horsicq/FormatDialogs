@@ -22,10 +22,7 @@
 #define DIALOGSEARCH_H
 
 #include <QDialog>
-#include <QFile>
-#include <QThread>
-#include <QMessageBox>
-#include "search.h"
+#include "searchprocess.h"
 
 namespace Ui {
 class DialogSearch;
