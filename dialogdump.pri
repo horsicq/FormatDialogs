@@ -2,12 +2,12 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 FORMS += \
-    $$PWD/dialogdump.ui
+    $$PWD/dialogdumpprocess.ui
 
 HEADERS += \
-    $$PWD/dialogdump.h \
-    $$PWD/dump.h
+    $$PWD/dialogdumpprocess.h \
+    $$PWD/dumpprocess.h
 
 SOURCES += \
-    $$PWD/dialogdump.cpp \
-    $$PWD/dump.cpp
+    $$PWD/dialogdumpprocess.cpp \
+    $$PWD/dumpprocess.cpp
