@@ -52,6 +52,7 @@ DialogSearchStrings::DialogSearchStrings(QWidget *parent) :
 DialogSearchStrings::~DialogSearchStrings()
 {
     pHandleStrings->stop();
+    pHandleModel->stop();
 
     pThreadSearch->quit();
     pThreadSearch->wait();
@@ -64,6 +65,7 @@ DialogSearchStrings::~DialogSearchStrings()
     delete pThreadSearch;
     delete pThreadModel;
     delete pHandleStrings;
+    delete pHandleModel;
 }
 
 void DialogSearchStrings::processSearch(QIODevice *pDevice, QList<SearchStrings::RECORD> *pListRecords, SearchStrings::OPTIONS *pOptions)
