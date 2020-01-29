@@ -1,8 +1,28 @@
+// copyright (c) 2019-2020 hors<horsicq@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
 #include "dumpprocess.h"
 
 DumpProcess::DumpProcess(QObject *parent) : QObject(parent)
 {
-    bIsStop=false;
+    connect(&binary,SIGNAL(dumpProgressValueChanged(qint32)),this,SIGNAL(progressValue(qint32)));
 }
 
 void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName)
@@ -15,94 +35,17 @@ void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QStr
 
 void DumpProcess::stop()
 {
-    bIsStop=true;
+    binary.setDumpProcessEnable(false);
 }
 
 void DumpProcess::process()
 {
-    const qint64 N_BUFFER_SIZE=0x1000;
-
-    qint64 _nProcent=nSize/100;
-
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    QFile file;
-    file.setFileName(sFileName);
+    binary.setData(pDevice);
 
-    if(file.open(QIODevice::ReadWrite))
-    {
-        bool bReadError=false;
-        bool bWriteError=false;
-
-        qint64 _nOffset=this->nOffset;
-        qint64 _nRawOffset=0;
-        qint64 _nSize=this->nSize;
-        qint32 _nCurrentProcent=0;
-
-        char *pBuffer=new char[N_BUFFER_SIZE];
-
-        while(_nSize>0)
-        {
-            qint64 nCurrentSize=qMin(N_BUFFER_SIZE,_nSize);
-
-            if(pDevice->seek(_nOffset))
-            {
-                if(pDevice->read(pBuffer,nCurrentSize)!=nCurrentSize)
-                {
-                    bReadError=true;
-                    break;
-                }
-            }
-            else
-            {
-                bReadError=true;
-                break;
-            }
-
-            if(file.seek(_nRawOffset))
-            {
-                if(file.write(pBuffer,nCurrentSize)!=nCurrentSize)
-                {
-                    bWriteError=true;
-                    break;
-                }
-            }
-            else
-            {
-                bWriteError=true;
-                break;
-            }
-
-            _nSize-=nCurrentSize;
-            _nOffset+=nCurrentSize;
-            _nRawOffset+=nCurrentSize;
-
-            if(_nRawOffset>((_nCurrentProcent+1)*_nProcent))
-            {
-                _nCurrentProcent++;
-                emit progressValue(_nCurrentProcent);
-            }
-        }
-
-        delete [] pBuffer;
-
-        file.close();
-
-        if(bReadError)
-        {
-            emit errorMessage(tr("Read error"));
-        }
-
-        if(bWriteError)
-        {
-            emit errorMessage(tr("Write error"));
-        }
-    }
-    else
-    {
-        emit errorMessage(tr("Cannot open file")+QString(": %1").arg(sFileName));
-    }
+    binary.dumpToFile(sFileName,nOffset,nSize);
 
     emit completed(scanTimer.elapsed());
 }
