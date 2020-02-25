@@ -28,6 +28,8 @@ namespace XShortcuts
 {
     const quint32 GOTOADDRESS                   =Qt::CTRL+Qt::Key_G;
     const quint32 DUMPTOFILE                    =Qt::CTRL+Qt::Key_D;
+    const quint32 DISASM                        =Qt::Key_D;
+    const quint32 TODATA                        =Qt::Key_A;
     const QKeySequence::StandardKey SELECTALL   =QKeySequence::SelectAll;
     const QKeySequence::StandardKey COPYASHEX   =QKeySequence::Copy;
     const QKeySequence::StandardKey SEARCH      =QKeySequence::Find;
