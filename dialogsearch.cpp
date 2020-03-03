@@ -32,3 +32,13 @@ DialogSearch::~DialogSearch()
 {
     delete ui;
 }
+
+void DialogSearch::on_pushButtonCancel_clicked()
+{
+    this->close();
+}
+
+void DialogSearch::on_pushButtonOK_clicked()
+{
+    // TODO
+}

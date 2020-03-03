@@ -36,6 +36,11 @@ public:
     explicit DialogSearch(QWidget *parent=nullptr);
     ~DialogSearch();
 
+private slots:
+    void on_pushButtonCancel_clicked();
+
+    void on_pushButtonOK_clicked();
+
 private:
     Ui::DialogSearch *ui;
 };
