@@ -26,6 +26,12 @@ DialogSearch::DialogSearch(QWidget *parent) :
     ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
+
+    ui->comboBoxSearchFrom->addItem(tr("Begin"));
+    ui->comboBoxSearchFrom->addItem(tr("Cursor"));
+
+    ui->comboBoxType->addItem(tr("ANSI"));
+    ui->comboBoxType->addItem(tr("Unicode"));
 }
 
 DialogSearch::~DialogSearch()
