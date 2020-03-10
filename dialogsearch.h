@@ -33,12 +33,11 @@ class DialogSearch : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogSearch(QWidget *parent=nullptr);
+    explicit DialogSearch(QWidget *parent,QIODevice *pDevice,qint64 nOffset,qint64 nSize);
     ~DialogSearch();
 
 private slots:
     void on_pushButtonCancel_clicked();
-
     void on_pushButtonOK_clicked();
 
 private:

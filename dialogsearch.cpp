@@ -21,7 +21,7 @@
 #include "dialogsearch.h"
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *parent) :
+DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) :
     QDialog(parent),
     ui(new Ui::DialogSearch)
 {
