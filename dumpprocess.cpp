@@ -46,8 +46,14 @@ void DumpProcess::process()
 
     binary.setData(pDevice);
 
-    // TODO Offset/Address
-    binary.dumpToFile(sFileName,nOffset,nSize);
+    if(dumpType==DT_OFFSET)
+    {
+        binary.dumpToFile(sFileName,nOffset,nSize);
+    }
+    else if(dumpType==DT_ADDRESS)
+    {
+        binary.dumpToFile(sFileName,nOffset,nSize);
+    }
 
     emit completed(scanTimer.elapsed());
 }
