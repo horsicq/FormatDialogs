@@ -25,12 +25,13 @@ DumpProcess::DumpProcess(QObject *parent) : QObject(parent)
     connect(&binary,SIGNAL(dumpProgressValueChanged(qint32)),this,SIGNAL(progressValue(qint32)));
 }
 
-void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName)
+void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DT dumpType)
 {
     this->pDevice=pDevice;
     this->nOffset=nOffset;
     this->nSize=nSize;
     this->sFileName=sFileName;
+    this->dumpType=dumpType;
 }
 
 void DumpProcess::stop()
@@ -45,6 +46,7 @@ void DumpProcess::process()
 
     binary.setData(pDevice);
 
+    // TODO Offset/Address
     binary.dumpToFile(sFileName,nOffset,nSize);
 
     emit completed(scanTimer.elapsed());

@@ -31,8 +31,14 @@ class DumpProcess : public QObject
     Q_OBJECT
 
 public:
+    enum DT
+    {
+        DT_OFFSET=0,
+        DT_ADDRESS
+    };
+
     explicit DumpProcess(QObject *parent=nullptr);
-    void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName);
+    void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DT dumpType);
 
 signals:
     void errorMessage(QString sText);
@@ -48,6 +54,7 @@ private:
     qint64 nOffset;
     qint64 nSize;
     QString sFileName;
+    DT dumpType;
     XBinary binary;
 };
 

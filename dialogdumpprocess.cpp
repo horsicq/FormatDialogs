@@ -21,7 +21,7 @@
 #include "dialogdumpprocess.h"
 #include "ui_dialogdumpprocess.h"
 
-DialogDumpProcess::DialogDumpProcess(QWidget *parent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName) :
+DialogDumpProcess::DialogDumpProcess(QWidget *parent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType) :
     QDialog(parent),
     ui(new Ui::DialogDumpProcess)
 {
@@ -40,7 +40,7 @@ DialogDumpProcess::DialogDumpProcess(QWidget *parent, QIODevice *pDevice, qint64
     ui->progressBar->setMaximum(100);
     ui->progressBar->setMinimum(0);
 
-    pDump->setData(pDevice,nOffset,nSize,sFileName);
+    pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType);
     pThread->start();
 }
 
