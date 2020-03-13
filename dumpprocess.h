@@ -33,8 +33,7 @@ class DumpProcess : public QObject
 public:
     enum DT
     {
-        DT_OFFSET=0,
-        DT_ADDRESS
+        DT_OFFSET=0
     };
 
     explicit DumpProcess(QObject *parent=nullptr);

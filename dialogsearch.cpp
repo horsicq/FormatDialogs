@@ -21,11 +21,13 @@
 #include "dialogsearch.h"
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) :
+DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) :
     QDialog(parent),
     ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
+
+    this->pSearchData=pSearchData;
 
     ui->comboBoxSearchFrom->addItem(tr("Begin"));
     ui->comboBoxSearchFrom->addItem(tr("Cursor"));
@@ -46,5 +48,21 @@ void DialogSearch::on_pushButtonCancel_clicked()
 
 void DialogSearch::on_pushButtonOK_clicked()
 {
-    // TODO
+    // TODO save state
+    if(ui->tabWidgetSearch->currentIndex()==0) // Strings
+    {
+        // TODO
+        bool bMatchCase=ui->checkBoxMatchCase->isChecked();
+
+        if(ui->comboBoxType->currentIndex()==0) // ANSI
+        {
+
+        }
+        else if(ui->comboBoxType->currentIndex()==1) // UNICODE
+        {
+
+        }
+    }
+
+    // TODO progressBar/Thread/Signals
 }

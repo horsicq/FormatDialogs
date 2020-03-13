@@ -50,10 +50,6 @@ void DumpProcess::process()
     {
         binary.dumpToFile(sFileName,nOffset,nSize);
     }
-    else if(dumpType==DT_ADDRESS)
-    {
-        binary.dumpToFile(sFileName,nOffset,nSize);
-    }
 
     emit completed(scanTimer.elapsed());
 }

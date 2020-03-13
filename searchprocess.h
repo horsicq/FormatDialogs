@@ -37,9 +37,9 @@ public:
 
     struct SEARCHDATA
     {
+        qint64 nCurrentOffset;
         ST st;
         QVariant variant;
-        QString sText;
     };
 
     explicit SearchProcess(QObject *parent=nullptr);
