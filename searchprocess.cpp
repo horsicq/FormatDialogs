@@ -20,7 +20,7 @@
 //
 #include "searchprocess.h"
 
-SearchProcess::SearchProcess(QObject *parent) : QObject(parent)
+SearchProcess::SearchProcess(QObject *paren, QIODevice *pDevice, SEARCHDATA *pSearchData) : QObject(paren)
 {
 
 }

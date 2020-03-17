@@ -56,13 +56,22 @@ void DialogSearch::on_pushButtonOK_clicked()
 
         if(ui->comboBoxType->currentIndex()==0) // ANSI
         {
-
+            pSearchData->status=SearchProcess::ST_ANSISTRING;
         }
         else if(ui->comboBoxType->currentIndex()==1) // UNICODE
         {
-
+            pSearchData->status=SearchProcess::ST_UNICODESTRING;
         }
     }
+    else if(ui->tabWidgetSearch->currentIndex()==1) // Strings
+    {
+        pSearchData->status=SearchProcess::ST_SIGNATURE;
+        pSearchData->variant=ui->plainTextEditSignature->toPlainText();
+    }
+    else if(ui->tabWidgetSearch->currentIndex()==2) // Value
+    {
+        // TODO
+    }
 
-    // TODO progressBar/Thread/Signals
+    done(QDialog::Accepted);
 }

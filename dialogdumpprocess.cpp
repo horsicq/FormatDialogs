@@ -35,7 +35,8 @@ DialogDumpProcess::DialogDumpProcess(QWidget *parent, QIODevice *pDevice, qint64
     connect(pThread, SIGNAL(started()), pDump, SLOT(process()));
     connect(pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
     connect(pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
-    connect(pDump, SIGNAL(progressValue(qint32)), this, SLOT(progressValue(qint32)));
+    connect(pDump, SIGNAL(progressValueChanged(qint32)), this, SLOT(progressValueChanged(qint32)));
+    connect(pDump, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
 
     ui->progressBar->setMaximum(100);
     ui->progressBar->setMinimum(0);
@@ -74,7 +75,12 @@ void DialogDumpProcess::onCompleted(qint64 nElapsed)
     this->close();
 }
 
-void DialogDumpProcess::progressValue(qint32 nValue)
+void DialogDumpProcess::progressValueChanged(qint32 nValue)
 {
     ui->progressBar->setValue(nValue);
+}
+
+void DialogDumpProcess::progressValueMaximum(qint32 nValue)
+{
+    ui->progressBar->setMaximum(nValue);
 }

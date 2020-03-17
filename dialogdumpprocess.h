@@ -45,7 +45,8 @@ private slots:
     void on_pushButtonCancel_clicked();
     void errorMessage(QString sText);
     void onCompleted(qint64 nElapsed);
-    void progressValue(qint32 nValue);
+    void progressValueChanged(qint32 nValue);
+    void progressValueMaximum(qint32 nValue);
 
 private:
     Ui::DialogDumpProcess *ui;

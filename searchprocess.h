@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include "xbinary.h"
 
 class SearchProcess : public QObject
 {
@@ -32,21 +33,30 @@ public:
     enum ST
     {
         ST_UNKNOWN=0,
-        ST_ANSISTRING
+        ST_ANSISTRING,
+        ST_UNICODESTRING,
+        ST_SIGNATURE,
+        // TODO more
+    };
+
+    enum SF
+    {
+        SF_BEGIN=0,
+        SF_CURRENTOFFSET
     };
 
     struct SEARCHDATA
     {
         qint64 nCurrentOffset;
-        ST st;
+        SF startFrom;
+        ST status;
         QVariant variant;
     };
 
-    explicit SearchProcess(QObject *parent=nullptr);
+    explicit SearchProcess(QObject *paren,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
 
-signals:
-
-public slots:
+private:
+    XBinary binary;
 };
 
 #endif // SEARCHPROCESS_H
