@@ -46,6 +46,7 @@ private:
     Ui::DialogSearchProcess *ui;
     QIODevice *pDevice;
     SearchProcess::SEARCHDATA *pSearchData;
+    XBinary binary;
 };
 
 #endif // DIALOGSEARCHPROCESS_H

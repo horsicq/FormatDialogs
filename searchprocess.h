@@ -53,10 +53,23 @@ public:
         QVariant variant;
     };
 
-    explicit SearchProcess(QObject *paren,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
+    explicit SearchProcess(QObject *parent);
+    void setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData);
+
+signals:
+    void errorMessage(QString sText);
+    void completed(qint64 nElapsed);
+    void progressValueChanged(qint32 nValue);
+    void progressValueMaximum(qint32 nValue);
+
+public slots:
+    void stop();
+    void process();
 
 private:
     XBinary binary;
+    QIODevice *pDevice;
+    SearchProcess::SEARCHDATA *pSearchData;
 };
 
 #endif // SEARCHPROCESS_H

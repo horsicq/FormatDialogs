@@ -20,7 +20,31 @@
 //
 #include "searchprocess.h"
 
-SearchProcess::SearchProcess(QObject *paren, QIODevice *pDevice, SEARCHDATA *pSearchData) : QObject(paren)
+SearchProcess::SearchProcess(QObject *parent) : QObject(parent)
 {
+    connect(&binary,SIGNAL(findProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
+    connect(&binary,SIGNAL(findProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
+}
 
+void SearchProcess::setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData)
+{
+    this->pDevice=pDevice;
+    this->pSearchData=pSearchData;
+}
+
+void SearchProcess::stop()
+{
+    binary.setDumpProcessEnable(false);
+}
+
+void SearchProcess::process()
+{
+    QElapsedTimer scanTimer;
+    scanTimer.start();
+
+    binary.setData(pDevice);
+
+    // TODO
+
+    emit completed(scanTimer.elapsed());
 }
