@@ -30,12 +30,12 @@ class SearchProcess : public QObject
     Q_OBJECT
 
 public:
-    enum ST
+    enum TYPE
     {
-        ST_UNKNOWN=0,
-        ST_ANSISTRING,
-        ST_UNICODESTRING,
-        ST_SIGNATURE,
+        TYPE_UNKNOWN=0,
+        TYPE_ANSISTRING,
+        TYPE_UNICODESTRING,
+        TYPE_SIGNATURE,
         // TODO more
     };
 
@@ -49,7 +49,7 @@ public:
     {
         qint64 nCurrentOffset;
         SF startFrom;
-        ST status;
+        TYPE type;
         QVariant variant;
     };
 

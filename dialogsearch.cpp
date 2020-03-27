@@ -56,16 +56,16 @@ void DialogSearch::on_pushButtonOK_clicked()
 
         if(ui->comboBoxType->currentIndex()==0) // ANSI
         {
-            pSearchData->status=SearchProcess::ST_ANSISTRING;
+            pSearchData->type=SearchProcess::TYPE_ANSISTRING;
         }
         else if(ui->comboBoxType->currentIndex()==1) // UNICODE
         {
-            pSearchData->status=SearchProcess::ST_UNICODESTRING;
+            pSearchData->type=SearchProcess::TYPE_ANSISTRING;
         }
     }
     else if(ui->tabWidgetSearch->currentIndex()==1) // Strings
     {
-        pSearchData->status=SearchProcess::ST_SIGNATURE;
+        pSearchData->type=SearchProcess::TYPE_ANSISTRING;
         pSearchData->variant=ui->plainTextEditSignature->toPlainText();
     }
     else if(ui->tabWidgetSearch->currentIndex()==2) // Value
