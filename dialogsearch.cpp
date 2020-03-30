@@ -73,5 +73,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         // TODO
     }
 
+    // TODO
+
     done(QDialog::Accepted);
 }

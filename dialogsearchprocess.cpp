@@ -40,3 +40,23 @@ void DialogSearchProcess::on_pushButtonCancel_clicked()
 {
 
 }
+
+void DialogSearchProcess::errorMessage(QString sText)
+{
+    QMessageBox::critical(this,tr("Error"),sText);
+}
+
+void DialogSearchProcess::completed(qint64 nElapsed)
+{
+    // TODO
+}
+
+void DialogSearchProcess::progressValueChanged(qint32 nValue)
+{
+    ui->progressBarSearch->setValue(nValue);
+}
+
+void DialogSearchProcess::progressValueMaximum(qint32 nValue)
+{
+    ui->progressBarSearch->setMaximum(nValue);
+}
