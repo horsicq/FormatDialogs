@@ -44,7 +44,28 @@ void SearchProcess::process()
 
     binary.setData(pDevice);
 
-    // TODO
+    qint64 nResult=0;
+
+    if(pSearchData->type==TYPE_ANSISTRING)
+    {
+        nResult=binary.find_ansiString(0,0,"");
+    }
+    else if(pSearchData->type==TYPE_ANSISTRING_I)
+    {
+        nResult=binary.find_ansiStringI(0,0,"");
+    }
+    else if(pSearchData->type==TYPE_UNICODESTRING)
+    {
+        nResult=binary.find_unicodeString(0,0,"");
+    }
+    else if(pSearchData->type==TYPE_UNICODESTRING_I)
+    {
+        nResult=binary.find_unicodeStringI(0,0,"");
+    }
+    else if(pSearchData->type==TYPE_SIGNATURE)
+    {
+
+    }
 
     emit completed(scanTimer.elapsed());
 }

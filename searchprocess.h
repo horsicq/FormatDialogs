@@ -34,7 +34,9 @@ public:
     {
         TYPE_UNKNOWN=0,
         TYPE_ANSISTRING,
+        TYPE_ANSISTRING_I,
         TYPE_UNICODESTRING,
+        TYPE_UNICODESTRING_I,
         TYPE_SIGNATURE,
         // TODO more
     };
