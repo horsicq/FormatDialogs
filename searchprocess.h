@@ -55,7 +55,7 @@ public:
         QVariant variant;
     };
 
-    explicit SearchProcess(QObject *parent);
+    explicit SearchProcess(QObject *parent=nullptr);
     void setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData);
 
 signals:

@@ -22,7 +22,9 @@
 
 DumpProcess::DumpProcess(QObject *parent) : QObject(parent)
 {
+    connect(&binary,SIGNAL(errorMessage(QString)),this,SIGNAL(errorMessage(QString)));
     connect(&binary,SIGNAL(dumpProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
+    connect(&binary,SIGNAL(dumpProgressMinimumChanged(qint32)),this,SIGNAL(progressValueMinimum(qint32)));
     connect(&binary,SIGNAL(dumpProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
 }
 

@@ -46,21 +46,28 @@ void SearchProcess::process()
 
     qint64 nResult=0;
 
+    qint64 nStartOffset=0;
+
+    if(pSearchData->startFrom==SF_CURRENTOFFSET)
+    {
+        nStartOffset=pSearchData->nCurrentOffset;
+    }
+
     if(pSearchData->type==TYPE_ANSISTRING)
     {
-        nResult=binary.find_ansiString(0,0,"");
+        nResult=binary.find_ansiString(nStartOffset,-1,"");
     }
     else if(pSearchData->type==TYPE_ANSISTRING_I)
     {
-        nResult=binary.find_ansiStringI(0,0,"");
+        nResult=binary.find_ansiStringI(nStartOffset,-1,"");
     }
     else if(pSearchData->type==TYPE_UNICODESTRING)
     {
-        nResult=binary.find_unicodeString(0,0,"");
+        nResult=binary.find_unicodeString(nStartOffset,-1,"");
     }
     else if(pSearchData->type==TYPE_UNICODESTRING_I)
     {
-        nResult=binary.find_unicodeStringI(0,0,"");
+        nResult=binary.find_unicodeStringI(nStartOffset,-1,"");
     }
     else if(pSearchData->type==TYPE_SIGNATURE)
     {

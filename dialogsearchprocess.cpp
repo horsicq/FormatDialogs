@@ -29,16 +29,39 @@ DialogSearchProcess::DialogSearchProcess(QWidget *parent, QIODevice *pDevice, Se
 
     this->pDevice=pDevice;
     this->pSearchData=pSearchData;
+
+    pSearch=new SearchProcess;
+    pThread=new QThread;
+
+    pSearch->moveToThread(pThread);
+
+    connect(pThread, SIGNAL(started()), pSearch, SLOT(process()));
+    connect(pSearch, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(pSearch, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+    connect(pSearch, SIGNAL(progressValueChanged(qint32)), this, SLOT(progressValueChanged(qint32)));
+    connect(pSearch, SIGNAL(progressValueMinimum(qint32)), this, SLOT(progressValueMinimum(qint32)));
+    connect(pSearch, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
+
+    pSearch->setData(pDevice,pSearchData);
+    pThread->start();
 }
 
 DialogSearchProcess::~DialogSearchProcess()
 {
+    pSearch->stop();
+
+    pThread->quit();
+    pThread->wait();
+
     delete ui;
+
+    delete pThread;
+    delete pSearch;
 }
 
 void DialogSearchProcess::on_pushButtonCancel_clicked()
 {
-
+    pSearch->stop();
 }
 
 void DialogSearchProcess::errorMessage(QString sText)
@@ -54,6 +77,11 @@ void DialogSearchProcess::completed(qint64 nElapsed)
 void DialogSearchProcess::progressValueChanged(qint32 nValue)
 {
     ui->progressBarSearch->setValue(nValue);
+}
+
+void DialogSearchProcess::progressValueMinimum(qint32 nValue)
+{
+    ui->progressBarSearch->setMinimum(nValue);
 }
 
 void DialogSearchProcess::progressValueMaximum(qint32 nValue)

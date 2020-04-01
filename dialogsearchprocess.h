@@ -44,13 +44,15 @@ private slots:
     void errorMessage(QString sText);
     void completed(qint64 nElapsed);
     void progressValueChanged(qint32 nValue);
+    void progressValueMinimum(qint32 nValue);
     void progressValueMaximum(qint32 nValue);
 
 private:
     Ui::DialogSearchProcess *ui;
     QIODevice *pDevice;
     SearchProcess::SEARCHDATA *pSearchData;
-    XBinary binary;
+    SearchProcess *pSearch;
+    QThread *pThread;
 };
 
 #endif // DIALOGSEARCHPROCESS_H
