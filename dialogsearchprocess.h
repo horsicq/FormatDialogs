@@ -42,7 +42,7 @@ public:
 private slots:
     void on_pushButtonCancel_clicked();
     void errorMessage(QString sText);
-    void completed(qint64 nElapsed);
+    void onCompleted(qint64 nElapsed);
     void progressValueChanged(qint32 nValue);
     void progressValueMinimum(qint32 nValue);
     void progressValueMaximum(qint32 nValue);

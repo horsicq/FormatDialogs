@@ -27,6 +27,7 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
 {
     ui->setupUi(this);
 
+    this->pDevice=pDevice;
     this->pSearchData=pSearchData;
 
     ui->comboBoxSearchFrom->addItem(tr("Begin"));
@@ -76,6 +77,8 @@ void DialogSearch::on_pushButtonOK_clicked()
                 pSearchData->type=SearchProcess::TYPE_UNICODESTRING_I;
             }
         }
+
+        pSearchData->variant=ui->plainTextEditString->toPlainText();
     }
     else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
     {
@@ -87,7 +90,9 @@ void DialogSearch::on_pushButtonOK_clicked()
         // TODO
     }
 
-    // TODO
+    DialogSearchProcess dsp(this,pDevice,pSearchData);
+
+    dsp.exec();
 
     done(QDialog::Accepted);
 }

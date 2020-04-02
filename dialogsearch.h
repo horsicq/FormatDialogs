@@ -22,7 +22,7 @@
 #define DIALOGSEARCH_H
 
 #include <QDialog>
-#include "searchprocess.h"
+#include "dialogsearchprocess.h"
 
 namespace Ui {
 class DialogSearch;
@@ -42,6 +42,7 @@ private slots:
 
 private:
     Ui::DialogSearch *ui;
+    QIODevice *pDevice;
     SearchProcess::SEARCHDATA *pSearchData;
 };
 

@@ -23,6 +23,7 @@
 SearchProcess::SearchProcess(QObject *parent) : QObject(parent)
 {
     connect(&binary,SIGNAL(findProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
+    connect(&binary,SIGNAL(findProgressMinimumChanged(qint32)),this,SIGNAL(progressValueMinimum(qint32)));
     connect(&binary,SIGNAL(findProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
 }
 
@@ -44,8 +45,6 @@ void SearchProcess::process()
 
     binary.setData(pDevice);
 
-    qint64 nResult=0;
-
     qint64 nStartOffset=0;
 
     if(pSearchData->startFrom==SF_CURRENTOFFSET)
@@ -55,19 +54,19 @@ void SearchProcess::process()
 
     if(pSearchData->type==TYPE_ANSISTRING)
     {
-        nResult=binary.find_ansiString(nStartOffset,-1,"");
+        pSearchData->nResult=binary.find_ansiString(nStartOffset,-1,pSearchData->variant.toString());
     }
     else if(pSearchData->type==TYPE_ANSISTRING_I)
     {
-        nResult=binary.find_ansiStringI(nStartOffset,-1,"");
+        pSearchData->nResult=binary.find_ansiStringI(nStartOffset,-1,pSearchData->variant.toString());
     }
     else if(pSearchData->type==TYPE_UNICODESTRING)
     {
-        nResult=binary.find_unicodeString(nStartOffset,-1,"");
+        pSearchData->nResult=binary.find_unicodeString(nStartOffset,-1,pSearchData->variant.toString());
     }
     else if(pSearchData->type==TYPE_UNICODESTRING_I)
     {
-        nResult=binary.find_unicodeStringI(nStartOffset,-1,"");
+        pSearchData->nResult=binary.find_unicodeStringI(nStartOffset,-1,pSearchData->variant.toString());
     }
     else if(pSearchData->type==TYPE_SIGNATURE)
     {

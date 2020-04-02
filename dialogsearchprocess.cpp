@@ -69,9 +69,9 @@ void DialogSearchProcess::errorMessage(QString sText)
     QMessageBox::critical(this,tr("Error"),sText);
 }
 
-void DialogSearchProcess::completed(qint64 nElapsed)
+void DialogSearchProcess::onCompleted(qint64 nElapsed)
 {
-    // TODO
+    this->close();
 }
 
 void DialogSearchProcess::progressValueChanged(qint32 nValue)
