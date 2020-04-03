@@ -71,7 +71,16 @@ void DialogSearchProcess::errorMessage(QString sText)
 
 void DialogSearchProcess::onCompleted(qint64 nElapsed)
 {
-    this->close();
+    Q_UNUSED(nElapsed)
+
+    if(pSearchData->nResult!=-1)
+    {
+        done(Accepted);
+    }
+    else
+    {
+        done(Rejected);
+    }
 }
 
 void DialogSearchProcess::progressValueChanged(qint32 nValue)

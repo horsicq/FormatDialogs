@@ -32,7 +32,7 @@ namespace XShortcuts
     const quint32 TODATA                        =Qt::Key_A;
     const QKeySequence::StandardKey SELECTALL   =QKeySequence::SelectAll;
     const QKeySequence::StandardKey COPYASHEX   =QKeySequence::Copy;
-    const QKeySequence::StandardKey SEARCH      =QKeySequence::Find;
+    const QKeySequence::StandardKey FIND        =QKeySequence::Find;
 };
 
 #endif // XSHORTCUTS_H
