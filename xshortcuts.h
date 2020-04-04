@@ -33,6 +33,7 @@ namespace XShortcuts
     const QKeySequence::StandardKey SELECTALL   =QKeySequence::SelectAll;
     const QKeySequence::StandardKey COPYASHEX   =QKeySequence::Copy;
     const QKeySequence::StandardKey FIND        =QKeySequence::Find;
-};
+    const QKeySequence::StandardKey FINDNEXT    =QKeySequence::FindNext;
+}
 
 #endif // XSHORTCUTS_H
