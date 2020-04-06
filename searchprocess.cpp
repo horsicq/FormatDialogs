@@ -73,5 +73,10 @@ void SearchProcess::process()
 
     }
 
+    if(pSearchData->nResult!=-1)
+    {
+        pSearchData->nCurrentOffset=pSearchData->nResult;
+    }
+
     emit completed(scanTimer.elapsed());
 }

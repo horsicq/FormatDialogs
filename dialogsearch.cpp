@@ -35,6 +35,8 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
 
     ui->comboBoxType->addItem(tr("ANSI"));
     ui->comboBoxType->addItem(tr("Unicode"));
+
+    ui->plainTextEditString->setFocus();
 }
 
 DialogSearch::~DialogSearch()
@@ -92,7 +94,17 @@ void DialogSearch::on_pushButtonOK_clicked()
 
     DialogSearchProcess dsp(this,pDevice,pSearchData);
 
-    dsp.exec();
+    done(dsp.exec());
+}
 
-    done(QDialog::Accepted);
+void DialogSearch::on_tabWidgetSearch_currentChanged(int index)
+{
+    if(ui->tabWidgetSearch->currentIndex()==0) // Strings
+    {
+        ui->plainTextEditString->setFocus();
+    }
+    else if(ui->tabWidgetSearch->currentIndex()==1) // Signatures
+    {
+        ui->plainTextEditSignature->setFocus();
+    }
 }
