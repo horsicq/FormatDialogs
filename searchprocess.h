@@ -54,6 +54,7 @@ public:
         SF startFrom;
         TYPE type;
         QVariant variant;
+        bool bInit;
     };
 
     explicit SearchProcess(QObject *parent=nullptr);
