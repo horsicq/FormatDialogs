@@ -72,6 +72,78 @@ void SearchProcess::process()
     {
         pSearchData->nResult=binary.find_signature(nStartOffset,-1,pSearchData->variant.toString());
     }
+    else if(pSearchData->type==TYPE_VALUE_CHAR)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_UCHAR)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_SHORT_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_SHORT_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_USHORT_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_USHORT_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_INT_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_INT_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_UINT_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_UINT_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_INT64_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_INT64_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_UINT64_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_UINT64_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_DOUBLE_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_DOUBLE_LE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_FLOAT_BE)
+    {
+
+    }
+    else if(pSearchData->type==TYPE_VALUE_FLOAT_LE)
+    {
+
+    }
 
     if(pSearchData->nResult!=-1)
     {
