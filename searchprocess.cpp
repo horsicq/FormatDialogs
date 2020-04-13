@@ -70,7 +70,7 @@ void SearchProcess::process()
     }
     else if(pSearchData->type==TYPE_SIGNATURE)
     {
-
+        pSearchData->nResult=binary.find_signature(nStartOffset,-1,pSearchData->variant.toString());
     }
 
     if(pSearchData->nResult!=-1)
