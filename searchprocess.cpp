@@ -74,27 +74,27 @@ void SearchProcess::process()
     }
     else if(pSearchData->type==TYPE_VALUE_CHAR)
     {
-
+        pSearchData->nResult=binary.find_int8(nStartOffset,-1,(qint8)(pSearchData->variant.toULongLong()));
     }
     else if(pSearchData->type==TYPE_VALUE_UCHAR)
     {
-
+        pSearchData->nResult=binary.find_uint8(nStartOffset,-1,(quint8)(pSearchData->variant.toULongLong()));
     }
     else if(pSearchData->type==TYPE_VALUE_SHORT_BE)
     {
-
+        pSearchData->nResult=binary.find_int16(nStartOffset,-1,(qint16)(pSearchData->variant.toULongLong()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_SHORT_LE)
     {
-
+        pSearchData->nResult=binary.find_int16(nStartOffset,-1,(qint16)(pSearchData->variant.toULongLong()),false);
     }
     else if(pSearchData->type==TYPE_VALUE_USHORT_BE)
     {
-
+        pSearchData->nResult=binary.find_uint16(nStartOffset,-1,(quint16)(pSearchData->variant.toULongLong()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_USHORT_LE)
     {
-
+        pSearchData->nResult=binary.find_uint16(nStartOffset,-1,(quint16)(pSearchData->variant.toULongLong()),false);
     }
     else if(pSearchData->type==TYPE_VALUE_INT_BE)
     {
