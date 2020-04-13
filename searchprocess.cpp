@@ -98,35 +98,35 @@ void SearchProcess::process()
     }
     else if(pSearchData->type==TYPE_VALUE_INT_BE)
     {
-
+        pSearchData->nResult=binary.find_int32(nStartOffset,-1,(qint32)(pSearchData->variant.toULongLong()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_INT_LE)
     {
-
+        pSearchData->nResult=binary.find_int32(nStartOffset,-1,(qint32)(pSearchData->variant.toULongLong()),false);
     }
     else if(pSearchData->type==TYPE_VALUE_UINT_BE)
     {
-
+        pSearchData->nResult=binary.find_uint32(nStartOffset,-1,(quint32)(pSearchData->variant.toULongLong()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_UINT_LE)
     {
-
+        pSearchData->nResult=binary.find_uint32(nStartOffset,-1,(quint32)(pSearchData->variant.toULongLong()),false);
     }
     else if(pSearchData->type==TYPE_VALUE_INT64_BE)
     {
-
+        pSearchData->nResult=binary.find_int64(nStartOffset,-1,(qint64)(pSearchData->variant.toULongLong()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_INT64_LE)
     {
-
+        pSearchData->nResult=binary.find_int64(nStartOffset,-1,(qint64)(pSearchData->variant.toULongLong()),false);
     }
     else if(pSearchData->type==TYPE_VALUE_UINT64_BE)
     {
-
+        pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_UINT64_LE)
     {
-
+        pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),false);
     }
     else if(pSearchData->type==TYPE_VALUE_DOUBLE_BE)
     {
