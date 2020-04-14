@@ -36,6 +36,9 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
     ui->comboBoxType->addItem(tr("ANSI"));
     ui->comboBoxType->addItem(tr("Unicode"));
 
+    ui->comboBoxEndianness->addItem(tr("Big endian"));
+    ui->comboBoxEndianness->addItem(tr("Little endian"));
+
     ui->plainTextEditString->setFocus();
 }
 
@@ -107,4 +110,64 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int index)
     {
         ui->plainTextEditSignature->setFocus();
     }
+}
+
+void DialogSearch::on_lineEditValue_textChanged(const QString &arg1)
+{
+
+}
+
+void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int index)
+{
+
+}
+
+void DialogSearch::on_radioButtonChar_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonUchar_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonShort_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonUshort_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonInt_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonUint_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonInt64_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonUint64_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonFloat_toggled(bool checked)
+{
+
+}
+
+void DialogSearch::on_radioButtonDouble_toggled(bool checked)
+{
+
 }
