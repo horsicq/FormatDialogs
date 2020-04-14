@@ -114,60 +114,89 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int index)
 
 void DialogSearch::on_lineEditValue_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1)
 
+    ajustValue();
 }
 
 void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int index)
 {
+    Q_UNUSED(index)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonChar_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonUchar_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonShort_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonUshort_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonInt_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonUint_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonInt64_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonUint64_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonFloat_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
 }
 
 void DialogSearch::on_radioButtonDouble_toggled(bool checked)
 {
+    Q_UNUSED(checked)
 
+    ajustValue();
+}
+
+void DialogSearch::ajustValue()
+{
+    // TODO
 }

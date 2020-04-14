@@ -52,6 +52,7 @@ private slots:
     void on_radioButtonUint64_toggled(bool checked);
     void on_radioButtonFloat_toggled(bool checked);
     void on_radioButtonDouble_toggled(bool checked);
+    void ajustValue();
 
 private:
     Ui::DialogSearch *ui;
