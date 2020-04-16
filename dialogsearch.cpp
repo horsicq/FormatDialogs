@@ -219,7 +219,43 @@ void DialogSearch::on_radioButtonDouble_toggled(bool checked)
 
 void DialogSearch::ajustValue()
 {
-    // TODO
+    QString sValue=ui->lineEditValue->text();
+
+    bool bSuccess=false;
+
+    if(ui->radioButtonChar->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonUchar->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonInt->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonUint->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonInt64->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonUint64->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonFloat->isChecked())
+    {
+
+    }
+    else if(ui->radioButtonDouble->isChecked())
+    {
+
+    }
+
     checkValid();
 }
 
@@ -237,7 +273,7 @@ void DialogSearch::checkValid()
     }
     else if(ui->tabWidgetSearch->currentIndex()==2) // Value
     {
-        // TODO
+        bIsValid=!(ui->lineEditHex->text().isEmpty());
     }
 
     ui->pushButtonOK->setEnabled(bIsValid);
