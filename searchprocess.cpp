@@ -128,21 +128,21 @@ void SearchProcess::process()
     {
         pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),false);
     }
-    else if(pSearchData->type==TYPE_VALUE_DOUBLE_BE)
-    {
-
-    }
-    else if(pSearchData->type==TYPE_VALUE_DOUBLE_LE)
-    {
-
-    }
     else if(pSearchData->type==TYPE_VALUE_FLOAT_BE)
     {
-
+        pSearchData->nResult=binary.find_float(nStartOffset,-1,(quint64)(pSearchData->variant.toFloat()),true);
     }
     else if(pSearchData->type==TYPE_VALUE_FLOAT_LE)
     {
-
+        pSearchData->nResult=binary.find_float(nStartOffset,-1,(quint64)(pSearchData->variant.toFloat()),false);
+    }
+    else if(pSearchData->type==TYPE_VALUE_DOUBLE_BE)
+    {
+        pSearchData->nResult=binary.find_double(nStartOffset,-1,(quint64)(pSearchData->variant.toDouble()),true);
+    }
+    else if(pSearchData->type==TYPE_VALUE_DOUBLE_LE)
+    {
+        pSearchData->nResult=binary.find_double(nStartOffset,-1,(quint64)(pSearchData->variant.toDouble()),false);
     }
 
     if(pSearchData->nResult!=-1)

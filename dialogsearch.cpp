@@ -46,6 +46,8 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
     ui->lineEditValue->setText("0");
 
     ui->radioButtonUint->setChecked(true);
+
+    ajustValue();
 }
 
 DialogSearch::~DialogSearch()
@@ -60,7 +62,6 @@ void DialogSearch::on_pushButtonCancel_clicked()
 
 void DialogSearch::on_pushButtonOK_clicked()
 {
-    // TODO save state
     if(ui->tabWidgetSearch->currentIndex()==0) // Strings
     {
         // TODO
@@ -89,12 +90,26 @@ void DialogSearch::on_pushButtonOK_clicked()
             }
         }
 
-        pSearchData->variant=ui->plainTextEditString->toPlainText();
+        QString sText=ui->plainTextEditString->toPlainText();
+
+        if(sText.length()>256) // TODO const
+        {
+            sText.resize(256);
+        }
+
+        pSearchData->variant=sText;
     }
     else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
     {
+        QString sText=ui->plainTextEditSignature->toPlainText();
+
+        if(sText.length()>256) // TODO const
+        {
+            sText.resize(256);
+        }
+
         pSearchData->type=SearchProcess::TYPE_SIGNATURE;
-        pSearchData->variant=ui->plainTextEditSignature->toPlainText();
+        pSearchData->variant=sText;
     }
     else if(ui->tabWidgetSearch->currentIndex()==2) // Value
     {
@@ -205,4 +220,35 @@ void DialogSearch::on_radioButtonDouble_toggled(bool checked)
 void DialogSearch::ajustValue()
 {
     // TODO
+    checkValid();
+}
+
+void DialogSearch::checkValid()
+{
+    bool bIsValid=false;
+
+    if(ui->tabWidgetSearch->currentIndex()==0) // Strings
+    {
+        bIsValid=!(ui->plainTextEditString->toPlainText().isEmpty());
+    }
+    else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
+    {
+        bIsValid=!(ui->plainTextEditSignature->toPlainText().isEmpty());
+    }
+    else if(ui->tabWidgetSearch->currentIndex()==2) // Value
+    {
+        // TODO
+    }
+
+    ui->pushButtonOK->setEnabled(bIsValid);
+}
+
+void DialogSearch::on_plainTextEditString_textChanged()
+{
+    checkValid();
+}
+
+void DialogSearch::on_plainTextEditSignature_textChanged()
+{
+    checkValid();
 }
