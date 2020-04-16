@@ -40,6 +40,12 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
     ui->comboBoxEndianness->addItem(tr("Little endian"));
 
     ui->plainTextEditString->setFocus();
+
+    ui->tabWidgetSearch->setCurrentIndex(0);
+
+    ui->lineEditValue->setText("0");
+
+    ui->radioButtonUint->setChecked(true);
 }
 
 DialogSearch::~DialogSearch()
