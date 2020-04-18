@@ -80,69 +80,37 @@ void SearchProcess::process()
     {
         pSearchData->nResult=binary.find_uint8(nStartOffset,-1,(quint8)(pSearchData->variant.toULongLong()));
     }
-    else if(pSearchData->type==TYPE_VALUE_SHORT_BE)
+    else if(pSearchData->type==TYPE_VALUE_SHORT)
     {
-        pSearchData->nResult=binary.find_int16(nStartOffset,-1,(qint16)(pSearchData->variant.toULongLong()),true);
+        pSearchData->nResult=binary.find_int16(nStartOffset,-1,(qint16)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_SHORT_LE)
+    else if(pSearchData->type==TYPE_VALUE_USHORT)
     {
-        pSearchData->nResult=binary.find_int16(nStartOffset,-1,(qint16)(pSearchData->variant.toULongLong()),false);
+        pSearchData->nResult=binary.find_uint16(nStartOffset,-1,(quint16)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_USHORT_BE)
+    else if(pSearchData->type==TYPE_VALUE_INT)
     {
-        pSearchData->nResult=binary.find_uint16(nStartOffset,-1,(quint16)(pSearchData->variant.toULongLong()),true);
+        pSearchData->nResult=binary.find_int32(nStartOffset,-1,(qint32)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_USHORT_LE)
+    else if(pSearchData->type==TYPE_VALUE_UINT)
     {
-        pSearchData->nResult=binary.find_uint16(nStartOffset,-1,(quint16)(pSearchData->variant.toULongLong()),false);
+        pSearchData->nResult=binary.find_uint32(nStartOffset,-1,(quint32)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_INT_BE)
+    else if(pSearchData->type==TYPE_VALUE_INT64)
     {
-        pSearchData->nResult=binary.find_int32(nStartOffset,-1,(qint32)(pSearchData->variant.toULongLong()),true);
+        pSearchData->nResult=binary.find_int64(nStartOffset,-1,(qint64)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_INT_LE)
+    else if(pSearchData->type==TYPE_VALUE_UINT64)
     {
-        pSearchData->nResult=binary.find_int32(nStartOffset,-1,(qint32)(pSearchData->variant.toULongLong()),false);
+        pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_UINT_BE)
+    else if(pSearchData->type==TYPE_VALUE_FLOAT)
     {
-        pSearchData->nResult=binary.find_uint32(nStartOffset,-1,(quint32)(pSearchData->variant.toULongLong()),true);
+        pSearchData->nResult=binary.find_float(nStartOffset,-1,(float)(pSearchData->variant.toFloat()),pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_UINT_LE)
+    else if(pSearchData->type==TYPE_VALUE_DOUBLE)
     {
-        pSearchData->nResult=binary.find_uint32(nStartOffset,-1,(quint32)(pSearchData->variant.toULongLong()),false);
-    }
-    else if(pSearchData->type==TYPE_VALUE_INT64_BE)
-    {
-        pSearchData->nResult=binary.find_int64(nStartOffset,-1,(qint64)(pSearchData->variant.toULongLong()),true);
-    }
-    else if(pSearchData->type==TYPE_VALUE_INT64_LE)
-    {
-        pSearchData->nResult=binary.find_int64(nStartOffset,-1,(qint64)(pSearchData->variant.toULongLong()),false);
-    }
-    else if(pSearchData->type==TYPE_VALUE_UINT64_BE)
-    {
-        pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),true);
-    }
-    else if(pSearchData->type==TYPE_VALUE_UINT64_LE)
-    {
-        pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),false);
-    }
-    else if(pSearchData->type==TYPE_VALUE_FLOAT_BE)
-    {
-        pSearchData->nResult=binary.find_float(nStartOffset,-1,(quint64)(pSearchData->variant.toFloat()),true);
-    }
-    else if(pSearchData->type==TYPE_VALUE_FLOAT_LE)
-    {
-        pSearchData->nResult=binary.find_float(nStartOffset,-1,(quint64)(pSearchData->variant.toFloat()),false);
-    }
-    else if(pSearchData->type==TYPE_VALUE_DOUBLE_BE)
-    {
-        pSearchData->nResult=binary.find_double(nStartOffset,-1,(quint64)(pSearchData->variant.toDouble()),true);
-    }
-    else if(pSearchData->type==TYPE_VALUE_DOUBLE_LE)
-    {
-        pSearchData->nResult=binary.find_double(nStartOffset,-1,(quint64)(pSearchData->variant.toDouble()),false);
+        pSearchData->nResult=binary.find_double(nStartOffset,-1,(double)(pSearchData->variant.toDouble()),pSearchData->bIsBigEndian);
     }
 
     if(pSearchData->nResult!=-1)

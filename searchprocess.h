@@ -40,23 +40,14 @@ public:
         TYPE_SIGNATURE,
         TYPE_VALUE_CHAR,
         TYPE_VALUE_UCHAR,
-        TYPE_VALUE_SHORT_BE,
-        TYPE_VALUE_SHORT_LE,
-        TYPE_VALUE_USHORT_BE,
-        TYPE_VALUE_USHORT_LE,
-        TYPE_VALUE_INT_BE,
-        TYPE_VALUE_INT_LE,
-        TYPE_VALUE_UINT_BE,
-        TYPE_VALUE_UINT_LE,
-        TYPE_VALUE_INT64_BE,
-        TYPE_VALUE_INT64_LE,
-        TYPE_VALUE_UINT64_BE,
-        TYPE_VALUE_UINT64_LE,
-        TYPE_VALUE_DOUBLE_BE,
-        TYPE_VALUE_DOUBLE_LE,
-        TYPE_VALUE_FLOAT_BE,
-        TYPE_VALUE_FLOAT_LE,
-        // TODO more
+        TYPE_VALUE_SHORT,
+        TYPE_VALUE_USHORT,
+        TYPE_VALUE_INT,
+        TYPE_VALUE_UINT,
+        TYPE_VALUE_INT64,
+        TYPE_VALUE_UINT64,
+        TYPE_VALUE_DOUBLE,
+        TYPE_VALUE_FLOAT,
     };
 
     enum SF
@@ -71,6 +62,7 @@ public:
         qint64 nCurrentOffset;
         SF startFrom;
         TYPE type;
+        bool bIsBigEndian;
         QVariant variant;
         bool bInit;
     };

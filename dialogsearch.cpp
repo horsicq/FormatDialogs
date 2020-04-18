@@ -27,6 +27,20 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
 {
     ui->setupUi(this);
 
+    const QSignalBlocker block1(ui->comboBoxEndianness);
+    const QSignalBlocker block2(ui->lineEditValue);
+    const QSignalBlocker block3(ui->tabWidgetSearch);
+    const QSignalBlocker block4(ui->radioButtonChar);
+    const QSignalBlocker block5(ui->radioButtonDouble);
+    const QSignalBlocker block6(ui->radioButtonFloat);
+    const QSignalBlocker block7(ui->radioButtonInt);
+    const QSignalBlocker block8(ui->radioButtonInt64);
+    const QSignalBlocker block9(ui->radioButtonShort);
+    const QSignalBlocker block10(ui->radioButtonUchar);
+    const QSignalBlocker block11(ui->radioButtonUint);
+    const QSignalBlocker block12(ui->radioButtonUint64);
+    const QSignalBlocker block13(ui->radioButtonUshort);
+
     this->pDevice=pDevice;
     this->pSearchData=pSearchData;
 
@@ -113,7 +127,54 @@ void DialogSearch::on_pushButtonOK_clicked()
     }
     else if(ui->tabWidgetSearch->currentIndex()==2) // Value
     {
-        // TODO
+        pSearchData->bIsBigEndian=(ui->comboBoxEndianness->currentIndex()==1);
+
+        pSearchData->variant=ui->lineEditValue->text();
+
+        if(ui->radioButtonChar->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_CHAR;
+        }
+        else if(ui->radioButtonUchar->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
+        }
+        else if(ui->radioButtonDouble->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_DOUBLE;
+        }
+        else if(ui->radioButtonFloat->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_FLOAT;
+        }
+        else if(ui->radioButtonInt->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_INT;
+        }
+        else if(ui->radioButtonInt64->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_INT64;
+        }
+        else if(ui->radioButtonShort->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_SHORT;
+        }
+        else if(ui->radioButtonUchar->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
+        }
+        else if(ui->radioButtonUint->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_UINT;
+        }
+        else if(ui->radioButtonUint64->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_UINT64;
+        }
+        else if(ui->radioButtonUshort->isChecked())
+        {
+            pSearchData->type=SearchProcess::TYPE_VALUE_USHORT;
+        }
     }
 
     DialogSearchProcess dsp(this,pDevice,pSearchData);
