@@ -36,8 +36,8 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
     ui->comboBoxType->addItem(tr("ANSI"));
     ui->comboBoxType->addItem(tr("Unicode"));
 
-    ui->comboBoxEndianness->addItem(tr("Big endian"));
     ui->comboBoxEndianness->addItem(tr("Little endian"));
+    ui->comboBoxEndianness->addItem(tr("Big endian"));
 
     ui->plainTextEditString->setFocus();
 
@@ -220,41 +220,82 @@ void DialogSearch::on_radioButtonDouble_toggled(bool checked)
 void DialogSearch::ajustValue()
 {
     QString sValue=ui->lineEditValue->text();
+    QString sHex;
 
-    bool bSuccess=false;
+    bool bIsBigEndian=(ui->comboBoxEndianness->currentIndex()==1);
 
     if(ui->radioButtonChar->isChecked())
     {
-
+        if(XBinary::checkString_int8(sValue))
+        {
+            sHex=XBinary::valueToHex((qint8)sValue.toShort(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonUchar->isChecked())
     {
-
+        if(XBinary::checkString_uint8(sValue))
+        {
+            sHex=XBinary::valueToHex((quint8)sValue.toUShort(),bIsBigEndian);
+        }
+    }
+    else if(ui->radioButtonShort->isChecked())
+    {
+        if(XBinary::checkString_int16(sValue))
+        {
+            sHex=XBinary::valueToHex((qint16)sValue.toShort(),bIsBigEndian);
+        }
+    }
+    else if(ui->radioButtonUshort->isChecked())
+    {
+        if(XBinary::checkString_uint16(sValue))
+        {
+            sHex=XBinary::valueToHex((quint16)sValue.toUShort(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonInt->isChecked())
     {
-
+        if(XBinary::checkString_int32(sValue))
+        {
+            sHex=XBinary::valueToHex((qint32)sValue.toInt(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonUint->isChecked())
     {
-
+        if(XBinary::checkString_uint32(sValue))
+        {
+            sHex=XBinary::valueToHex((quint32)sValue.toUInt(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonInt64->isChecked())
     {
-
+        if(XBinary::checkString_int64(sValue))
+        {
+            sHex=XBinary::valueToHex((qint64)sValue.toLongLong(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonUint64->isChecked())
     {
-
+        if(XBinary::checkString_uint64(sValue))
+        {
+            sHex=XBinary::valueToHex((quint64)sValue.toULongLong(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonFloat->isChecked())
     {
-
+        if(XBinary::checkString_float(sValue))
+        {
+            sHex=XBinary::valueToHex((float)sValue.toFloat(),bIsBigEndian);
+        }
     }
     else if(ui->radioButtonDouble->isChecked())
     {
-
+        if(XBinary::checkString_double(sValue))
+        {
+            sHex=XBinary::valueToHex((double)sValue.toDouble(),bIsBigEndian);
+        }
     }
+
+    ui->lineEditHex->setText(sHex);
 
     checkValid();
 }
