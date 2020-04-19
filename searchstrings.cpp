@@ -279,7 +279,7 @@ void SearchStrings::processModel()
     scanTimer.start();
 
     int nCount=pListRecords->count();
-    *ppModel=new QStandardItemModel(nCount,4);
+    *ppModel=new QStandardItemModel(nCount,4); // TODO Check
 
     qint64 nBaseAddress=options.nBaseAddress;
     qint32 nAddressWidth=options.nAddressWidth;
