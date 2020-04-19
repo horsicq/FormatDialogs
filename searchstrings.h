@@ -54,6 +54,8 @@ public:
         bool bSearchUnicode;
     };
 
+    const int N_MAX=50000;
+
     explicit SearchStrings(QObject *parent=nullptr);
     void setSearchData(QIODevice *pDevice,QList<RECORD> *pListRecords, OPTIONS *pOptions=nullptr);
     void setModelData(QList<SearchStrings::RECORD> *pListRecords, QStandardItemModel **ppModel, OPTIONS *pOptions=nullptr);

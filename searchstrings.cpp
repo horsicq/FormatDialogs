@@ -91,6 +91,8 @@ void SearchStrings::processSearch()
 
     bIsStop=false;
 
+    int nCurrentRecords=0;
+
     while((_nSize>0)&&(!bIsStop))
     {
         qint64 nCurrentSize=qMin(N_BUFFER_SIZE,_nSize);
@@ -155,6 +157,13 @@ void SearchStrings::processSearch()
                         record.sString=pAnsiBuffer;
 
                         pListRecords->append(record);
+
+                        nCurrentRecords++;
+
+                        if(nCurrentRecords>=N_MAX)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -204,6 +213,13 @@ void SearchStrings::processSearch()
                             record.sString=QString::fromUtf16(pUnicodeBuffer[nParity]);
 
                             pListRecords->append(record);
+
+                            nCurrentRecords++;
+
+                            if(nCurrentRecords>=N_MAX)
+                            {
+                                break;
+                            }
                         }
                     }
 
@@ -231,6 +247,13 @@ void SearchStrings::processSearch()
                                 record.sString=QString::fromUtf16(pUnicodeBuffer[nO]);
 
                                 pListRecords->append(record);
+
+                                nCurrentRecords++;
+
+                                if(nCurrentRecords>=N_MAX)
+                                {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -255,6 +278,13 @@ void SearchStrings::processSearch()
         {
             _nCurrentProcent++;
             emit progressValue(_nCurrentProcent);
+        }
+
+        if(nCurrentRecords>=N_MAX)
+        {
+            emit errorMessage(QString("%1: %2").arg(tr("Maximum")).arg(nCurrentRecords));
+
+            break;
         }
     }
 
