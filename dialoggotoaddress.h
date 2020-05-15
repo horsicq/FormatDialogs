@@ -34,9 +34,16 @@ class DialogGoToAddress : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogGoToAddress(QWidget *parent,XBinary::_MEMORY_MAP *pMemoryMap);
+
+    enum TYPE
+    {
+        TYPE_ADDRESS=0,
+        TYPE_OFFSET
+    };
+
+    explicit DialogGoToAddress(QWidget *parent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
     ~DialogGoToAddress();
-    qint64 getAddress();
+    qint64 getValue();
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -44,8 +51,9 @@ private slots:
 
 private:
     Ui::DialogGoToAddress *ui;
+    TYPE type;
     XBinary::_MEMORY_MAP *pMemoryMap;
-    qint64 nAddress;
+    qint64 nValue;
 };
 
 #endif // DIALOGGOTOADDRESS_H

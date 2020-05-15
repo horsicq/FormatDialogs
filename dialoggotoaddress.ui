@@ -21,7 +21,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBoxAddress">
+    <widget class="QGroupBox" name="groupBoxValue">
      <property name="title">
       <string>Address</string>
      </property>
@@ -42,7 +42,7 @@
        <number>1</number>
       </property>
       <item>
-       <widget class="XLineEditHEX" name="lineEditAddress"/>
+       <widget class="XLineEditHEX" name="lineEditValue"/>
       </item>
      </layout>
     </widget>

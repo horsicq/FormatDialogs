@@ -21,13 +21,28 @@
 #include "dialoggotoaddress.h"
 #include "ui_dialoggotoaddress.h"
 
-DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMemoryMap) :
+DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMemoryMap,TYPE type) :
     QDialog(parent),
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
     this->pMemoryMap=pMemoryMap;
-    nAddress=0;
+    this->type=type;
+    nValue=0;
+
+    QString sCaption="";
+
+    if(type==TYPE_ADDRESS)
+    {
+        sCaption=tr("Address");
+    }
+    else if(type==TYPE_OFFSET)
+    {
+        sCaption=tr("Offset");
+    }
+
+    setWindowTitle(QString("%1 %2").arg(tr("Go to")).arg(sCaption));
+    ui->groupBoxValue->setTitle(sCaption);
 }
 
 DialogGoToAddress::~DialogGoToAddress()
@@ -35,9 +50,9 @@ DialogGoToAddress::~DialogGoToAddress()
     delete ui;
 }
 
-qint64 DialogGoToAddress::getAddress()
+qint64 DialogGoToAddress::getValue()
 {
-    return nAddress;
+    return nValue;
 }
 
 void DialogGoToAddress::on_pushButtonCancel_clicked()
@@ -47,11 +62,22 @@ void DialogGoToAddress::on_pushButtonCancel_clicked()
 
 void DialogGoToAddress::on_pushButtonOK_clicked()
 {
-    qint64 nAddress=(qint64)ui->lineEditAddress->getValue();
+    qint64 nValue=(qint64)ui->lineEditValue->getValue();
 
-    if(XBinary::isAddressValid(pMemoryMap,nAddress))
+    bool bValid=false;
+
+    if(type==TYPE_ADDRESS)
     {
-        this->nAddress=nAddress;
+        bValid=XBinary::isAddressValid(pMemoryMap,nValue);
+    }
+    else if(type==TYPE_OFFSET)
+    {
+        bValid=XBinary::isOffsetValid(pMemoryMap,nValue);
+    }
+
+    if(bValid)
+    {
+        this->nValue=nValue;
         accept();
     }
     else

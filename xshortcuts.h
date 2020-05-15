@@ -27,6 +27,7 @@
 namespace XShortcuts
 {
     const quint32 GOTOADDRESS                   =Qt::CTRL+Qt::Key_G;
+    const quint32 GOTOOFFSET                    =Qt::CTRL+Qt::Key_H;
     const quint32 DUMPTOFILE                    =Qt::CTRL+Qt::Key_D;
     const quint32 DISASM                        =Qt::Key_D;
     const quint32 TODATA                        =Qt::Key_A;
