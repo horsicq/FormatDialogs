@@ -34,11 +34,11 @@ DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMem
 
     if(type==TYPE_ADDRESS)
     {
-        sCaption=tr("Address");
+        sCaption=tr("address");
     }
     else if(type==TYPE_OFFSET)
     {
-        sCaption=tr("Offset");
+        sCaption=tr("offset");
     }
 
     setWindowTitle(QString("%1 %2").arg(tr("Go to")).arg(sCaption));
