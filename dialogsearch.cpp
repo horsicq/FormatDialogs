@@ -47,11 +47,11 @@ DialogSearch::DialogSearch(QWidget *parent, QIODevice *pDevice, SearchProcess::S
     ui->comboBoxSearchFrom->addItem(tr("Begin"));
     ui->comboBoxSearchFrom->addItem(tr("Cursor"));
 
-    ui->comboBoxType->addItem(tr("ANSI"));
-    ui->comboBoxType->addItem(tr("Unicode"));
+    ui->comboBoxType->addItem(QString("ANSI"));
+    ui->comboBoxType->addItem(QString("Unicode"));
 
-    ui->comboBoxEndianness->addItem(tr("Little endian"));
-    ui->comboBoxEndianness->addItem(tr("Big endian"));
+    ui->comboBoxEndianness->addItem(QString("LE"));
+    ui->comboBoxEndianness->addItem(QString("BE"));
 
     ui->plainTextEditString->setFocus();
 
