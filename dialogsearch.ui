@@ -178,7 +178,7 @@
          <item>
           <widget class="QGroupBox" name="groupBoxHex">
            <property name="title">
-            <string>Hex</string>
+            <string notr="true">Hex</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <property name="leftMargin">
@@ -247,70 +247,70 @@
          <item row="0" column="0">
           <widget class="QRadioButton" name="radioButtonChar">
            <property name="text">
-            <string>char</string>
+            <string notr="true">char</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QRadioButton" name="radioButtonShort">
            <property name="text">
-            <string>short</string>
+            <string notr="true">short</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
           <widget class="QRadioButton" name="radioButtonInt">
            <property name="text">
-            <string>int</string>
+            <string notr="true">int</string>
            </property>
           </widget>
          </item>
          <item row="0" column="3">
           <widget class="QRadioButton" name="radioButtonInt64">
            <property name="text">
-            <string>int64</string>
+            <string notr="true">int64</string>
            </property>
           </widget>
          </item>
          <item row="0" column="4">
           <widget class="QRadioButton" name="radioButtonFloat">
            <property name="text">
-            <string>float</string>
+            <string notr="true">float</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QRadioButton" name="radioButtonUchar">
            <property name="text">
-            <string>uchar</string>
+            <string notr="true">uchar</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="QRadioButton" name="radioButtonUshort">
            <property name="text">
-            <string>ushort</string>
+            <string notr="true">ushort</string>
            </property>
           </widget>
          </item>
          <item row="1" column="2">
           <widget class="QRadioButton" name="radioButtonUint">
            <property name="text">
-            <string>uint</string>
+            <string notr="true">uint</string>
            </property>
           </widget>
          </item>
          <item row="1" column="3">
           <widget class="QRadioButton" name="radioButtonUint64">
            <property name="text">
-            <string>uint64</string>
+            <string notr="true">uint64</string>
            </property>
           </widget>
          </item>
          <item row="1" column="4">
           <widget class="QRadioButton" name="radioButtonDouble">
            <property name="text">
-            <string>double</string>
+            <string notr="true">double</string>
            </property>
           </widget>
          </item>
