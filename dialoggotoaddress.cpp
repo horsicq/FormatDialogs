@@ -30,19 +30,22 @@ DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMem
     this->type=type;
     nValue=0;
 
-    QString sCaption="";
+    QString sTitle="";
+    QString sValue="";
 
     if(type==TYPE_ADDRESS)
     {
-        sCaption=tr("address");
+        sTitle=tr("Go to address");
+        sValue=tr("Address");
     }
     else if(type==TYPE_OFFSET)
     {
-        sCaption=tr("offset");
+        sTitle=tr("Go to offset");
+        sValue=tr("Offset");
     }
 
-    setWindowTitle(QString("%1 %2").arg(tr("Go to")).arg(sCaption));
-    ui->groupBoxValue->setTitle(sCaption);
+    setWindowTitle(sTitle);
+    ui->groupBoxValue->setTitle(sValue);
 }
 
 DialogGoToAddress::~DialogGoToAddress()
