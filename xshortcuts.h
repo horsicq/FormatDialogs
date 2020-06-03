@@ -31,6 +31,7 @@ namespace XShortcuts
     const quint32 DUMPTOFILE                    =Qt::CTRL+Qt::Key_D;
     const quint32 DISASM                        =Qt::Key_D;
     const quint32 TODATA                        =Qt::Key_A;
+    const quint32 SIGNATURE                     =Qt::Key_S;
     const QKeySequence::StandardKey SELECTALL   =QKeySequence::SelectAll;
     const QKeySequence::StandardKey COPYASHEX   =QKeySequence::Copy;
     const QKeySequence::StandardKey FIND        =QKeySequence::Find;
