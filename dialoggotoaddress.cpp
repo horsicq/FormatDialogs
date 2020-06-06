@@ -35,13 +35,18 @@ DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMem
 
     if(type==TYPE_ADDRESS)
     {
-        sTitle=tr("Go to address");
-        sValue=tr("Address");
+        sTitle=tr("Virtual address");
+        sValue=tr("Virtual address");
     }
     else if(type==TYPE_OFFSET)
     {
-        sTitle=tr("Go to offset");
-        sValue=tr("Offset");
+        sTitle=tr("File offset");
+        sValue=tr("File offset");
+    }
+    else if(type==TYPE_REL_ADDRESS)
+    {
+        sTitle=tr("Relative virtual address");
+        sValue=tr("Relative virtual address");
     }
 
     setWindowTitle(sTitle);
@@ -76,6 +81,10 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
     else if(type==TYPE_OFFSET)
     {
         bValid=XBinary::isOffsetValid(pMemoryMap,nValue);
+    }
+    else if(type==TYPE_REL_ADDRESS)
+    {
+        bValid=XBinary::isRelAddressValid(pMemoryMap,nValue);
     }
 
     if(bValid)
