@@ -36,17 +36,17 @@ DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMem
     if(type==TYPE_ADDRESS)
     {
         sTitle=tr("Virtual address");
-        sValue=tr("Virtual address");
+        sValue=tr("Value");
     }
     else if(type==TYPE_OFFSET)
     {
         sTitle=tr("File offset");
-        sValue=tr("File offset");
+        sValue=tr("Value");
     }
     else if(type==TYPE_REL_ADDRESS)
     {
         sTitle=tr("Relative virtual address");
-        sValue=tr("Relative virtual address");
+        sValue=tr("Value");
     }
 
     setWindowTitle(sTitle);

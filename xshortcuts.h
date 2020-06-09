@@ -26,6 +26,7 @@
 
 namespace XShortcuts
 {
+    const quint32 GOTOENTRYPOINT                =Qt::Key_E;
     const quint32 GOTOADDRESS                   =Qt::CTRL+Qt::Key_G;
     const quint32 GOTOOFFSET                    =Qt::CTRL+Qt::Key_H;
     const quint32 GOTORELADDRESS                =Qt::CTRL+Qt::Key_R;
@@ -33,6 +34,10 @@ namespace XShortcuts
     const quint32 DISASM                        =Qt::Key_D;
     const quint32 TODATA                        =Qt::Key_A;
     const quint32 SIGNATURE                     =Qt::Key_S;
+    const quint32 HEX                           =Qt::Key_H;
+    const quint32 COPYADDRESS                   =Qt::CTRL+Qt::Key_J;
+    const quint32 COPYOFFSET                    =Qt::CTRL+Qt::Key_K;
+    const quint32 COPYRELADDRESS                =Qt::CTRL+Qt::Key_L;
     const QKeySequence::StandardKey SELECTALL   =QKeySequence::SelectAll;
     const QKeySequence::StandardKey COPYASHEX   =QKeySequence::Copy;
     const QKeySequence::StandardKey FIND        =QKeySequence::Find;
