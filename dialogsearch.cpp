@@ -184,11 +184,11 @@ void DialogSearch::on_pushButtonOK_clicked()
 
 void DialogSearch::on_tabWidgetSearch_currentChanged(int index)
 {
-    if(ui->tabWidgetSearch->currentIndex()==0) // Strings
+    if(index==0) // Strings
     {
         ui->plainTextEditString->setFocus();
     }
-    else if(ui->tabWidgetSearch->currentIndex()==1) // Signatures
+    else if(index==1) // Signatures
     {
         ui->plainTextEditSignature->setFocus();
     }
