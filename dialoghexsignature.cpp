@@ -27,6 +27,8 @@ DialogHexSignature::DialogHexSignature(QWidget *parent,QIODevice *pDevice,qint64
 {
     ui->setupUi(this);
 
+    ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
+
     for(int i=0;i<128;i++)
     {
         pushButton[i]=new QPushButton;
