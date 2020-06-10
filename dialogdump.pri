@@ -2,15 +2,12 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 FORMS += \
-    $$PWD/dialogdumpprocess.ui \
-    $$PWD/dialoghexsignature.ui
+    $$PWD/dialogdumpprocess.ui
 
 HEADERS += \
-    $$PWD/dialogdumpprocess.h \
-    $$PWD/dialoghexsignature.h \
+    $$PWD/dialogdumpprocess.h
     $$PWD/dumpprocess.h
 
 SOURCES += \
-    $$PWD/dialogdumpprocess.cpp \
-    $$PWD/dialoghexsignature.cpp \
+    $$PWD/dialogdumpprocess.cpp
     $$PWD/dumpprocess.cpp
