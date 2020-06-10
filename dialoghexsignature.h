@@ -35,10 +35,8 @@ class DialogHexSignature : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogHexSignature(QWidget *parent=nullptr);
+    explicit DialogHexSignature(QWidget *parent,QIODevice *pDevice,qint64 nOffset,qint64 nSize);
     ~DialogHexSignature();
-
-    void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize);
 
 private slots:
     void on_pushButtonOK_clicked();

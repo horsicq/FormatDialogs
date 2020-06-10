@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>453</height>
+    <width>576</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -180,12 +180,6 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonCopy">
-       <property name="minimumSize">
-        <size>
-         <width>75</width>
-         <height>23</height>
-        </size>
-       </property>
        <property name="maximumSize">
         <size>
          <width>75</width>
@@ -199,18 +193,6 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonClose">
-       <property name="minimumSize">
-        <size>
-         <width>75</width>
-         <height>23</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>75</width>
-         <height>23</height>
-        </size>
-       </property>
        <property name="text">
         <string>OK</string>
        </property>

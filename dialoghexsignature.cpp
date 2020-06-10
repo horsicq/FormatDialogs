@@ -21,7 +21,7 @@
 #include "dialoghexsignature.h"
 #include "ui_dialoghexsignature.h"
 
-DialogHexSignature::DialogHexSignature(QWidget *parent) :
+DialogHexSignature::DialogHexSignature(QWidget *parent,QIODevice *pDevice,qint64 nOffset,qint64 nSize) :
     QDialog(parent),
     ui(new Ui::DialogHexSignature)
 {
@@ -30,7 +30,7 @@ DialogHexSignature::DialogHexSignature(QWidget *parent) :
     for(int i=0;i<128;i++)
     {
         pushButton[i]=new QPushButton;
-//        pushButton[i]->setMaximumWidth(30);
+        pushButton[i]->setMaximumWidth(30);
         pushButton[i]->setMaximumHeight(20);
         pushButton[i]->setCheckable(true);
         pushButton[i]->setEnabled(false);
@@ -69,17 +69,8 @@ DialogHexSignature::DialogHexSignature(QWidget *parent) :
         {
             ui->horizontalLayout7->addWidget(pushButton[i]);
         }
-
     }
-}
 
-DialogHexSignature::~DialogHexSignature()
-{
-    delete ui;
-}
-
-void DialogHexSignature::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize)
-{
     nSize=qMin(nSize,(qint64)128);
 
     baData=XBinary::read_array(pDevice,nOffset,nSize);
@@ -91,6 +82,11 @@ void DialogHexSignature::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSiz
     }
 
     reload();
+}
+
+DialogHexSignature::~DialogHexSignature()
+{
+    delete ui;
 }
 
 void DialogHexSignature::on_pushButtonOK_clicked()
