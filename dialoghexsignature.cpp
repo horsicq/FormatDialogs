@@ -26,6 +26,51 @@ DialogHexSignature::DialogHexSignature(QWidget *parent) :
     ui(new Ui::DialogHexSignature)
 {
     ui->setupUi(this);
+
+    for(int i=0;i<128;i++)
+    {
+        pushButton[i]=new QPushButton;
+//        pushButton[i]->setMaximumWidth(30);
+        pushButton[i]->setMaximumHeight(20);
+        pushButton[i]->setCheckable(true);
+        pushButton[i]->setEnabled(false);
+
+        connect(pushButton[i],SIGNAL(toggled(bool)),this,SLOT(reload()));
+
+        if((i>=0)&&(i<16))
+        {
+            ui->horizontalLayout0->addWidget(pushButton[i]);
+        }
+        else if((i>=16)&&(i<32))
+        {
+            ui->horizontalLayout1->addWidget(pushButton[i]);
+        }
+        else if((i>=32)&&(i<48))
+        {
+            ui->horizontalLayout2->addWidget(pushButton[i]);
+        }
+        else if((i>=48)&&(i<64))
+        {
+            ui->horizontalLayout3->addWidget(pushButton[i]);
+        }
+        else if((i>=64)&&(i<80))
+        {
+            ui->horizontalLayout4->addWidget(pushButton[i]);
+        }
+        else if((i>=80)&&(i<96))
+        {
+            ui->horizontalLayout5->addWidget(pushButton[i]);
+        }
+        else if((i>=96)&&(i<112))
+        {
+            ui->horizontalLayout6->addWidget(pushButton[i]);
+        }
+        else if((i>=112)&&(i<128))
+        {
+            ui->horizontalLayout7->addWidget(pushButton[i]);
+        }
+
+    }
 }
 
 DialogHexSignature::~DialogHexSignature()

@@ -22,6 +22,7 @@
 #define DIALOGHEXSIGNATURE_H
 
 #include <QDialog>
+#include <QPushButton>
 
 namespace Ui {
 class DialogHexSignature;
@@ -32,7 +33,7 @@ class DialogHexSignature : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogHexSignature(QWidget *parent = nullptr);
+    explicit DialogHexSignature(QWidget *parent=nullptr);
     ~DialogHexSignature();
 
 private slots:
@@ -40,6 +41,7 @@ private slots:
 
 private:
     Ui::DialogHexSignature *ui;
+    QPushButton *pushButton[128];
 };
 
 #endif // DIALOGHEXSIGNATURE_H

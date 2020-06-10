@@ -54,9 +54,7 @@ private slots:
     void on_radioButtonDouble_toggled(bool checked);
     void ajustValue();
     void checkValid();
-
     void on_plainTextEditString_textChanged();
-
     void on_plainTextEditSignature_textChanged();
 
 private:

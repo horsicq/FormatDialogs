@@ -5,9 +5,9 @@ FORMS += \
     $$PWD/dialogdumpprocess.ui
 
 HEADERS += \
-    $$PWD/dialogdumpprocess.h
+    $$PWD/dialogdumpprocess.h \
     $$PWD/dumpprocess.h
 
 SOURCES += \
-    $$PWD/dialogdumpprocess.cpp
+    $$PWD/dialogdumpprocess.cpp \
     $$PWD/dumpprocess.cpp
