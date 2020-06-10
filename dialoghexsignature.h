@@ -23,6 +23,8 @@
 
 #include <QDialog>
 #include <QPushButton>
+#include <QClipboard>
+#include "xbinary.h"
 
 namespace Ui {
 class DialogHexSignature;
@@ -36,12 +38,20 @@ public:
     explicit DialogHexSignature(QWidget *parent=nullptr);
     ~DialogHexSignature();
 
+    void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize);
+
 private slots:
     void on_pushButtonOK_clicked();
+    void reload();
+    void on_pushButtonCopy_clicked();
+    void on_checkBoxSpaces_toggled(bool checked);
+    void on_checkBoxUpper_toggled(bool checked);
+    void on_lineEditWildcard_textChanged(const QString &arg1);
 
 private:
     Ui::DialogHexSignature *ui;
     QPushButton *pushButton[128];
+    QByteArray baData;
 };
 
 #endif // DIALOGHEXSIGNATURE_H

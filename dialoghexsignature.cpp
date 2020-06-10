@@ -78,7 +78,83 @@ DialogHexSignature::~DialogHexSignature()
     delete ui;
 }
 
+void DialogHexSignature::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize)
+{
+    nSize=qMin(nSize,(qint64)128);
+
+    baData=XBinary::read_array(pDevice,nOffset,nSize);
+
+    for(int i=0; i<nSize; i++)
+    {
+        pushButton[i]->setText(QString("%1").arg((unsigned char)(baData.data()[i]),2,16,QChar('0')).toUpper());
+        pushButton[i]->setEnabled(true);
+    }
+
+    reload();
+}
+
 void DialogHexSignature::on_pushButtonOK_clicked()
 {
     this->close();
+}
+
+void DialogHexSignature::reload()
+{
+    int nSize=qMin(128,baData.size());
+    QString sSignature;
+    QString sTemp;
+
+    for(int i=0; i<nSize; i++)
+    {
+        if(pushButton[i]->isChecked())
+        {
+            sTemp=ui->lineEditWildcard->text();
+            sTemp+=sTemp;
+        }
+        else
+        {
+            sTemp=QString("%1").arg((unsigned char)(baData.data()[i]),2,16,QChar('0'));
+        }
+
+        if(ui->checkBoxUpper->isChecked())
+        {
+            sTemp=sTemp.toUpper();
+        }
+
+        sSignature+=sTemp;
+
+        if(ui->checkBoxSpaces->isChecked())
+        {
+            sSignature+=" ";
+        }
+    }
+
+    ui->textEditSignature->setText(sSignature);
+}
+
+void DialogHexSignature::on_pushButtonCopy_clicked()
+{
+    QClipboard *clipboard=QApplication::clipboard();
+    clipboard->setText(ui->textEditSignature->toPlainText());
+}
+
+void DialogHexSignature::on_checkBoxSpaces_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+
+    reload();
+}
+
+void DialogHexSignature::on_checkBoxUpper_toggled(bool checked)
+{
+    Q_UNUSED(checked)
+
+    reload();
+}
+
+void DialogHexSignature::on_lineEditWildcard_textChanged(const QString &arg1)
+{
+    Q_UNUSED(arg1)
+
+    reload();
 }
