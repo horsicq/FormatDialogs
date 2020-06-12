@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonClose">
+      <widget class="QPushButton" name="pushButtonOK">
        <property name="text">
         <string>OK</string>
        </property>
