@@ -78,7 +78,6 @@ void DialogSearch::on_pushButtonOK_clicked()
 {
     if(ui->tabWidgetSearch->currentIndex()==0) // Strings
     {
-        // TODO
         bool bMatchCase=ui->checkBoxMatchCase->isChecked();
 
         if(ui->comboBoxType->currentIndex()==0) // ANSI
