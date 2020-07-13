@@ -150,9 +150,9 @@ void DialogHexSignature::on_checkBoxUpper_toggled(bool checked)
     reload();
 }
 
-void DialogHexSignature::on_lineEditWildcard_textChanged(const QString &arg1)
+void DialogHexSignature::on_lineEditWildcard_textChanged(const QString &sText)
 {
-    Q_UNUSED(arg1)
+    Q_UNUSED(sText)
 
     reload();
 }

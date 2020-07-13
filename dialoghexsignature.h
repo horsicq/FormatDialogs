@@ -44,7 +44,7 @@ private slots:
     void on_pushButtonCopy_clicked();
     void on_checkBoxSpaces_toggled(bool checked);
     void on_checkBoxUpper_toggled(bool checked);
-    void on_lineEditWildcard_textChanged(const QString &arg1);
+    void on_lineEditWildcard_textChanged(const QString &sText);
 
 private:
     Ui::DialogHexSignature *ui;

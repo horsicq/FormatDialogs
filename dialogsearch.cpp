@@ -193,9 +193,9 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int index)
     }
 }
 
-void DialogSearch::on_lineEditValue_textChanged(const QString &arg1)
+void DialogSearch::on_lineEditValue_textChanged(const QString &sText)
 {
-    Q_UNUSED(arg1)
+    Q_UNUSED(sText)
 
     ajustValue();
 }

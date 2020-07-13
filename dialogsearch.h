@@ -40,7 +40,7 @@ private slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonOK_clicked();
     void on_tabWidgetSearch_currentChanged(int index);
-    void on_lineEditValue_textChanged(const QString &arg1);
+    void on_lineEditValue_textChanged(const QString &sText);
     void on_comboBoxEndianness_currentIndexChanged(int index);
     void on_radioButtonChar_toggled(bool checked);
     void on_radioButtonUchar_toggled(bool checked);
