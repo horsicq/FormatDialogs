@@ -207,72 +207,72 @@ void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int index)
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonChar_toggled(bool checked)
+void DialogSearch::on_radioButtonChar_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUchar_toggled(bool checked)
+void DialogSearch::on_radioButtonUchar_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonShort_toggled(bool checked)
+void DialogSearch::on_radioButtonShort_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUshort_toggled(bool checked)
+void DialogSearch::on_radioButtonUshort_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonInt_toggled(bool checked)
+void DialogSearch::on_radioButtonInt_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUint_toggled(bool checked)
+void DialogSearch::on_radioButtonUint_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonInt64_toggled(bool checked)
+void DialogSearch::on_radioButtonInt64_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUint64_toggled(bool checked)
+void DialogSearch::on_radioButtonUint64_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonFloat_toggled(bool checked)
+void DialogSearch::on_radioButtonFloat_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonDouble_toggled(bool checked)
+void DialogSearch::on_radioButtonDouble_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }

@@ -136,16 +136,16 @@ void DialogHexSignature::on_pushButtonCopy_clicked()
     clipboard->setText(ui->textEditSignature->toPlainText());
 }
 
-void DialogHexSignature::on_checkBoxSpaces_toggled(bool checked)
+void DialogHexSignature::on_checkBoxSpaces_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     reload();
 }
 
-void DialogHexSignature::on_checkBoxUpper_toggled(bool checked)
+void DialogHexSignature::on_checkBoxUpper_toggled(bool bChecked)
 {
-    Q_UNUSED(checked)
+    Q_UNUSED(bChecked)
 
     reload();
 }
