@@ -39,9 +39,9 @@ public:
 private slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonOK_clicked();
-    void on_tabWidgetSearch_currentChanged(int index);
+    void on_tabWidgetSearch_currentChanged(int nIndex);
     void on_lineEditValue_textChanged(const QString &sText);
-    void on_comboBoxEndianness_currentIndexChanged(int index);
+    void on_comboBoxEndianness_currentIndexChanged(int nIndex);
     void on_radioButtonChar_toggled(bool bChecked);
     void on_radioButtonUchar_toggled(bool bChecked);
     void on_radioButtonShort_toggled(bool bChecked);

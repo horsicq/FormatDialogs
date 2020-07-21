@@ -181,13 +181,13 @@ void DialogSearch::on_pushButtonOK_clicked()
     done(dsp.exec());
 }
 
-void DialogSearch::on_tabWidgetSearch_currentChanged(int index)
+void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
 {
-    if(index==0) // Strings
+    if(nIndex==0) // Strings
     {
         ui->plainTextEditString->setFocus();
     }
-    else if(index==1) // Signatures
+    else if(nIndex==1) // Signatures
     {
         ui->plainTextEditSignature->setFocus();
     }
@@ -200,9 +200,9 @@ void DialogSearch::on_lineEditValue_textChanged(const QString &sText)
     ajustValue();
 }
 
-void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int index)
+void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int nIndex)
 {
-    Q_UNUSED(index)
+    Q_UNUSED(nIndex)
 
     ajustValue();
 }
