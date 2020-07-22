@@ -42,7 +42,7 @@ public:
         TYPE_OFFSET
     };
 
-    explicit DialogGoToAddress(QWidget *parent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
+    explicit DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
     ~DialogGoToAddress();
     qint64 getValue();
 

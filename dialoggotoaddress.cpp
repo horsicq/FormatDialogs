@@ -21,8 +21,8 @@
 #include "dialoggotoaddress.h"
 #include "ui_dialoggotoaddress.h"
 
-DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMemoryMap,TYPE type) :
-    QDialog(parent),
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) :
+    QDialog(pParent),
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
