@@ -30,8 +30,31 @@ DialogTextInfo::DialogTextInfo(QWidget *parent) :
 
 void DialogTextInfo::setText(QString sText)
 {
-    ui->textEditInfo->clear();
-    ui->textEditInfo->append(sText);
+    ui->textEditInfo->setPlainText(sText);
+}
+
+void DialogTextInfo::setFile(QString sFileName)
+{
+    QFile file;
+
+    file.setFileName(sFileName);
+
+    if(file.open(QFile::ReadOnly))
+    {
+        QByteArray data=file.readAll();
+        QString str=QString::fromUtf8(data.data());
+
+        if(Qt::mightBeRichText(str))
+        {
+            ui->textEditInfo->setHtml(str);
+        }
+        else
+        {
+            ui->textEditInfo->setPlainText(str);
+        }
+
+        file.close();
+    }
 }
 
 DialogTextInfo::~DialogTextInfo()

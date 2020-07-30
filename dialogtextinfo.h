@@ -22,6 +22,7 @@
 #define DIALOGTEXTINFO_H
 
 #include <QDialog>
+#include <QFile>
 
 namespace Ui {
 class DialogTextInfo;
@@ -34,6 +35,7 @@ class DialogTextInfo : public QDialog
 public:
     explicit DialogTextInfo(QWidget *parent);
     void setText(QString sText);
+    void setFile(QString sFileName);
     ~DialogTextInfo();
 
 private slots:
