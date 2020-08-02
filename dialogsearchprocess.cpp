@@ -21,8 +21,8 @@
 #include "dialogsearchprocess.h"
 #include "ui_dialogsearchprocess.h"
 
-DialogSearchProcess::DialogSearchProcess(QWidget *parent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) :
-    QDialog(parent),
+DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) :
+    QDialog(pParent),
     ui(new Ui::DialogSearchProcess)
 {
     ui->setupUi(this);

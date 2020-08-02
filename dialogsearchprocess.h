@@ -36,7 +36,7 @@ class DialogSearchProcess : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogSearchProcess(QWidget *parent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
+    explicit DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
     ~DialogSearchProcess();
 
 private slots:
