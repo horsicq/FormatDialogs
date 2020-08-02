@@ -20,7 +20,7 @@
 //
 #include "dumpprocess.h"
 
-DumpProcess::DumpProcess(QObject *parent) : QObject(parent)
+DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 {
     connect(&binary,SIGNAL(errorMessage(QString)),this,SIGNAL(errorMessage(QString)));
     connect(&binary,SIGNAL(dumpProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
