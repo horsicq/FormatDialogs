@@ -33,7 +33,7 @@ class DialogTextInfo : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogTextInfo(QWidget *parent);
+    explicit DialogTextInfo(QWidget *pParent);
     void setText(QString sText);
     void setFile(QString sFileName);
     ~DialogTextInfo();
