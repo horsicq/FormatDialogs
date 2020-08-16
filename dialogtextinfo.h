@@ -34,9 +34,10 @@ class DialogTextInfo : public QDialog
 
 public:
     explicit DialogTextInfo(QWidget *pParent);
-    void setText(QString sText);
-    void setFile(QString sFileName);
     ~DialogTextInfo();
+
+    void setText(QString sText);
+    void setFile(QString sFileName); 
 
 private slots:
     void on_pushButtonClose_clicked();

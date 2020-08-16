@@ -28,6 +28,11 @@ DialogTextInfo::DialogTextInfo(QWidget *pParent) :
     ui->setupUi(this); 
 }
 
+DialogTextInfo::~DialogTextInfo()
+{
+    delete ui;
+}
+
 void DialogTextInfo::setText(QString sText)
 {
     ui->textEditInfo->setPlainText(sText);
@@ -55,11 +60,6 @@ void DialogTextInfo::setFile(QString sFileName)
 
         file.close();
     }
-}
-
-DialogTextInfo::~DialogTextInfo()
-{
-    delete ui;
 }
 
 void DialogTextInfo::on_pushButtonClose_clicked()
