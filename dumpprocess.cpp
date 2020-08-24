@@ -47,7 +47,7 @@ void DumpProcess::process()
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    binary.setData(pDevice);
+    binary.setDevice(pDevice);
 
     if(dumpType==DT_OFFSET)
     {

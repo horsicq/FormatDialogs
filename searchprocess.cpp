@@ -43,7 +43,7 @@ void SearchProcess::process()
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    binary.setData(pDevice);
+    binary.setDevice(pDevice);
 
     qint64 nStartOffset=0;
 
