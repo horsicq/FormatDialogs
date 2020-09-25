@@ -42,7 +42,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
     const QSignalBlocker block13(ui->radioButtonUshort);
 
     this->pDevice=pDevice;
-    this->pSearchData=pSearchData;
+    this->g_pSearchData=pSearchData;
 
     ui->comboBoxSearchFrom->addItem(tr("Begin"));
     ui->comboBoxSearchFrom->addItem(tr("Cursor"));
@@ -84,22 +84,22 @@ void DialogSearch::on_pushButtonOK_clicked()
         {
             if(bMatchCase)
             {
-                pSearchData->type=SearchProcess::TYPE_ANSISTRING;
+                g_pSearchData->type=SearchProcess::TYPE_ANSISTRING;
             }
             else
             {
-                pSearchData->type=SearchProcess::TYPE_ANSISTRING_I;
+                g_pSearchData->type=SearchProcess::TYPE_ANSISTRING_I;
             }
         }
         else if(ui->comboBoxType->currentIndex()==1) // UNICODE
         {
             if(bMatchCase)
             {
-                pSearchData->type=SearchProcess::TYPE_UNICODESTRING;
+                g_pSearchData->type=SearchProcess::TYPE_UNICODESTRING;
             }
             else
             {
-                pSearchData->type=SearchProcess::TYPE_UNICODESTRING_I;
+                g_pSearchData->type=SearchProcess::TYPE_UNICODESTRING_I;
             }
         }
 
@@ -110,7 +110,7 @@ void DialogSearch::on_pushButtonOK_clicked()
             sText.resize(256);
         }
 
-        pSearchData->variant=sText;
+        g_pSearchData->variant=sText;
     }
     else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
     {
@@ -121,62 +121,62 @@ void DialogSearch::on_pushButtonOK_clicked()
             sText.resize(256);
         }
 
-        pSearchData->type=SearchProcess::TYPE_SIGNATURE;
-        pSearchData->variant=sText;
+        g_pSearchData->type=SearchProcess::TYPE_SIGNATURE;
+        g_pSearchData->variant=sText;
     }
     else if(ui->tabWidgetSearch->currentIndex()==2) // Value
     {
-        pSearchData->bIsBigEndian=(ui->comboBoxEndianness->currentIndex()==1);
+        g_pSearchData->bIsBigEndian=(ui->comboBoxEndianness->currentIndex()==1);
 
-        pSearchData->variant=ui->lineEditValue->text();
+        g_pSearchData->variant=ui->lineEditValue->text();
 
         if(ui->radioButtonChar->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_CHAR;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_CHAR;
         }
         else if(ui->radioButtonUchar->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
         }
         else if(ui->radioButtonDouble->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_DOUBLE;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_DOUBLE;
         }
         else if(ui->radioButtonFloat->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_FLOAT;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_FLOAT;
         }
         else if(ui->radioButtonInt->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_INT;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_INT;
         }
         else if(ui->radioButtonInt64->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_INT64;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_INT64;
         }
         else if(ui->radioButtonShort->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_SHORT;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_SHORT;
         }
         else if(ui->radioButtonUchar->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
         }
         else if(ui->radioButtonUint->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_UINT;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_UINT;
         }
         else if(ui->radioButtonUint64->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_UINT64;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_UINT64;
         }
         else if(ui->radioButtonUshort->isChecked())
         {
-            pSearchData->type=SearchProcess::TYPE_VALUE_USHORT;
+            g_pSearchData->type=SearchProcess::TYPE_VALUE_USHORT;
         }
     }
 
-    DialogSearchProcess dsp(this,pDevice,pSearchData);
+    DialogSearchProcess dsp(this,pDevice,g_pSearchData);
 
     done(dsp.exec());
 }

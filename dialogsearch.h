@@ -60,7 +60,7 @@ private slots:
 private:
     Ui::DialogSearch *ui;
     QIODevice *pDevice;
-    SearchProcess::SEARCHDATA *pSearchData;
+    SearchProcess::SEARCHDATA *g_pSearchData;
 };
 
 #endif // DIALOGSEARCH_H
