@@ -30,10 +30,10 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 
 void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DT dumpType)
 {
-    this->pDevice=pDevice;
-    this->nOffset=nOffset;
-    this->nSize=nSize;
-    this->sFileName=sFileName;
+    this->g_pDevice=pDevice;
+    this->g_nOffset=nOffset;
+    this->g_nSize=nSize;
+    this->g_sFileName=sFileName;
     this->dumpType=dumpType;
 }
 
@@ -47,11 +47,11 @@ void DumpProcess::process()
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    binary.setDevice(pDevice);
+    binary.setDevice(g_pDevice);
 
     if(dumpType==DT_OFFSET)
     {
-        binary.dumpToFile(sFileName,nOffset,nSize);
+        binary.dumpToFile(g_sFileName,g_nOffset,g_nSize);
     }
 
     emit completed(scanTimer.elapsed());
