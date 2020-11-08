@@ -75,11 +75,11 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
 
     nSize=qMin(nSize,(qint64)128);
 
-    baData=XBinary::read_array(pDevice,nOffset,nSize);
+    g_baData=XBinary::read_array(pDevice,nOffset,nSize);
 
     for(int i=0; i<nSize; i++)
     {
-        pushButton[i]->setText(QString("%1").arg((unsigned char)(baData.data()[i]),2,16,QChar('0')).toUpper());
+        pushButton[i]->setText(QString("%1").arg((unsigned char)(g_baData.data()[i]),2,16,QChar('0')).toUpper());
         pushButton[i]->setEnabled(true);
     }
 
@@ -98,7 +98,7 @@ void DialogHexSignature::on_pushButtonOK_clicked()
 
 void DialogHexSignature::reload()
 {
-    int nSize=qMin(128,baData.size());
+    int nSize=qMin(128,g_baData.size());
     QString sSignature;
     QString sTemp;
 
@@ -111,7 +111,7 @@ void DialogHexSignature::reload()
         }
         else
         {
-            sTemp=QString("%1").arg((unsigned char)(baData.data()[i]),2,16,QChar('0'));
+            sTemp=QString("%1").arg((unsigned char)(g_baData.data()[i]),2,16,QChar('0'));
         }
 
         if(ui->checkBoxUpper->isChecked())

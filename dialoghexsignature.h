@@ -49,7 +49,7 @@ private slots:
 private:
     Ui::DialogHexSignature *ui;
     QPushButton *pushButton[128]; // TODO const
-    QByteArray baData;
+    QByteArray g_baData;
 };
 
 #endif // DIALOGHEXSIGNATURE_H
