@@ -41,7 +41,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
     const QSignalBlocker block12(ui->radioButtonUint64);
     const QSignalBlocker block13(ui->radioButtonUshort);
 
-    this->pDevice=pDevice;
+    this->g_pDevice=pDevice;
     this->g_pSearchData=pSearchData;
 
     ui->comboBoxSearchFrom->addItem(tr("Begin"));
@@ -176,7 +176,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
     }
 
-    DialogSearchProcess dsp(this,pDevice,g_pSearchData);
+    DialogSearchProcess dsp(this,g_pDevice,g_pSearchData);
 
     done(dsp.exec());
 }
