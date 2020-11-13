@@ -52,9 +52,9 @@ private slots:
 
 private:
     Ui::DialogGoToAddress *ui;
-    TYPE type;
-    XBinary::_MEMORY_MAP *pMemoryMap;
-    qint64 nValue;
+    TYPE g_type;
+    XBinary::_MEMORY_MAP *g_pMemoryMap;
+    qint64 g_nValue;
 };
 
 #endif // DIALOGGOTOADDRESS_H

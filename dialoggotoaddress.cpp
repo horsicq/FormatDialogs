@@ -26,9 +26,9 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    this->pMemoryMap=pMemoryMap;
-    this->type=type;
-    nValue=0;
+    this->g_pMemoryMap=pMemoryMap;
+    this->g_type=type;
+    g_nValue=0;
 
     QString sTitle="";
     QString sValue="";
@@ -60,7 +60,7 @@ DialogGoToAddress::~DialogGoToAddress()
 
 qint64 DialogGoToAddress::getValue()
 {
-    return nValue;
+    return g_nValue;
 }
 
 void DialogGoToAddress::on_pushButtonCancel_clicked()
@@ -74,22 +74,22 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
     bool bValid=false;
 
-    if(type==TYPE_ADDRESS)
+    if(g_type==TYPE_ADDRESS)
     {
-        bValid=XBinary::isAddressValid(pMemoryMap,nValue);
+        bValid=XBinary::isAddressValid(g_pMemoryMap,nValue);
     }
-    else if(type==TYPE_OFFSET)
+    else if(g_type==TYPE_OFFSET)
     {
-        bValid=XBinary::isOffsetValid(pMemoryMap,nValue);
+        bValid=XBinary::isOffsetValid(g_pMemoryMap,nValue);
     }
-    else if(type==TYPE_REL_ADDRESS)
+    else if(g_type==TYPE_REL_ADDRESS)
     {
-        bValid=XBinary::isRelAddressValid(pMemoryMap,nValue);
+        bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue);
     }
 
     if(bValid)
     {
-        this->nValue=nValue;
+        this->g_nValue=nValue;
         accept();
     }
     else
