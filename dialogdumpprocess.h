@@ -51,8 +51,8 @@ private slots:
 
 private:
     Ui::DialogDumpProcess *ui;
-    DumpProcess *pDump;
-    QThread *pThread;
+    DumpProcess *g_pDump;
+    QThread *g_pThread;
 };
 
 #endif // DIALOGDUMPPROCESS_H

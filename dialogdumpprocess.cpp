@@ -27,38 +27,38 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint6
 {
     ui->setupUi(this);
 
-    pDump=new DumpProcess;
-    pThread=new QThread;
+    g_pDump=new DumpProcess;
+    g_pThread=new QThread;
 
-    pDump->moveToThread(pThread);
+    g_pDump->moveToThread(g_pThread);
 
-    connect(pThread, SIGNAL(started()), pDump, SLOT(process()));
-    connect(pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
-    connect(pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
-    connect(pDump, SIGNAL(progressValueChanged(qint32)), this, SLOT(progressValueChanged(qint32)));
-    connect(pDump, SIGNAL(progressValueMinimum(qint32)), this, SLOT(progressValueMinimum(qint32)));
-    connect(pDump, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
+    connect(g_pThread, SIGNAL(started()), g_pDump, SLOT(process()));
+    connect(g_pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(g_pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+    connect(g_pDump, SIGNAL(progressValueChanged(qint32)), this, SLOT(progressValueChanged(qint32)));
+    connect(g_pDump, SIGNAL(progressValueMinimum(qint32)), this, SLOT(progressValueMinimum(qint32)));
+    connect(g_pDump, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
 
-    pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType);
-    pThread->start();
+    g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType);
+    g_pThread->start();
 }
 
 DialogDumpProcess::~DialogDumpProcess()
 {
-    pDump->stop();
+    g_pDump->stop();
 
-    pThread->quit();
-    pThread->wait();
+    g_pThread->quit();
+    g_pThread->wait();
 
     delete ui;
 
-    delete pThread;
-    delete pDump;
+    delete g_pThread;
+    delete g_pDump;
 }
 
 void DialogDumpProcess::on_pushButtonCancel_clicked()
 {
-    pDump->stop();
+    g_pDump->stop();
 }
 
 void DialogDumpProcess::errorMessage(QString sText)
