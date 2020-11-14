@@ -27,41 +27,41 @@ DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, S
 {
     ui->setupUi(this);
 
-    this->pDevice=pDevice;
-    this->pSearchData=pSearchData;
+    this->g_pDevice=pDevice;
+    this->g_pSearchData=pSearchData;
 
-    pSearch=new SearchProcess;
-    pThread=new QThread;
+    g_pSearch=new SearchProcess;
+    g_pThread=new QThread;
 
-    pSearch->moveToThread(pThread);
+    g_pSearch->moveToThread(g_pThread);
 
-    connect(pThread, SIGNAL(started()), pSearch, SLOT(process()));
-    connect(pSearch, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
-    connect(pSearch, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
-    connect(pSearch, SIGNAL(progressValueChanged(qint32)), this, SLOT(progressValueChanged(qint32)));
-    connect(pSearch, SIGNAL(progressValueMinimum(qint32)), this, SLOT(progressValueMinimum(qint32)));
-    connect(pSearch, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
+    connect(g_pThread, SIGNAL(started()), g_pSearch, SLOT(process()));
+    connect(g_pSearch, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(g_pSearch, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+    connect(g_pSearch, SIGNAL(progressValueChanged(qint32)), this, SLOT(progressValueChanged(qint32)));
+    connect(g_pSearch, SIGNAL(progressValueMinimum(qint32)), this, SLOT(progressValueMinimum(qint32)));
+    connect(g_pSearch, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
 
-    pSearch->setData(pDevice,pSearchData);
-    pThread->start();
+    g_pSearch->setData(pDevice,pSearchData);
+    g_pThread->start();
 }
 
 DialogSearchProcess::~DialogSearchProcess()
 {
-    pSearch->stop();
+    g_pSearch->stop();
 
-    pThread->quit();
-    pThread->wait();
+    g_pThread->quit();
+    g_pThread->wait();
 
     delete ui;
 
-    delete pThread;
-    delete pSearch;
+    delete g_pThread;
+    delete g_pSearch;
 }
 
 void DialogSearchProcess::on_pushButtonCancel_clicked()
 {
-    pSearch->stop();
+    g_pSearch->stop();
 }
 
 void DialogSearchProcess::errorMessage(QString sText)
@@ -73,7 +73,7 @@ void DialogSearchProcess::onCompleted(qint64 nElapsed)
 {
     Q_UNUSED(nElapsed)
 
-    if(pSearchData->nResult!=-1)
+    if(g_pSearchData->nResult!=-1)
     {
         done(Accepted);
     }

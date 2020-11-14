@@ -49,10 +49,10 @@ private slots:
 
 private:
     Ui::DialogSearchProcess *ui;
-    QIODevice *pDevice;
-    SearchProcess::SEARCHDATA *pSearchData;
-    SearchProcess *pSearch;
-    QThread *pThread;
+    QIODevice *g_pDevice;
+    SearchProcess::SEARCHDATA *g_pSearchData;
+    SearchProcess *g_pSearch;
+    QThread *g_pThread;
 };
 
 #endif // DIALOGSEARCHPROCESS_H
