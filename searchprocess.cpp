@@ -22,20 +22,20 @@
 
 SearchProcess::SearchProcess(QObject *pParent) : QObject(pParent)
 {
-    connect(&binary,SIGNAL(findProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
-    connect(&binary,SIGNAL(findProgressMinimumChanged(qint32)),this,SIGNAL(progressValueMinimum(qint32)));
-    connect(&binary,SIGNAL(findProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
+    connect(&g_binary,SIGNAL(findProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
+    connect(&g_binary,SIGNAL(findProgressMinimumChanged(qint32)),this,SIGNAL(progressValueMinimum(qint32)));
+    connect(&g_binary,SIGNAL(findProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
 }
 
 void SearchProcess::setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData)
 {
-    this->pDevice=pDevice;
-    this->pSearchData=pSearchData;
+    this->g_pDevice=pDevice;
+    this->g_pSearchData=pSearchData;
 }
 
 void SearchProcess::stop()
 {
-    binary.setDumpProcessEnable(false);
+    g_binary.setDumpProcessEnable(false);
 }
 
 void SearchProcess::process()
@@ -43,79 +43,79 @@ void SearchProcess::process()
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    binary.setDevice(pDevice);
+    g_binary.setDevice(g_pDevice);
 
     qint64 nStartOffset=0;
 
-    if(pSearchData->startFrom==SF_CURRENTOFFSET)
+    if(g_pSearchData->startFrom==SF_CURRENTOFFSET)
     {
-        nStartOffset=pSearchData->nCurrentOffset;
+        nStartOffset=g_pSearchData->nCurrentOffset;
     }
 
-    if(pSearchData->type==TYPE_ANSISTRING)
+    if(g_pSearchData->type==TYPE_ANSISTRING)
     {
-        pSearchData->nResult=binary.find_ansiString(nStartOffset,-1,pSearchData->variant.toString());
+        g_pSearchData->nResult=g_binary.find_ansiString(nStartOffset,-1,g_pSearchData->variant.toString());
     }
-    else if(pSearchData->type==TYPE_ANSISTRING_I)
+    else if(g_pSearchData->type==TYPE_ANSISTRING_I)
     {
-        pSearchData->nResult=binary.find_ansiStringI(nStartOffset,-1,pSearchData->variant.toString());
+        g_pSearchData->nResult=g_binary.find_ansiStringI(nStartOffset,-1,g_pSearchData->variant.toString());
     }
-    else if(pSearchData->type==TYPE_UNICODESTRING)
+    else if(g_pSearchData->type==TYPE_UNICODESTRING)
     {
-        pSearchData->nResult=binary.find_unicodeString(nStartOffset,-1,pSearchData->variant.toString());
+        g_pSearchData->nResult=g_binary.find_unicodeString(nStartOffset,-1,g_pSearchData->variant.toString());
     }
-    else if(pSearchData->type==TYPE_UNICODESTRING_I)
+    else if(g_pSearchData->type==TYPE_UNICODESTRING_I)
     {
-        pSearchData->nResult=binary.find_unicodeStringI(nStartOffset,-1,pSearchData->variant.toString());
+        g_pSearchData->nResult=g_binary.find_unicodeStringI(nStartOffset,-1,g_pSearchData->variant.toString());
     }
-    else if(pSearchData->type==TYPE_SIGNATURE)
+    else if(g_pSearchData->type==TYPE_SIGNATURE)
     {
-        pSearchData->nResult=binary.find_signature(nStartOffset,-1,pSearchData->variant.toString());
+        g_pSearchData->nResult=g_binary.find_signature(nStartOffset,-1,g_pSearchData->variant.toString());
     }
-    else if(pSearchData->type==TYPE_VALUE_CHAR)
+    else if(g_pSearchData->type==TYPE_VALUE_CHAR)
     {
-        pSearchData->nResult=binary.find_int8(nStartOffset,-1,(qint8)(pSearchData->variant.toULongLong()));
+        g_pSearchData->nResult=g_binary.find_int8(nStartOffset,-1,(qint8)(g_pSearchData->variant.toULongLong()));
     }
-    else if(pSearchData->type==TYPE_VALUE_UCHAR)
+    else if(g_pSearchData->type==TYPE_VALUE_UCHAR)
     {
-        pSearchData->nResult=binary.find_uint8(nStartOffset,-1,(quint8)(pSearchData->variant.toULongLong()));
+        g_pSearchData->nResult=g_binary.find_uint8(nStartOffset,-1,(quint8)(g_pSearchData->variant.toULongLong()));
     }
-    else if(pSearchData->type==TYPE_VALUE_SHORT)
+    else if(g_pSearchData->type==TYPE_VALUE_SHORT)
     {
-        pSearchData->nResult=binary.find_int16(nStartOffset,-1,(qint16)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_int16(nStartOffset,-1,(qint16)(g_pSearchData->variant.toULongLong()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_USHORT)
+    else if(g_pSearchData->type==TYPE_VALUE_USHORT)
     {
-        pSearchData->nResult=binary.find_uint16(nStartOffset,-1,(quint16)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_uint16(nStartOffset,-1,(quint16)(g_pSearchData->variant.toULongLong()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_INT)
+    else if(g_pSearchData->type==TYPE_VALUE_INT)
     {
-        pSearchData->nResult=binary.find_int32(nStartOffset,-1,(qint32)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_int32(nStartOffset,-1,(qint32)(g_pSearchData->variant.toULongLong()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_UINT)
+    else if(g_pSearchData->type==TYPE_VALUE_UINT)
     {
-        pSearchData->nResult=binary.find_uint32(nStartOffset,-1,(quint32)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_uint32(nStartOffset,-1,(quint32)(g_pSearchData->variant.toULongLong()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_INT64)
+    else if(g_pSearchData->type==TYPE_VALUE_INT64)
     {
-        pSearchData->nResult=binary.find_int64(nStartOffset,-1,(qint64)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_int64(nStartOffset,-1,(qint64)(g_pSearchData->variant.toULongLong()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_UINT64)
+    else if(g_pSearchData->type==TYPE_VALUE_UINT64)
     {
-        pSearchData->nResult=binary.find_uint64(nStartOffset,-1,(quint64)(pSearchData->variant.toULongLong()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_uint64(nStartOffset,-1,(quint64)(g_pSearchData->variant.toULongLong()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_FLOAT)
+    else if(g_pSearchData->type==TYPE_VALUE_FLOAT)
     {
-        pSearchData->nResult=binary.find_float(nStartOffset,-1,(float)(pSearchData->variant.toFloat()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_float(nStartOffset,-1,(float)(g_pSearchData->variant.toFloat()),g_pSearchData->bIsBigEndian);
     }
-    else if(pSearchData->type==TYPE_VALUE_DOUBLE)
+    else if(g_pSearchData->type==TYPE_VALUE_DOUBLE)
     {
-        pSearchData->nResult=binary.find_double(nStartOffset,-1,(double)(pSearchData->variant.toDouble()),pSearchData->bIsBigEndian);
+        g_pSearchData->nResult=g_binary.find_double(nStartOffset,-1,(double)(g_pSearchData->variant.toDouble()),g_pSearchData->bIsBigEndian);
     }
 
-    if(pSearchData->nResult!=-1)
+    if(g_pSearchData->nResult!=-1)
     {
-        pSearchData->bInit=true;
+        g_pSearchData->bInit=true;
     }
 
     emit completed(scanTimer.elapsed());

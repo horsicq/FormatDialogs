@@ -82,9 +82,9 @@ public slots:
     void process();
 
 private:
-    XBinary binary;
-    QIODevice *pDevice;
-    SearchProcess::SEARCHDATA *pSearchData;
+    XBinary g_binary;
+    QIODevice *g_pDevice;
+    SearchProcess::SEARCHDATA *g_pSearchData;
 };
 
 #endif // SEARCHPROCESS_H
