@@ -22,10 +22,10 @@
 
 DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 {
-    connect(&binary,SIGNAL(errorMessage(QString)),this,SIGNAL(errorMessage(QString)));
-    connect(&binary,SIGNAL(dumpProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
-    connect(&binary,SIGNAL(dumpProgressMinimumChanged(qint32)),this,SIGNAL(progressValueMinimum(qint32)));
-    connect(&binary,SIGNAL(dumpProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
+    connect(&g_binary,SIGNAL(errorMessage(QString)),this,SIGNAL(errorMessage(QString)));
+    connect(&g_binary,SIGNAL(dumpProgressValueChanged(qint32)),this,SIGNAL(progressValueChanged(qint32)));
+    connect(&g_binary,SIGNAL(dumpProgressMinimumChanged(qint32)),this,SIGNAL(progressValueMinimum(qint32)));
+    connect(&g_binary,SIGNAL(dumpProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
 }
 
 void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DT dumpType)
@@ -34,12 +34,12 @@ void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QStr
     this->g_nOffset=nOffset;
     this->g_nSize=nSize;
     this->g_sFileName=sFileName;
-    this->dumpType=dumpType;
+    this->g_dumpType=dumpType;
 }
 
 void DumpProcess::stop()
 {
-    binary.setDumpProcessEnable(false);
+    g_binary.setDumpProcessEnable(false);
 }
 
 void DumpProcess::process()
@@ -47,11 +47,11 @@ void DumpProcess::process()
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    binary.setDevice(g_pDevice);
+    g_binary.setDevice(g_pDevice);
 
-    if(dumpType==DT_OFFSET)
+    if(g_dumpType==DT_OFFSET)
     {
-        binary.dumpToFile(g_sFileName,g_nOffset,g_nSize);
+        g_binary.dumpToFile(g_sFileName,g_nOffset,g_nSize);
     }
 
     emit completed(scanTimer.elapsed());

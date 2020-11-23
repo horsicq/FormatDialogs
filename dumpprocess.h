@@ -56,8 +56,8 @@ private:
     qint64 g_nOffset;
     qint64 g_nSize;
     QString g_sFileName;
-    DT dumpType;
-    XBinary binary;
+    DT g_dumpType;
+    XBinary g_binary;
 };
 
 #endif // DUMPPROCESS_H
