@@ -28,8 +28,36 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     ui->setupUi(this);
     this->g_pMemoryMap=pMemoryMap;
     this->g_type=type;
+    g_nValue=0; 
+
+    adjustTitle(type);
+}
+
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, qint64 nMinValue, qint64 nMaxValue, DialogGoToAddress::TYPE type) :
+    QDialog(pParent),
+    ui(new Ui::DialogGoToAddress)
+{
+    ui->setupUi(this);
+    this->g_nMinValue=nMinValue;
+    this->g_nMaxValue=nMaxValue;
+    this->g_type=type;
     g_nValue=0;
 
+    adjustTitle(type);
+}
+
+DialogGoToAddress::~DialogGoToAddress()
+{
+    delete ui;
+}
+
+qint64 DialogGoToAddress::getValue()
+{
+    return g_nValue;
+}
+
+void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
+{
     QString sTitle="";
     QString sValue="";
 
@@ -53,16 +81,6 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     ui->groupBoxValue->setTitle(sValue);
 }
 
-DialogGoToAddress::~DialogGoToAddress()
-{
-    delete ui;
-}
-
-qint64 DialogGoToAddress::getValue()
-{
-    return g_nValue;
-}
-
 void DialogGoToAddress::on_pushButtonCancel_clicked()
 {
     reject();
@@ -74,17 +92,27 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
     bool bValid=false;
 
-    if(g_type==TYPE_ADDRESS)
+    if(g_pMemoryMap)
     {
-        bValid=XBinary::isAddressValid(g_pMemoryMap,nValue);
+        if(g_type==TYPE_ADDRESS)
+        {
+            bValid=XBinary::isAddressValid(g_pMemoryMap,nValue);
+        }
+        else if(g_type==TYPE_OFFSET)
+        {
+            bValid=XBinary::isOffsetValid(g_pMemoryMap,nValue);
+        }
+        else if(g_type==TYPE_REL_ADDRESS)
+        {
+            bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue);
+        }
     }
-    else if(g_type==TYPE_OFFSET)
+    else
     {
-        bValid=XBinary::isOffsetValid(g_pMemoryMap,nValue);
-    }
-    else if(g_type==TYPE_REL_ADDRESS)
-    {
-        bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue);
+        if((nValue>=g_nMinValue)&&(nValue<=g_nMaxValue))
+        {
+            bValid=true;
+        }
     }
 
     if(bValid)

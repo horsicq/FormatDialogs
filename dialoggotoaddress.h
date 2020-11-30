@@ -42,9 +42,13 @@ public:
         TYPE_OFFSET
     };
 
-    explicit DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
+    DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
+    DialogGoToAddress(QWidget *pParent,qint64 nMinValue,qint64 nMaxValue,TYPE type);
     ~DialogGoToAddress();
     qint64 getValue();
+
+private:
+    void adjustTitle(TYPE type);
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -54,6 +58,8 @@ private:
     Ui::DialogGoToAddress *ui;
     TYPE g_type;
     XBinary::_MEMORY_MAP *g_pMemoryMap;
+    qint64 g_nMinValue;
+    qint64 g_nMaxValue;
     qint64 g_nValue;
 };
 
