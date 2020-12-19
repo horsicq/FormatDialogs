@@ -21,9 +21,6 @@
 #ifndef DUMPPROCESS_H
 #define DUMPPROCESS_H
 
-#include <QObject>
-#include <QElapsedTimer>
-#include <QFile>
 #include "xbinary.h"
 
 class DumpProcess : public QObject
