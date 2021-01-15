@@ -9,3 +9,8 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/dialoggotoaddress.cpp
+
+!contains(XCONFIG, xlineedithex) {
+    XCONFIG += xlineedithex
+    include($$PWD/../Controls/xlineedithex.pri)
+}
