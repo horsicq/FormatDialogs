@@ -33,7 +33,7 @@ namespace XShortcuts
     const quint32 DUMPTOFILE                    =Qt::CTRL+Qt::Key_D;
     const quint32 DISASM                        =Qt::Key_D;
     const quint32 TODATA                        =Qt::Key_A;
-    const quint32 SIGNATURE                     =Qt::Key_S;
+    const quint32 HEXSIGNATURE                  =Qt::Key_S;
     const quint32 HEX                           =Qt::Key_H;
     const quint32 COPYADDRESS                   =Qt::CTRL+Qt::Key_J;
     const quint32 COPYOFFSET                    =Qt::CTRL+Qt::Key_K;
