@@ -84,6 +84,8 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
     }
 
     reload();
+
+    // TODO mono font
 }
 
 DialogHexSignature::~DialogHexSignature()
