@@ -73,7 +73,7 @@ void DialogSearchProcess::onCompleted(qint64 nElapsed)
 {
     Q_UNUSED(nElapsed)
 
-    if(g_pSearchData->nResult!=-1)
+    if(g_pSearchData->nResultOffset!=-1)
     {
         done(Accepted);
     }

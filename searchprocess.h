@@ -57,7 +57,8 @@ public:
 
     struct SEARCHDATA
     {
-        qint64 nResult;
+        qint64 nResultOffset;
+        qint64 nResultSize;
         qint64 nCurrentOffset;
         SF startFrom;
         TYPE type;

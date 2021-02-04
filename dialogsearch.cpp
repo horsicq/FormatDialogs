@@ -21,6 +21,8 @@
 #include "dialogsearch.h"
 #include "ui_dialogsearch.h"
 
+int DialogSearch::g_nCurrentTab=0;
+
 DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) :
     QDialog(pParent),
     ui(new Ui::DialogSearch)
@@ -62,6 +64,8 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
     ui->radioButtonUint->setChecked(true);
 
     ajustValue();
+
+    ui->tabWidgetSearch->setCurrentIndex(g_nCurrentTab);
 }
 
 DialogSearch::~DialogSearch()
@@ -111,6 +115,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
 
         g_pSearchData->variant=sText;
+        g_pSearchData->nResultSize=sText.size();
     }
     else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
     {
@@ -123,6 +128,7 @@ void DialogSearch::on_pushButtonOK_clicked()
 
         g_pSearchData->type=SearchProcess::TYPE_SIGNATURE;
         g_pSearchData->variant=sText;
+        g_pSearchData->nResultSize=1; // TODO Check
     }
     else if(ui->tabWidgetSearch->currentIndex()==2) // Value
     {
@@ -133,46 +139,57 @@ void DialogSearch::on_pushButtonOK_clicked()
         if(ui->radioButtonChar->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_CHAR;
+            g_pSearchData->nResultSize=1;
         }
         else if(ui->radioButtonUchar->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
+            g_pSearchData->nResultSize=1;
         }
         else if(ui->radioButtonDouble->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_DOUBLE;
+            g_pSearchData->nResultSize=8;
         }
         else if(ui->radioButtonFloat->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_FLOAT;
+            g_pSearchData->nResultSize=4;
         }
         else if(ui->radioButtonInt->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_INT;
+            g_pSearchData->nResultSize=4;
         }
         else if(ui->radioButtonInt64->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_INT64;
+            g_pSearchData->nResultSize=8;
         }
         else if(ui->radioButtonShort->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_SHORT;
+            g_pSearchData->nResultSize=2;
         }
         else if(ui->radioButtonUchar->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_UCHAR;
+            g_pSearchData->nResultSize=1;
         }
         else if(ui->radioButtonUint->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_UINT;
+            g_pSearchData->nResultSize=4;
         }
         else if(ui->radioButtonUint64->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_UINT64;
+            g_pSearchData->nResultSize=8;
         }
         else if(ui->radioButtonUshort->isChecked())
         {
             g_pSearchData->type=SearchProcess::TYPE_VALUE_USHORT;
+            g_pSearchData->nResultSize=2;
         }
     }
 
@@ -183,6 +200,8 @@ void DialogSearch::on_pushButtonOK_clicked()
 
 void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
 {
+    g_nCurrentTab=nIndex;
+
     if(nIndex==0) // Strings
     {
         ui->plainTextEditString->setFocus();

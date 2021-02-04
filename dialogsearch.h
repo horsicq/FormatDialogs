@@ -58,6 +58,7 @@ private slots:
     void on_plainTextEditSignature_textChanged();
 
 private:
+    static qint32 g_nCurrentTab;
     Ui::DialogSearch *ui;
     QIODevice *g_pDevice;
     SearchProcess::SEARCHDATA *g_pSearchData;
