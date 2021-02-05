@@ -68,7 +68,7 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
     }
     else if(type==TYPE_OFFSET)
     {
-        sTitle=tr("File offset");
+        sTitle=tr("Offset");
         sValue=tr("Value");
     }
     else if(type==TYPE_REL_ADDRESS)
