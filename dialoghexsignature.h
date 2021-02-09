@@ -25,6 +25,7 @@
 #include <QPushButton>
 #include <QClipboard>
 #include "xbinary.h"
+#include "xoptions.h"
 
 namespace Ui {
 class DialogHexSignature;
