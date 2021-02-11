@@ -71,7 +71,7 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
         sTitle=tr("Offset");
         sValue=tr("Value");
     }
-    else if(type==TYPE_REL_ADDRESS)
+    else if(type==TYPE_RELADDRESS)
     {
         sTitle=tr("Relative virtual address");
         sValue=tr("Value");
@@ -102,7 +102,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
         {
             bValid=XBinary::isOffsetValid(g_pMemoryMap,nValue);
         }
-        else if(g_type==TYPE_REL_ADDRESS)
+        else if(g_type==TYPE_RELADDRESS)
         {
             bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue);
         }

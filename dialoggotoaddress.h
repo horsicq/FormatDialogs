@@ -38,7 +38,7 @@ public:
     enum TYPE
     {
         TYPE_ADDRESS=0,
-        TYPE_REL_ADDRESS,
+        TYPE_RELADDRESS,
         TYPE_OFFSET
     };
 
