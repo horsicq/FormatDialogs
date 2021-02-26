@@ -26,6 +26,7 @@
 #include <QClipboard>
 #include "xbinary.h"
 #include "xoptions.h"
+#include "dialogsearchsignatures.h"
 
 namespace Ui {
 class DialogHexSignature;
@@ -36,7 +37,7 @@ class DialogHexSignature : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize);
+    explicit DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sSignaturesPath);
     ~DialogHexSignature();
 
 private slots:
@@ -46,11 +47,14 @@ private slots:
     void on_checkBoxSpaces_toggled(bool bChecked);
     void on_checkBoxUpper_toggled(bool bChecked);
     void on_lineEditWildcard_textChanged(const QString &sText);
+    void on_pushButtonScan_clicked();
 
 private:
     Ui::DialogHexSignature *ui;
     QPushButton *pushButton[128]; // TODO const
     QByteArray g_baData;
+    QIODevice *g_pDevice;
+    QString g_sSignaturesPath;
 };
 
 #endif // DIALOGHEXSIGNATURE_H

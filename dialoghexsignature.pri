@@ -10,7 +10,3 @@ HEADERS += \
 SOURCES += \
     $$PWD/dialoghexsignature.cpp
 
-!contains(XCONFIG, xoptions) {
-    XCONFIG += xoptions
-    include($$PWD/../XOptions/xoptions.pri)
-}
