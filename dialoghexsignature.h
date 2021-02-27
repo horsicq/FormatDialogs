@@ -32,7 +32,7 @@ namespace Ui {
 class DialogHexSignature;
 }
 
-class DialogHexSignature : public QDialog
+class DialogHexSignature : public XShortcutsDialog
 {
     Q_OBJECT
 

@@ -22,7 +22,7 @@
 #include "ui_dialoghexsignature.h"
 
 DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sSignaturesPath) :
-    QDialog(pParent),
+    XShortcutsDialog(pParent),
     ui(new Ui::DialogHexSignature)
 {
     ui->setupUi(this);
@@ -167,8 +167,11 @@ void DialogHexSignature::on_pushButtonScan_clicked()
     SearchSignaturesWidget::OPTIONS options={};
     options.bMenu_Hex=false;
     options.sSignaturesPath=g_sSignaturesPath;
+    options.sUserSignature=ui->textEditSignature->toPlainText();
 
     DialogSearchSignatures dialogSearchSignatures(this,g_pDevice,XBinary::FT_BINARY,options,true);
+
+    dialogSearchSignatures.setShortcuts(getShortcuts());
 
     dialogSearchSignatures.exec();
 }
