@@ -32,7 +32,7 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
 
     ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
 
-    for(int i=0;i<N_MAX;i++)
+    for(int i=0;i<G_N_MAX;i++)
     {
         pushButton[i]=new QPushButton;
         pushButton[i]->setMaximumWidth(30);
@@ -103,7 +103,7 @@ void DialogHexSignature::on_pushButtonOK_clicked()
 
 void DialogHexSignature::reload()
 {
-    int nSize=qMin(N_MAX,g_baData.size());
+    int nSize=qMin(G_N_MAX,g_baData.size());
     QString sSignature;
     QString sTemp;
 
