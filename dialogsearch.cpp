@@ -29,6 +29,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
 {
     ui->setupUi(this);
 
+#if QT_VERSION >= 0x050300
     const QSignalBlocker block1(ui->comboBoxEndianness);
     const QSignalBlocker block2(ui->lineEditValue);
     const QSignalBlocker block3(ui->tabWidgetSearch);
@@ -42,6 +43,21 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
     const QSignalBlocker block11(ui->radioButtonUint);
     const QSignalBlocker block12(ui->radioButtonUint64);
     const QSignalBlocker block13(ui->radioButtonUshort);
+#else
+    const bool bBlocked1=ui->comboBoxEndianness->blockSignals(true);
+    const bool bBlocked2=ui->lineEditValue->blockSignals(true);
+    const bool bBlocked3=ui->tabWidgetSearch->blockSignals(true);
+    const bool bBlocked4=ui->radioButtonChar->blockSignals(true);
+    const bool bBlocked5=ui->radioButtonDouble->blockSignals(true);
+    const bool bBlocked6=ui->radioButtonFloat->blockSignals(true);
+    const bool bBlocked7=ui->radioButtonInt->blockSignals(true);
+    const bool bBlocked8=ui->radioButtonInt64->blockSignals(true);
+    const bool bBlocked9=ui->radioButtonShort->blockSignals(true);
+    const bool bBlocked10=ui->radioButtonUchar->blockSignals(true);
+    const bool bBlocked11=ui->radioButtonUint->blockSignals(true);
+    const bool bBlocked12=ui->radioButtonUint64->blockSignals(true);
+    const bool bBlocked13=ui->radioButtonUshort->blockSignals(true);
+#endif
 
     this->g_pDevice=pDevice;
     this->g_pSearchData=pSearchData;
@@ -66,6 +82,22 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
     ajustValue();
 
     ui->tabWidgetSearch->setCurrentIndex(g_nCurrentTab);
+
+#if QT_VERSION < 0x050300
+    ui->comboBoxEndianness->blockSignals(bBlocked1);
+    ui->lineEditValue->blockSignals(bBlocked2);
+    ui->tabWidgetSearch->blockSignals(bBlocked3);
+    ui->radioButtonChar->blockSignals(bBlocked4);
+    ui->radioButtonDouble->blockSignals(bBlocked5);
+    ui->radioButtonFloat->blockSignals(bBlocked6);
+    ui->radioButtonInt->blockSignals(bBlocked7);
+    ui->radioButtonInt64->blockSignals(bBlocked8);
+    ui->radioButtonShort->blockSignals(bBlocked9);
+    ui->radioButtonUchar->blockSignals(bBlocked10);
+    ui->radioButtonUint->blockSignals(bBlocked11);
+    ui->radioButtonUint64->blockSignals(bBlocked12);
+    ui->radioButtonUshort->blockSignals(bBlocked13);
+#endif
 }
 
 DialogSearch::~DialogSearch()
