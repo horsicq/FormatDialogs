@@ -3,7 +3,7 @@
  <class>DialogTextInfo</class>
  <widget class="QDialog" name="DialogTextInfo">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
