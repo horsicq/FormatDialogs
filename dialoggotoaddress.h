@@ -34,7 +34,6 @@ class DialogGoToAddress : public QDialog
     Q_OBJECT
 
 public:
-
     enum TYPE
     {
         TYPE_ADDRESS=0,
