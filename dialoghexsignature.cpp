@@ -103,8 +103,8 @@ void DialogHexSignature::on_pushButtonOK_clicked()
 
 void DialogHexSignature::reload()
 {
-    int nNMax=G_N_MAX;
-    int nSize=qMin(nNMax,g_baData.size());
+    int _nMax=G_N_MAX;
+    int nSize=qMin(_nMax,g_baData.size());
     QString sSignature;
     QString sTemp;
 
