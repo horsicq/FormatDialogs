@@ -35,8 +35,8 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
     for(int i=0;i<G_N_MAX;i++)
     {
         pushButton[i]=new QPushButton;
-        pushButton[i]->setMaximumWidth(30);
-        pushButton[i]->setMaximumHeight(20);
+        pushButton[i]->setMaximumWidth(30);     // TODO Consts
+        pushButton[i]->setMaximumHeight(20);    // TODO Consts
         pushButton[i]->setCheckable(true);
         pushButton[i]->setEnabled(false);
 
