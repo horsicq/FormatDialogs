@@ -34,45 +34,45 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
 
     for(int i=0;i<G_N_MAX;i++)
     {
-        pushButton[i]=new QPushButton;
-        pushButton[i]->setMaximumWidth(30);     // TODO Consts
-        pushButton[i]->setMaximumHeight(20);    // TODO Consts
-        pushButton[i]->setCheckable(true);
-        pushButton[i]->setEnabled(false);
+        g_pushButton[i]=new QPushButton;
+        g_pushButton[i]->setMaximumWidth(30);     // TODO Consts
+        g_pushButton[i]->setMaximumHeight(20);    // TODO Consts
+        g_pushButton[i]->setCheckable(true);
+        g_pushButton[i]->setEnabled(false);
 
-        connect(pushButton[i],SIGNAL(toggled(bool)),this,SLOT(reload()));
+        connect(g_pushButton[i],SIGNAL(toggled(bool)),this,SLOT(reload()));
 
         if((i>=0)&&(i<16)) // TODO Consts
         {
-            ui->horizontalLayout0->addWidget(pushButton[i]);
+            ui->horizontalLayout0->addWidget(g_pushButton[i]);
         }
         else if((i>=16)&&(i<32))
         {
-            ui->horizontalLayout1->addWidget(pushButton[i]);
+            ui->horizontalLayout1->addWidget(g_pushButton[i]);
         }
         else if((i>=32)&&(i<48))
         {
-            ui->horizontalLayout2->addWidget(pushButton[i]);
+            ui->horizontalLayout2->addWidget(g_pushButton[i]);
         }
         else if((i>=48)&&(i<64))
         {
-            ui->horizontalLayout3->addWidget(pushButton[i]);
+            ui->horizontalLayout3->addWidget(g_pushButton[i]);
         }
         else if((i>=64)&&(i<80))
         {
-            ui->horizontalLayout4->addWidget(pushButton[i]);
+            ui->horizontalLayout4->addWidget(g_pushButton[i]);
         }
         else if((i>=80)&&(i<96))
         {
-            ui->horizontalLayout5->addWidget(pushButton[i]);
+            ui->horizontalLayout5->addWidget(g_pushButton[i]);
         }
         else if((i>=96)&&(i<112))
         {
-            ui->horizontalLayout6->addWidget(pushButton[i]);
+            ui->horizontalLayout6->addWidget(g_pushButton[i]);
         }
         else if((i>=112)&&(i<128))
         {
-            ui->horizontalLayout7->addWidget(pushButton[i]);
+            ui->horizontalLayout7->addWidget(g_pushButton[i]);
         }
     }
 
@@ -82,8 +82,8 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
 
     for(int i=0; i<nSize; i++)
     {
-        pushButton[i]->setText(QString("%1").arg((unsigned char)(g_baData.data()[i]),2,16,QChar('0')).toUpper());
-        pushButton[i]->setEnabled(true);
+        g_pushButton[i]->setText(QString("%1").arg((unsigned char)(g_baData.data()[i]),2,16,QChar('0')).toUpper());
+        g_pushButton[i]->setEnabled(true);
     }
 
     reload();
@@ -110,7 +110,7 @@ void DialogHexSignature::reload()
 
     for(int i=0; i<nSize; i++)
     {
-        if(pushButton[i]->isChecked())
+        if(g_pushButton[i]->isChecked())
         {
             sTemp=ui->lineEditWildcard->text();
             sTemp+=sTemp;
