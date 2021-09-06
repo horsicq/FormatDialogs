@@ -26,8 +26,10 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    this->g_pMemoryMap=pMemoryMap;
-    this->g_type=type;
+    g_pMemoryMap=pMemoryMap;
+    g_nMinValue=0;
+    g_nMaxValue=0;
+    g_type=type;
     g_nValue=0; 
 
     adjustTitle(type);
@@ -38,9 +40,10 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, qint64 nMinValue, qint64 
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    this->g_nMinValue=nMinValue;
-    this->g_nMaxValue=nMaxValue;
-    this->g_type=type;
+    g_pMemoryMap=0;
+    g_nMinValue=nMinValue;
+    g_nMaxValue=nMaxValue;
+    g_type=type;
     g_nValue=0;
 
     adjustTitle(type);
