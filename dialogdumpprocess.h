@@ -22,7 +22,6 @@
 #define DIALOGDUMPPROCESS_H
 
 #include <QDialog>
-#include <QFile>
 #include <QFileDialog>
 #include <QThread>
 #include <QMessageBox>
