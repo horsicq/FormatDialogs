@@ -29,7 +29,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
 {
     ui->setupUi(this);
 
-#if QT_VERSION >= 0x050300
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
     const QSignalBlocker block1(ui->comboBoxEndianness);
     const QSignalBlocker block2(ui->lineEditValue);
     const QSignalBlocker block3(ui->tabWidgetSearch);
@@ -83,7 +83,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
 
     ui->tabWidgetSearch->setCurrentIndex(g_nCurrentTab);
 
-#if QT_VERSION < 0x050300
+#if QT_VERSION <  QT_VERSION_CHECK(5,3,0)
     ui->comboBoxEndianness->blockSignals(bBlocked1);
     ui->lineEditValue->blockSignals(bBlocked2);
     ui->tabWidgetSearch->blockSignals(bBlocked3);
