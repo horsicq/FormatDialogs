@@ -31,7 +31,7 @@ public:
     enum DT
     {
         DT_OFFSET=0,
-        DT_ADDRESS // TODO
+        DT_ADDRESS
     };
 
     explicit DumpProcess(QObject *pParent=nullptr);
