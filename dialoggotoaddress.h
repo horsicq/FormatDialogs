@@ -44,6 +44,7 @@ public:
     DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
     DialogGoToAddress(QWidget *pParent,qint64 nMinValue,qint64 nMaxValue,TYPE type);
     ~DialogGoToAddress();
+
     qint64 getValue();
 
 private:
