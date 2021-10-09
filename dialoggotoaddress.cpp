@@ -40,7 +40,7 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, qint64 nMinValue, qint64 
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    g_pMemoryMap=0;
+    g_pMemoryMap=nullptr;
     g_nMinValue=nMinValue;
     g_nMaxValue=nMaxValue;
     g_type=type;
