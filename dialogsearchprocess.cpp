@@ -66,7 +66,7 @@ void DialogSearchProcess::on_pushButtonCancel_clicked()
 
 void DialogSearchProcess::errorMessage(QString sText)
 {
-    QMessageBox::critical(this,tr("Error"),sText);
+    QMessageBox::critical(XOptions::getMainWidget(this),tr("Error"),sText);
 }
 
 void DialogSearchProcess::onCompleted(qint64 nElapsed)

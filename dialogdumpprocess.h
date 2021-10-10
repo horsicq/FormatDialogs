@@ -26,6 +26,7 @@
 #include <QThread>
 #include <QMessageBox>
 #include "dumpprocess.h"
+#include "xoptions.h"
 
 namespace Ui
 {

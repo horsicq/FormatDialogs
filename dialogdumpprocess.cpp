@@ -63,7 +63,7 @@ void DialogDumpProcess::on_pushButtonCancel_clicked()
 
 void DialogDumpProcess::errorMessage(QString sText)
 {
-    QMessageBox::critical(this,tr("Error"),sText);
+    QMessageBox::critical(XOptions::getMainWidget(this),tr("Error"),sText);
 }
 
 void DialogDumpProcess::onCompleted(qint64 nElapsed)

@@ -25,6 +25,7 @@
 #include <QThread>
 #include <QMessageBox>
 #include "searchprocess.h"
+#include "xoptions.h"
 
 namespace Ui {
 class DialogSearchProcess;
