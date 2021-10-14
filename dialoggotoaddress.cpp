@@ -30,7 +30,7 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     g_nMinValue=0;
     g_nMaxValue=0;
     g_type=type;
-    g_nValue=0; 
+    g_nValue=0;
 
     adjustTitle(type);
 }

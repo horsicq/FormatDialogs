@@ -25,7 +25,7 @@ DialogTextInfo::DialogTextInfo(QWidget *pParent) :
     QDialog(pParent),
     ui(new Ui::DialogTextInfo)
 {
-    ui->setupUi(this); 
+    ui->setupUi(this);
 }
 
 DialogTextInfo::~DialogTextInfo()
