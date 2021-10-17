@@ -23,6 +23,7 @@
 
 #include <QDialog>
 #include <QFile>
+#include "xarchives.h"
 
 namespace Ui {
 class DialogTextInfo;
@@ -37,8 +38,11 @@ public:
     ~DialogTextInfo();
 
     void setText(QString sText);
-    void setFile(QString sFileName); 
-
+    void setByteArray(QByteArray baData);
+    void setFile(QString sFileName);
+#ifdef USE_ARCHIVE
+    void setArchive(QString sFileName,QString sRecordFileName);
+#endif
 private slots:
     void on_pushButtonClose_clicked();
 

@@ -38,6 +38,20 @@ void DialogTextInfo::setText(QString sText)
     ui->textEditInfo->setPlainText(sText);
 }
 
+void DialogTextInfo::setByteArray(QByteArray baData)
+{
+    QString str=QString::fromUtf8(baData.data());
+
+    if(Qt::mightBeRichText(str))
+    {
+        ui->textEditInfo->setHtml(str);
+    }
+    else
+    {
+        ui->textEditInfo->setPlainText(str);
+    }
+}
+
 void DialogTextInfo::setFile(QString sFileName)
 {
     QFile file;
@@ -46,22 +60,20 @@ void DialogTextInfo::setFile(QString sFileName)
 
     if(file.open(QFile::ReadOnly))
     {
-        QByteArray data=file.readAll();
-        QString str=QString::fromUtf8(data.data());
-
-        if(Qt::mightBeRichText(str))
-        {
-            ui->textEditInfo->setHtml(str);
-        }
-        else
-        {
-            ui->textEditInfo->setPlainText(str);
-        }
+        QByteArray baData=file.readAll();
+        setByteArray(baData);
 
         file.close();
     }
 }
+#ifdef USE_ARCHIVE
+void DialogTextInfo::setArchive(QString sFileName, QString sRecordFileName)
+{
+    QByteArray baData=XArchives::decompress(sFileName,sRecordFileName);
 
+    setByteArray(baData);
+}
+#endif
 void DialogTextInfo::on_pushButtonClose_clicked()
 {
     this->close();
