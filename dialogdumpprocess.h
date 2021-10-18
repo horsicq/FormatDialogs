@@ -23,8 +23,8 @@
 
 #include <QDialog>
 #include <QFileDialog>
-#include <QThread>
 #include <QMessageBox>
+#include <QThread>
 #include "dumpprocess.h"
 #include "xoptions.h"
 

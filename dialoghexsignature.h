@@ -21,9 +21,9 @@
 #ifndef DIALOGHEXSIGNATURE_H
 #define DIALOGHEXSIGNATURE_H
 
+#include <QClipboard>
 #include <QDialog>
 #include <QPushButton>
-#include <QClipboard>
 #include "xbinary.h"
 #include "xoptions.h"
 #include "dialogsearchsignatures.h"
