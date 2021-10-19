@@ -23,7 +23,9 @@
 
 #include <QDialog>
 #include <QFile>
+#ifdef USE_ARCHIVE
 #include "xarchives.h"
+#endif
 
 namespace Ui {
 class DialogTextInfo;
