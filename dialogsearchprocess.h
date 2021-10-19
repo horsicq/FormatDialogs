@@ -22,8 +22,8 @@
 #define DIALOGSEARCHPROCESS_H
 
 #include <QDialog>
-#include <QThread>
 #include <QMessageBox>
+#include <QThread>
 #include "searchprocess.h"
 #include "xoptions.h"
 
