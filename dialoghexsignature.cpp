@@ -80,7 +80,7 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
 
     g_baData=XBinary::read_array(pDevice,nOffset,nSize);
 
-    for(int i=0;i<nSize;i++)
+    for(qint32 i=0;i<nSize;i++)
     {
         g_pushButton[i]->setText(QString("%1").arg((unsigned char)(g_baData.data()[i]),2,16,QChar('0')).toUpper());
         g_pushButton[i]->setEnabled(true);
