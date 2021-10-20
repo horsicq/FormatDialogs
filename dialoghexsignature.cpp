@@ -32,7 +32,7 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint6
 
     ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
 
-    for(int i=0;i<G_N_MAX;i++)
+    for(qint32 i=0;i<G_N_MAX;i++)
     {
         g_pushButton[i]=new QPushButton;
         g_pushButton[i]->setMaximumWidth(30);     // TODO Consts
