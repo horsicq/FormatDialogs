@@ -108,7 +108,7 @@ void DialogHexSignature::reload()
     QString sSignature;
     QString sTemp;
 
-    for(int i=0;i<nSize;i++)
+    for(qint32 i=0;i<nSize;i++)
     {
         if(g_pushButton[i]->isChecked())
         {
