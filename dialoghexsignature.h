@@ -36,7 +36,7 @@ class DialogHexSignature : public XShortcutsDialog
 {
     Q_OBJECT
 
-static const int G_N_MAX=128;
+static const qint32 G_N_MAX=128;
 
 public:
     explicit DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sSignaturesPath);
