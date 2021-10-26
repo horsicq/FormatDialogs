@@ -14,3 +14,6 @@ SOURCES += \
     XCONFIG += xlineedithex
     include($$PWD/../Controls/xlineedithex.pri)
 }
+
+DISTFILES += \
+    $$PWD/dialoggotoaddress.cmake
