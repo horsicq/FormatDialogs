@@ -11,3 +11,6 @@ HEADERS += \
 SOURCES += \
     $$PWD/dialogdumpprocess.cpp \
     $$PWD/dumpprocess.cpp
+
+DISTFILES += \
+    $$PWD/dialogdump.cmake
