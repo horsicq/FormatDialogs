@@ -21,14 +21,13 @@
 #include "dialoghexsignature.h"
 #include "ui_dialoghexsignature.h"
 
-DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sSignaturesPath) :
+DialogHexSignature::DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize) :
     XShortcutsDialog(pParent),
     ui(new Ui::DialogHexSignature)
 {
     ui->setupUi(this);
 
     g_pDevice=pDevice;
-    g_sSignaturesPath=sSignaturesPath;
 
     ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
 
@@ -167,13 +166,12 @@ void DialogHexSignature::on_pushButtonScan_clicked()
 {
     SearchSignaturesWidget::OPTIONS options={};
     options.bMenu_Hex=false;
-    options.sSignaturesPath=g_sSignaturesPath;
     options.sUserSignature=ui->textEditSignature->toPlainText();
 
     DialogSearchSignatures dialogSearchSignatures(this);
 
     dialogSearchSignatures.setData(g_pDevice,XBinary::FT_BINARY,options,true);
-    dialogSearchSignatures.setShortcuts(getShortcuts());
+    dialogSearchSignatures.setGlobal(getShortcuts(),getGlobalOptions());
 
     dialogSearchSignatures.exec();
 }
