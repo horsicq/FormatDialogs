@@ -13,4 +13,6 @@ SOURCES += \
     $$PWD/dumpprocess.cpp
 
 DISTFILES += \
+    $$PWD/LICENSE \
+    $$PWD/README.md \
     $$PWD/dialogdump.cmake
