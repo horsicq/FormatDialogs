@@ -26,11 +26,13 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    g_pMemoryMap=pMemoryMap;
+
     g_nMinValue=0;
     g_nMaxValue=0;
-    g_type=type;
     g_nValue=0;
+
+    g_pMemoryMap=pMemoryMap;
+    g_type=type;
 
     adjustTitle(type);
 }
