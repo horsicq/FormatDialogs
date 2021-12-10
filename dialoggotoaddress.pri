@@ -16,4 +16,6 @@ SOURCES += \
 }
 
 DISTFILES += \
+    $$PWD/LICENSE \
+    $$PWD/README.md \
     $$PWD/dialoggotoaddress.cmake
