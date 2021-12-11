@@ -24,6 +24,7 @@
 #include <QDialog>
 #include "xbinary.h"
 
+// TODO XShortcutDialog
 namespace Ui
 {
 class DialogGoToAddress;
