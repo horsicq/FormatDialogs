@@ -67,6 +67,7 @@ public:
     };
 
     explicit SearchProcess(QObject *pParent=nullptr);
+
     void setData(QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
 
 signals:
