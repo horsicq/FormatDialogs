@@ -234,11 +234,11 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
 {
     g_nCurrentTab=nIndex;
 
-    if(nIndex==0) // Strings
+    if(nIndex==0) // Strings TODO const
     {
         ui->plainTextEditString->setFocus();
     }
-    else if(nIndex==1) // Signatures
+    else if(nIndex==1) // Signatures TODO const
     {
         ui->plainTextEditSignature->setFocus();
     }
