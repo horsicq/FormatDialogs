@@ -23,6 +23,7 @@
 
 #include <QDialog>
 #include "xbinary.h"
+#include "xshortcutsdialog.h"
 
 // TODO XShortcutDialog
 namespace Ui
@@ -30,7 +31,7 @@ namespace Ui
 class DialogGoToAddress;
 }
 
-class DialogGoToAddress : public QDialog
+class DialogGoToAddress : public XShortcutsDialog
 {
     Q_OBJECT
 
