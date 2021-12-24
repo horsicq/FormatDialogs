@@ -38,6 +38,7 @@ class DialogTextInfo : public QDialog
 public:
     explicit DialogTextInfo(QWidget *pParent);
     ~DialogTextInfo();
+
     // TODO setDevice
     void setText(QString sText);
     void setByteArray(QByteArray baData);
