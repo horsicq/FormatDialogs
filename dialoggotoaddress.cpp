@@ -30,7 +30,6 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     g_nMinValue=0;
     g_nMaxValue=0;
     g_nValue=0;
-
     g_pMemoryMap=pMemoryMap;
     g_type=type;
 
