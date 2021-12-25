@@ -21,7 +21,6 @@
 #ifndef DIALOGGOTOADDRESS_H
 #define DIALOGGOTOADDRESS_H
 
-#include <QDialog>
 #include "xbinary.h"
 #include "xshortcutsdialog.h"
 
