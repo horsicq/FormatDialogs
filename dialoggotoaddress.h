@@ -37,8 +37,8 @@ class DialogGoToAddress : public XShortcutsDialog
 public:
     enum TYPE
     {
-        TYPE_ADDRESS=0,
-        TYPE_RELADDRESS,
+        TYPE_VIRTUALADDRESS=0,
+        TYPE_RELVIRTUALADDRESS,
         TYPE_OFFSET
     };
 

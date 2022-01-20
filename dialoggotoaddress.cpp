@@ -66,7 +66,7 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
     QString sTitle="";
     QString sValue="";
 
-    if(type==TYPE_ADDRESS)
+    if(type==TYPE_VIRTUALADDRESS)
     {
         sTitle=tr("Virtual address"); // mb TODO rename to "Address" or add extra type
         sValue=tr("Value");
@@ -76,7 +76,7 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
         sTitle=tr("Offset");
         sValue=tr("Value");
     }
-    else if(type==TYPE_RELADDRESS)
+    else if(type==TYPE_RELVIRTUALADDRESS)
     {
         sTitle=tr("Relative virtual address");
         sValue=tr("Value");
@@ -99,7 +99,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
     if(g_pMemoryMap)
     {
-        if(g_type==TYPE_ADDRESS)
+        if(g_type==TYPE_VIRTUALADDRESS)
         {
             bValid=XBinary::isAddressValid(g_pMemoryMap,nValue);
         }
@@ -107,7 +107,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
         {
             bValid=XBinary::isOffsetValid(g_pMemoryMap,nValue);
         }
-        else if(g_type==TYPE_RELADDRESS)
+        else if(g_type==TYPE_RELVIRTUALADDRESS)
         {
             bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue);
         }
