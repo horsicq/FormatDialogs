@@ -39,7 +39,8 @@ public:
     {
         TYPE_VIRTUALADDRESS=0,
         TYPE_RELVIRTUALADDRESS,
-        TYPE_OFFSET
+        TYPE_OFFSET,
+        TYPE_ADDRESS
     };
 
     DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);

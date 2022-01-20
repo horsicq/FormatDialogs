@@ -81,6 +81,11 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
         sTitle=tr("Relative virtual address");
         sValue=tr("Value");
     }
+    else if(type==TYPE_ADDRESS)
+    {
+        sTitle=tr("Address");
+        sValue=tr("Value");
+    }
 
     setWindowTitle(sTitle);
     ui->groupBoxValue->setTitle(sValue);
@@ -99,7 +104,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
     if(g_pMemoryMap)
     {
-        if(g_type==TYPE_VIRTUALADDRESS)
+        if((g_type==TYPE_VIRTUALADDRESS)||(g_type==TYPE_ADDRESS))
         {
             bValid=XBinary::isAddressValid(g_pMemoryMap,nValue);
         }
