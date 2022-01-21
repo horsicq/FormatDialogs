@@ -68,7 +68,7 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
 
     if(type==TYPE_VIRTUALADDRESS)
     {
-        sTitle=tr("Virtual address"); // mb TODO rename to "Address" or add extra type
+        sTitle=tr("Virtual address");
         sValue=tr("Value");
     }
     else if(type==TYPE_OFFSET)
