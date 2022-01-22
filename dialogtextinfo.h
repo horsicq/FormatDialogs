@@ -39,10 +39,10 @@ public:
     explicit DialogTextInfo(QWidget *pParent);
     ~DialogTextInfo();
 
-    // TODO setDevice
     void setText(QString sText);
     void setByteArray(QByteArray baData);
     void setFile(QString sFileName);
+    void setDevice(QIODevice *pDevice);
 #ifdef USE_ARCHIVE
     void setArchive(QString sFileName,QString sRecordFileName);
 #endif

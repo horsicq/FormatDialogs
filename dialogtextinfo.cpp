@@ -66,6 +66,11 @@ void DialogTextInfo::setFile(QString sFileName)
         file.close();
     }
 }
+
+void DialogTextInfo::setDevice(QIODevice *pDevice)
+{
+    // TODO
+}
 #ifdef USE_ARCHIVE
 void DialogTextInfo::setArchive(QString sFileName, QString sRecordFileName)
 {
