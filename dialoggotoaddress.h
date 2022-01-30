@@ -24,7 +24,6 @@
 #include "xbinary.h"
 #include "xshortcutsdialog.h"
 
-// TODO XShortcutDialog
 namespace Ui
 {
 class DialogGoToAddress;
