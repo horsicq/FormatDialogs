@@ -10,3 +10,4 @@ HEADERS += \
 SOURCES += \
     $$PWD/dialoghexsignature.cpp
 
+# mb TODO cmake
