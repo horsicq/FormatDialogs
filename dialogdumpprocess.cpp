@@ -37,7 +37,7 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint6
     connect(g_pDump,SIGNAL(errorMessage(QString)),this,SLOT(errorMessage(QString)));
     connect(g_pDump,SIGNAL(progressValueChanged(qint32)),this,SLOT(progressValueChanged(qint32)));
     connect(g_pDump,SIGNAL(progressValueMinimum(qint32)),this,SLOT(progressValueMinimum(qint32)));
-    connect(g_pDump, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
+    connect(g_pDump,SIGNAL(progressValueMaximum(qint32)),this,SLOT(progressValueMaximum(qint32)));
 
     g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType);
     g_pThread->start();
