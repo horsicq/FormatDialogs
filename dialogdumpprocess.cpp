@@ -21,7 +21,7 @@
 #include "dialogdumpprocess.h"
 #include "ui_dialogdumpprocess.h"
 
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType) :
+DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType) :
     QDialog(pParent),
     ui(new Ui::DialogDumpProcess)
 {
