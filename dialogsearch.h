@@ -32,6 +32,13 @@ class DialogSearch : public QDialog
 {
     Q_OBJECT
 
+    enum SEARCHMODE
+    {
+        SEARCHMODE_STRING=0,
+        SEARCHMODE_SIGNATURE,
+        SEARCHMODE_VALUE
+    };
+
 public:
     explicit DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
     ~DialogSearch();

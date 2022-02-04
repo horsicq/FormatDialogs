@@ -112,7 +112,7 @@ void DialogSearch::on_pushButtonCancel_clicked()
 
 void DialogSearch::on_pushButtonOK_clicked()
 {
-    if(ui->tabWidgetSearch->currentIndex()==0) // Strings
+    if(ui->tabWidgetSearch->currentIndex()==SEARCHMODE_STRING) // Strings
     {
         bool bMatchCase=ui->checkBoxMatchCase->isChecked();
 
@@ -149,7 +149,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         g_pSearchData->variant=sText;
         g_pSearchData->nResultSize=sText.size();
     }
-    else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
+    else if(ui->tabWidgetSearch->currentIndex()==SEARCHMODE_SIGNATURE) // Signature
     {
         QString sText=ui->plainTextEditSignature->toPlainText();
 
@@ -162,7 +162,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         g_pSearchData->variant=sText;
         g_pSearchData->nResultSize=1; // TODO Check
     }
-    else if(ui->tabWidgetSearch->currentIndex()==2) // Value
+    else if(ui->tabWidgetSearch->currentIndex()==SEARCHMODE_VALUE) // Value
     {
         g_pSearchData->bIsBigEndian=(ui->comboBoxEndianness->currentIndex()==1);
 
@@ -234,11 +234,11 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
 {
     g_nCurrentTab=nIndex;
 
-    if(nIndex==0) // Strings TODO const
+    if(nIndex==SEARCHMODE_STRING)
     {
         ui->plainTextEditString->setFocus();
     }
-    else if(nIndex==1) // Signatures TODO const
+    else if(nIndex==SEARCHMODE_SIGNATURE)
     {
         ui->plainTextEditSignature->setFocus();
     }
@@ -415,15 +415,15 @@ void DialogSearch::checkValid()
 {
     bool bIsValid=false;
 
-    if(ui->tabWidgetSearch->currentIndex()==0) // Strings
+    if(ui->tabWidgetSearch->currentIndex()==SEARCHMODE_STRING) // Strings
     {
         bIsValid=!(ui->plainTextEditString->toPlainText().isEmpty());
     }
-    else if(ui->tabWidgetSearch->currentIndex()==1) // Signature
+    else if(ui->tabWidgetSearch->currentIndex()==SEARCHMODE_SIGNATURE) // Signature
     {
         bIsValid=!(ui->plainTextEditSignature->toPlainText().isEmpty());
     }
-    else if(ui->tabWidgetSearch->currentIndex()==2) // Value
+    else if(ui->tabWidgetSearch->currentIndex()==SEARCHMODE_VALUE) // Value
     {
         bIsValid=!(ui->lineEditHex->text().isEmpty());
     }
