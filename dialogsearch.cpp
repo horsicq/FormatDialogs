@@ -23,7 +23,7 @@
 
 qint32 DialogSearch::g_nCurrentTab=0;
 
-DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) :
+DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData) :
     QDialog(pParent),
     ui(new Ui::DialogSearch)
 {
