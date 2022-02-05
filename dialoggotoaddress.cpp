@@ -21,7 +21,7 @@
 #include "dialoggotoaddress.h"
 #include "ui_dialoggotoaddress.h"
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) :
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type) :
     XShortcutsDialog(pParent),
     ui(new Ui::DialogGoToAddress)
 {
