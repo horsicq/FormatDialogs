@@ -36,7 +36,7 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMem
     adjustTitle(type);
 }
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, qint64 nMinValue, qint64 nMaxValue, DialogGoToAddress::TYPE type) :
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent,qint64 nMinValue,qint64 nMaxValue,DialogGoToAddress::TYPE type) :
     XShortcutsDialog(pParent),
     ui(new Ui::DialogGoToAddress)
 {

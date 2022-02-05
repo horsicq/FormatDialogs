@@ -28,7 +28,7 @@ SearchProcess::SearchProcess(QObject *pParent) : QObject(pParent)
     connect(&g_binary,SIGNAL(searchProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
 }
 
-void SearchProcess::setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData)
+void SearchProcess::setData(QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData)
 {
     this->g_pDevice=pDevice;
     this->g_pSearchData=pSearchData;
