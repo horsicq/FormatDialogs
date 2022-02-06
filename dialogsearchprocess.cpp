@@ -21,7 +21,7 @@
 #include "dialogsearchprocess.h"
 #include "ui_dialogsearchprocess.h"
 
-DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) :
+DialogSearchProcess::DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData) :
     QDialog(pParent),
     ui(new Ui::DialogSearchProcess)
 {
@@ -39,8 +39,8 @@ DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, S
     connect(g_pSearch,SIGNAL(completed(qint64)),this,SLOT(onCompleted(qint64)));
     connect(g_pSearch,SIGNAL(errorMessage(QString)),this,SLOT(errorMessage(QString)));
     connect(g_pSearch,SIGNAL(progressValueChanged(qint32)),this,SLOT(progressValueChanged(qint32)));
-    connect(g_pSearch, SIGNAL(progressValueMinimum(qint32)), this, SLOT(progressValueMinimum(qint32)));
-    connect(g_pSearch, SIGNAL(progressValueMaximum(qint32)), this, SLOT(progressValueMaximum(qint32)));
+    connect(g_pSearch,SIGNAL(progressValueMinimum(qint32)),this,SLOT(progressValueMinimum(qint32)));
+    connect(g_pSearch,SIGNAL(progressValueMaximum(qint32)),this,SLOT(progressValueMaximum(qint32)));
 
     g_pSearch->setData(pDevice,pSearchData);
     g_pThread->start();
