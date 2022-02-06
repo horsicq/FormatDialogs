@@ -28,7 +28,7 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
     connect(&g_binary,SIGNAL(dumpProgressMaximumChanged(qint32)),this,SIGNAL(progressValueMaximum(qint32)));
 }
 
-void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DT dumpType)
+void DumpProcess::setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType)
 {
     this->g_pDevice=pDevice;
     this->g_nOffset=nOffset;
