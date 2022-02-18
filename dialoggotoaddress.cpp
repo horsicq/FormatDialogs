@@ -33,6 +33,8 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMem
     g_pMemoryMap=pMemoryMap;
     g_type=type;
 
+    ui->checkBoxHex->setChecked(true);
+
     adjustTitle(type);
 }
 
@@ -133,5 +135,24 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
     else
     {
         ui->labelStatus->setText(tr("Invalid"));
+    }
+}
+
+void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
+{
+    quint64 nValue=ui->lineEditValue->getValue();
+
+    if(bChecked)
+    {
+        ui->lineEditValue->setValue(nValue,HEXValidator::MODE_HEX);
+    }
+    else
+    {
+        ui->lineEditValue->setValue(nValue,HEXValidator::MODE_DEC);
+    }
+
+    if(!nValue)
+    {
+        ui->lineEditValue->clear();
     }
 }
