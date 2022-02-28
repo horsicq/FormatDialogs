@@ -40,15 +40,15 @@ void DialogTextInfo::setText(QString sText)
 
 void DialogTextInfo::setByteArray(QByteArray baData)
 {
-    QString str=QString::fromUtf8(baData.data());
+    QString sString=QString::fromUtf8(baData.data());
 
-    if(Qt::mightBeRichText(str))
+    if(Qt::mightBeRichText(sString))
     {
-        ui->textEditInfo->setHtml(str);
+        ui->textEditInfo->setHtml(sString);
     }
     else
     {
-        ui->textEditInfo->setPlainText(str);
+        ui->textEditInfo->setPlainText(sString);
     }
 }
 
