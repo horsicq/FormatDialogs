@@ -38,7 +38,7 @@ class DialogDumpProcess : public QDialog
     Q_OBJECT
 
 public:
-    // TODO setData
+    // TODO setData !!!
     explicit DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
     ~DialogDumpProcess();
 
