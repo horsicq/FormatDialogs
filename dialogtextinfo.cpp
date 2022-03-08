@@ -33,6 +33,23 @@ DialogTextInfo::~DialogTextInfo()
     delete ui;
 }
 
+void DialogTextInfo::setWrap(bool bState)
+{
+    if(bState)
+    {
+        ui->textEditInfo->setLineWrapMode(QTextEdit::WidgetWidth);
+    }
+    else
+    {
+        ui->textEditInfo->setLineWrapMode(QTextEdit::NoWrap);
+    }
+}
+
+void DialogTextInfo::setTitle(QString sTitle)
+{
+    setWindowTitle(sTitle);
+}
+
 void DialogTextInfo::setText(QString sText)
 {
     ui->textEditInfo->setPlainText(sText);

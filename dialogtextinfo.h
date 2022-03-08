@@ -39,6 +39,8 @@ public:
     explicit DialogTextInfo(QWidget *pParent);
     ~DialogTextInfo();
 
+    void setWrap(bool bState);
+    void setTitle(QString sTitle);
     void setText(QString sText);
     void setByteArray(QByteArray baData);
     void setFile(QString sFileName);
