@@ -35,6 +35,7 @@ public:
     };
 
     explicit DumpProcess(QObject *pParent=nullptr);
+
     void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType);
 
 signals:
