@@ -86,6 +86,7 @@ void DialogTextInfo::setFile(QString sFileName)
 
 void DialogTextInfo::setDevice(QIODevice *pDevice)
 {
+    Q_UNUSED(pDevice)
     // TODO
 }
 #ifdef USE_ARCHIVE
