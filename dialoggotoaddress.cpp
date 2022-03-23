@@ -50,6 +50,8 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent,qint64 nMinValue,qint64 nM
     g_type=type;
     g_nValue=0;
 
+    ui->checkBoxHex->setChecked(true);
+
     adjustTitle(type);
 }
 
