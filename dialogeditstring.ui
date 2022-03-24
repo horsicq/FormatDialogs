@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>261</height>
+    <width>395</width>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,17 +21,28 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>208</height>
-      </size>
-     </property>
-    </spacer>
+    <widget class="QComboBox" name="comboBoxType"/>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="plainTextEditString"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QCheckBox" name="checkBoxKeepSize">
+       <property name="text">
+        <string>Keep size</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelAvailable">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

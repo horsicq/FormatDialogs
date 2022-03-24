@@ -21,14 +21,30 @@
 #include "dialogeditstring.h"
 #include "ui_dialogeditstring.h"
 
-DialogEditString::DialogEditString(QWidget *pParent) :
+DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT data_struct) :
     QDialog(pParent),
     ui(new Ui::DialogEditString)
 {
     ui->setupUi(this);
+
+    ui->plainTextEditString->setPlainText(data_struct.sString);
+
+    ui->checkBoxKeepSize->setChecked(true);
 }
 
 DialogEditString::~DialogEditString()
 {
     delete ui;
+}
+
+void DialogEditString::on_pushButtonCancel_clicked()
+{
+    this->close();
+}
+
+void DialogEditString::on_pushButtonOK_clicked()
+{
+    accept();
+
+    this->close();
 }
