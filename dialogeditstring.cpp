@@ -21,15 +21,57 @@
 #include "dialogeditstring.h"
 #include "ui_dialogeditstring.h"
 
-DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT data_struct) :
+DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct) :
     QDialog(pParent),
     ui(new Ui::DialogEditString)
 {
     ui->setupUi(this);
 
-    ui->plainTextEditString->setPlainText(data_struct.sString);
+    this->g_pDevice=pDevice;
+    this->g_pData_struct=pData_struct;
 
+    g_nSize=pData_struct->nSize;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
+    const QSignalBlocker blocker1(ui->comboBoxType);
+    const QSignalBlocker blocker2(ui->lineEditString);
+    const QSignalBlocker blocker3(ui->checkBoxKeepSize);
+    const QSignalBlocker blocker4(ui->checkBoxCStrings);
+#else
+    const bool bBlocked1=ui->comboBoxType->blockSignals(true);
+    const bool bBlocked2=ui->lineEditString->blockSignals(true);
+    const bool bBlocked3=ui->checkBoxKeepSize->blockSignals(true);
+    const bool bBlocked4=ui->checkBoxCStrings->blockSignals(true);
+#endif
+
+    ui->comboBoxType->addItem(QString("ANSI"),XBinary::MS_RECORD_TYPE_ANSI);
+    ui->comboBoxType->addItem(QString("Unicode"),XBinary::MS_RECORD_TYPE_UNICODE);
+    ui->comboBoxType->addItem(QString("UTF8"),XBinary::MS_RECORD_TYPE_UTF8);
+
+    qint32 nNumberOfRecords=ui->comboBoxType->count();
+
+    for(qint32 i=0;i<nNumberOfRecords;i++)
+    {
+        if(ui->comboBoxType->itemData(i)==pData_struct->recordType)
+        {
+            ui->comboBoxType->setCurrentIndex(i);
+
+            break;
+        }
+    }
+
+    ui->lineEditString->setText(pData_struct->sString);
     ui->checkBoxKeepSize->setChecked(true);
+    ui->checkBoxCStrings->setChecked(pData_struct->bIsCStrings);
+
+#if QT_VERSION < QT_VERSION_CHECK(5,3,0)
+    ui->comboBoxType->blockSignals(bBlocked1);
+    ui->lineEditString->blockSignals(bBlocked2);
+    ui->checkBoxKeepSize->blockSignals(bBlocked3);
+    ui->checkBoxCStrings->blockSignals(bBlocked4);
+#endif
+
+    adjust();
 }
 
 DialogEditString::~DialogEditString()
@@ -45,6 +87,87 @@ void DialogEditString::on_pushButtonCancel_clicked()
 void DialogEditString::on_pushButtonOK_clicked()
 {
     accept();
+}
 
-    this->close();
+void DialogEditString::on_comboBoxType_currentIndexChanged(int nIndex)
+{
+    Q_UNUSED(nIndex)
+
+    adjust();
+}
+
+void DialogEditString::on_checkBoxKeepSize_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
+
+    adjust();
+}
+
+void DialogEditString::on_lineEditString_textChanged(const QString &sStrings)
+{
+    Q_UNUSED(sStrings)
+
+    adjust();
+}
+
+void DialogEditString::on_checkBoxCStrings_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
+
+    adjust();
+}
+
+void DialogEditString::adjust()
+{
+    qint32 nMax=g_nSize;
+
+    if(ui->checkBoxCStrings->isChecked())
+    {
+        if(ui->comboBoxType->currentData().toUInt()==XBinary::MS_RECORD_TYPE_UNICODE)
+        {
+            nMax-=2;
+        }
+        else
+        {
+            nMax--;
+        }
+    }
+
+    if(!ui->checkBoxKeepSize->isChecked())
+    {
+        nMax=qMin((qint64)0x100,g_pDevice->size()-(g_pData_struct->nOffset));
+    }
+
+    if(ui->comboBoxType->currentData().toUInt()==XBinary::MS_RECORD_TYPE_UNICODE)
+    {
+        ui->lineEditString->setMaxLength(nMax/2);
+    }
+    else
+    {
+        ui->lineEditString->setMaxLength(nMax);
+    }
+
+    QByteArray baString=XBinary::getStringData((XBinary::MS_RECORD_TYPE)(ui->comboBoxType->currentData().toUInt()),ui->lineEditString->text(),ui->checkBoxCStrings->isChecked());
+
+    QString sStatus=QString("%1: %2").arg(tr("Bytes available"),QString::number(nMax-baString.size()));
+
+    ui->labelAvailable->setText(sStatus);
+
+    g_pData_struct->recordType=(XBinary::MS_RECORD_TYPE)(ui->comboBoxType->currentData().toUInt());
+    g_pData_struct->sString=ui->lineEditString->text();
+    g_pData_struct->nSize=baString.size();
+
+    if(ui->checkBoxCStrings->isChecked())
+    {
+        if(ui->comboBoxType->currentData().toUInt()==XBinary::MS_RECORD_TYPE_UNICODE)
+        {
+            g_pData_struct->nSize-=2;
+        }
+        else
+        {
+            g_pData_struct->nSize--;
+        }
+    }
+
+    g_pData_struct->bIsCStrings=ui->checkBoxCStrings->isChecked();
 }

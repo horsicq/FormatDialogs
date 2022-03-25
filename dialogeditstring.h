@@ -39,17 +39,26 @@ public:
         qint64 nSize;
         XBinary::MS_RECORD_TYPE recordType;
         QString sString;
+        bool bIsCStrings;
     };
 
-    explicit DialogEditString(QWidget *pParent,QIODevice *pDevice,DATA_STRUCT data_struct);
+    explicit DialogEditString(QWidget *pParent,QIODevice *pDevice,DATA_STRUCT *pData_struct);
     ~DialogEditString();
 
 private slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonOK_clicked();
+    void on_comboBoxType_currentIndexChanged(int nIndex);
+    void on_lineEditString_textChanged(const QString &sStrings);
+    void on_checkBoxKeepSize_toggled(bool bChecked);
+    void on_checkBoxCStrings_toggled(bool bChecked);
+    void adjust();
 
 private:
     Ui::DialogEditString *ui;
+    QIODevice *g_pDevice;
+    DATA_STRUCT *g_pData_struct;
+    qint64 g_nSize;
 };
 
 #endif // DIALOGEDITSTRING_H
