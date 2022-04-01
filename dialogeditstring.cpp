@@ -21,7 +21,7 @@
 #include "dialogeditstring.h"
 #include "ui_dialogeditstring.h"
 
-DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct) :
+DialogEditString::DialogEditString(QWidget *pParent,QIODevice *pDevice,DATA_STRUCT *pData_struct) :
     QDialog(pParent),
     ui(new Ui::DialogEditString)
 {
