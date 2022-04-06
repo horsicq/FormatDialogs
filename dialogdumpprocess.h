@@ -39,7 +39,8 @@ class DialogDumpProcess : public QDialog
 
 public:
     // TODO setData !!!
-    explicit DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
+    explicit DialogDumpProcess(QWidget *pParent);
+    DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
     ~DialogDumpProcess();
 
 private slots:
