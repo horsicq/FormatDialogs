@@ -56,6 +56,7 @@ void SearchProcess::process()
         nStartOffset=g_pSearchData->nCurrentOffset;
     }
 
+    // TODO more mb pascal strings
     if(g_pSearchData->type==TYPE_ANSISTRING)
     {
         g_pSearchData->nResultOffset=g_binary.find_ansiString(nStartOffset,-1,g_pSearchData->variant.toString());
