@@ -47,7 +47,7 @@ public:
         TYPE_VALUE_DOUBLE,
         TYPE_VALUE_FLOAT,
         // TODO UTF8
-        // TODO pascal strings(UNICODE too)
+        // TODO pascal strings(A/U)
     };
 
     enum SF
