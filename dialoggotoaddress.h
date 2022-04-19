@@ -43,7 +43,7 @@ public:
     };
 
     DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type);
-    DialogGoToAddress(QWidget *pParent,qint64 nMinValue,qint64 nMaxValue,TYPE type);
+    DialogGoToAddress(QWidget *pParent,XADDR nMinValue,XADDR nMaxValue,TYPE type);
     ~DialogGoToAddress();
 
     qint64 getValue();
@@ -60,9 +60,9 @@ private:
     Ui::DialogGoToAddress *ui;
     TYPE g_type;
     XBinary::_MEMORY_MAP *g_pMemoryMap;
-    qint64 g_nMinValue;
-    qint64 g_nMaxValue;
-    qint64 g_nValue;
+    XADDR g_nMinValue;
+    XADDR g_nMaxValue;
+    XADDR g_nValue;
 };
 
 #endif // DIALOGGOTOADDRESS_H

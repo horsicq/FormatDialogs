@@ -39,7 +39,7 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMem
     adjustTitle(type);
 }
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent,qint64 nMinValue,qint64 nMaxValue,DialogGoToAddress::TYPE type) :
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type) :
     XShortcutsDialog(pParent),
     ui(new Ui::DialogGoToAddress)
 {
@@ -103,7 +103,7 @@ void DialogGoToAddress::on_pushButtonCancel_clicked()
 
 void DialogGoToAddress::on_pushButtonOK_clicked()
 {
-    qint64 nValue=(qint64)ui->lineEditValue->getValue();
+    XADDR nValue=(quint64)ui->lineEditValue->getValue();
 
     bool bValid=false;
 
@@ -143,7 +143,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
 void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
 {
-    quint64 nValue=ui->lineEditValue->getValue();
+    XADDR nValue=ui->lineEditValue->getValue();
 
     if(bChecked)
     {
