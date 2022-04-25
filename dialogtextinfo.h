@@ -23,6 +23,7 @@
 
 #include <QDialog>
 #include <QFile>
+#include <QFileDialog>
 #ifdef USE_ARCHIVE
 #include "xarchives.h"
 #endif
@@ -50,6 +51,7 @@ public:
 #endif
 private slots:
     void on_pushButtonClose_clicked();
+    void on_pushButtonSave_clicked();
 
 private:
     Ui::DialogTextInfo *ui;
