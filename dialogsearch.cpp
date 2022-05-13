@@ -21,9 +21,7 @@
 #include "dialogsearch.h"
 #include "ui_dialogsearch.h"
 
-qint32 DialogSearch::g_nCurrentTab=0;
-
-DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData) :
+DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, SEARCHMODE searchMode) :
     QDialog(pParent),
     ui(new Ui::DialogSearch)
 {
@@ -67,6 +65,7 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
 
     ui->comboBoxType->addItem(QString("ANSI"));
     ui->comboBoxType->addItem(QString("Unicode"));
+    ui->comboBoxType->addItem(QString("UTF8"));
 
     ui->comboBoxEndianness->addItem(QString("LE"));
     ui->comboBoxEndianness->addItem(QString("BE"));
@@ -81,7 +80,22 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
 
     ajustValue();
 
-    ui->tabWidgetSearch->setCurrentIndex(g_nCurrentTab);
+    qint32 nCurrentTab=0;
+
+    if(searchMode==SEARCHMODE_STRING)
+    {
+        nCurrentTab=0;
+    }
+    else if(searchMode==SEARCHMODE_SIGNATURE)
+    {
+        nCurrentTab=1;
+    }
+    else if(searchMode==SEARCHMODE_VALUE)
+    {
+        nCurrentTab=1;
+    }
+
+    ui->tabWidgetSearch->setCurrentIndex(nCurrentTab);
 
 #if QT_VERSION <  QT_VERSION_CHECK(5,3,0)
     ui->comboBoxEndianness->blockSignals(bBlocked1);
@@ -136,6 +150,17 @@ void DialogSearch::on_pushButtonOK_clicked()
             else
             {
                 g_pSearchData->type=SearchProcess::TYPE_UNICODESTRING_I;
+            }
+        }
+        else if(ui->comboBoxType->currentIndex()==2) // UTF8
+        {
+            if(bMatchCase)
+            {
+                g_pSearchData->type=SearchProcess::TYPE_UTF8STRING;
+            }
+            else
+            {
+                g_pSearchData->type=SearchProcess::TYPE_UTF8STRING_I;
             }
         }
 
@@ -232,8 +257,6 @@ void DialogSearch::on_pushButtonOK_clicked()
 
 void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
 {
-    g_nCurrentTab=nIndex;
-
     if(nIndex==SEARCHMODE_STRING)
     {
         ui->plainTextEditString->setFocus();
@@ -241,6 +264,10 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
     else if(nIndex==SEARCHMODE_SIGNATURE)
     {
         ui->plainTextEditSignature->setFocus();
+    }
+    else if(nIndex==SEARCHMODE_VALUE)
+    {
+        ui->lineEditValue->setFocus();
     }
 }
 

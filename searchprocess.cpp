@@ -73,6 +73,14 @@ void SearchProcess::process()
     {
         g_pSearchData->nResultOffset=g_binary.find_unicodeStringI(nStartOffset,-1,g_pSearchData->variant.toString());
     }
+    else if(g_pSearchData->type==TYPE_UTF8STRING)
+    {
+        g_pSearchData->nResultOffset=g_binary.find_utf8String(nStartOffset,-1,g_pSearchData->variant.toString());
+    }
+    else if(g_pSearchData->type==TYPE_UTF8STRING_I)
+    {
+        g_pSearchData->nResultOffset=g_binary.find_utf8StringI(nStartOffset,-1,g_pSearchData->variant.toString());
+    }
     else if(g_pSearchData->type==TYPE_SIGNATURE)
     {
         g_pSearchData->nResultOffset=g_binary.find_signature(nStartOffset,-1,g_pSearchData->variant.toString(),&(g_pSearchData->nResultSize));

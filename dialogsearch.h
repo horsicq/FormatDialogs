@@ -32,15 +32,16 @@ class DialogSearch : public QDialog
 {
     Q_OBJECT
 
+public:
     enum SEARCHMODE
     {
-        SEARCHMODE_STRING=0,
+        SEARCHMODE_UNKNOWN=0,
+        SEARCHMODE_STRING,
         SEARCHMODE_SIGNATURE,
         SEARCHMODE_VALUE
     };
 
-public:
-    explicit DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
+    explicit DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData,SEARCHMODE searchMode);
     ~DialogSearch();
 
 private slots:
@@ -65,7 +66,6 @@ private slots:
     void on_plainTextEditSignature_textChanged();
 
 private:
-    static qint32 g_nCurrentTab;
     Ui::DialogSearch *ui;
     QIODevice *g_pDevice;
     SearchProcess::SEARCHDATA *g_pSearchData;
