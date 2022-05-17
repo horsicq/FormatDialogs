@@ -92,7 +92,7 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
     }
     else if(searchMode==SEARCHMODE_VALUE)
     {
-        nCurrentTab=1;
+        nCurrentTab=2;
     }
 
     ui->tabWidgetSearch->setCurrentIndex(nCurrentTab);
