@@ -111,7 +111,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
     {
         if((g_type==TYPE_VIRTUALADDRESS)||(g_type==TYPE_ADDRESS))
         {
-            bValid=XBinary::isAddressValid(g_pMemoryMap,nValue);
+            bValid=XBinary::isAddressValid(g_pMemoryMap,nValue)&&XBinary::isAddressPhysical(g_pMemoryMap,nValue);
         }
         else if(g_type==TYPE_OFFSET)
         {
@@ -119,7 +119,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
         }
         else if(g_type==TYPE_RELVIRTUALADDRESS)
         {
-            bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue);
+            bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue)&&XBinary::isRelAddressPhysical(g_pMemoryMap,nValue);
         }
     }
     else
