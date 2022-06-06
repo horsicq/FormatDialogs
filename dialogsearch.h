@@ -35,8 +35,7 @@ class DialogSearch : public QDialog
 public:
     enum SEARCHMODE
     {
-        SEARCHMODE_UNKNOWN=0,
-        SEARCHMODE_STRING,
+        SEARCHMODE_STRING=0,
         SEARCHMODE_SIGNATURE,
         SEARCHMODE_VALUE
     };
