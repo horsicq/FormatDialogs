@@ -14,3 +14,8 @@ SOURCES += \
     $$PWD/dialogsearch.cpp \
     $$PWD/dialogsearchprocess.cpp \
     $$PWD/searchprocess.cpp
+
+!contains(XCONFIG, xdialogprocess) {
+    XCONFIG += xdialogprocess
+    include($$PWD/xdialogprocess.pri)
+}
