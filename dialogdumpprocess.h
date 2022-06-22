@@ -33,7 +33,7 @@ namespace Ui
 class DialogDumpProcess;
 }
 
-class DialogDumpProcess : public QDialog
+class DialogDumpProcess : public QDialog // TODO XDialogProcess
 {
     Q_OBJECT
 

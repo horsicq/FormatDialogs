@@ -31,7 +31,7 @@ namespace Ui {
 class DialogSearchProcess;
 }
 
-class DialogSearchProcess : public QDialog
+class DialogSearchProcess : public QDialog // TODO XDialogProcess
 {
     Q_OBJECT
 
