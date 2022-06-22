@@ -26,12 +26,13 @@
 #include <QThread>
 #include "searchprocess.h"
 #include "xoptions.h"
+#include "xdialogprocess.h"
 
 namespace Ui {
 class DialogSearchProcess;
 }
 
-class DialogSearchProcess : public QDialog // TODO XDialogProcess
+class DialogSearchProcess : public XDialogProcess
 {
     Q_OBJECT
 

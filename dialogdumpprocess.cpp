@@ -22,7 +22,7 @@
 #include "ui_dialogdumpprocess.h"
 
 DialogDumpProcess::DialogDumpProcess(QWidget *pParent):
-    QDialog(pParent),
+    XDialogProcess(pParent),
     ui(new Ui::DialogDumpProcess)
 {
     ui->setupUi(this);

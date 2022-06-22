@@ -22,6 +22,11 @@
 #define XDIALOGPROCESS_H
 
 #include <QDialog>
+#include <QMessageBox>
+#include <QThread>
+#include <QTimer>
+#include "xbinary.h"
+#include "xoptions.h"
 
 class XDialogProcess : public QDialog
 {
@@ -29,6 +34,25 @@ class XDialogProcess : public QDialog
 
 public:
     explicit XDialogProcess(QWidget *pParent);
+
+    XBinary::PDSTRUCT *getPdStruct();
+
+    void stop();
+    bool isSuccess();
+    qint32 showDialogDelay(quint64 nMsec);
+    bool waitDelay(quint64 nMsec);
+
+protected:
+    virtual void _timerSlot();
+
+public slots:
+    void errorMessage(QString sErrorMessage);
+    void onCompleted(qint64 nElapsed);
+    void timerSlot();
+
+private:
+    XBinary::PDSTRUCT g_pdStruct;
+    QTimer *g_pTimer;
 };
 
 #endif // XDIALOGPROCESS_H

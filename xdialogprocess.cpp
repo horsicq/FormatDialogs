@@ -23,4 +23,110 @@
 XDialogProcess::XDialogProcess(QWidget *pParent):
     QDialog(pParent)
 {
+    g_pdStruct={};
+
+    g_pTimer=new QTimer(this);
+    connect(g_pTimer,SIGNAL(timeout()),this,SLOT(timerSlot()));
+
+    g_pTimer->start(1000); // TODO constt
+}
+
+XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
+{
+    return &g_pdStruct;
+}
+
+void XDialogProcess::stop()
+{
+    g_pTimer->stop();
+    g_pdStruct.bIsStop=true;
+}
+
+bool XDialogProcess::isSuccess()
+{
+    bool bResult=false;
+
+    bResult=g_pdStruct.pdRecord.bSuccess;
+
+    if(getPdStruct()->pdRecordOpt.bIsValid)
+    {
+        bResult&=g_pdStruct.pdRecordOpt.bSuccess;
+    }
+
+    return bResult;
+}
+
+void XDialogProcess::errorMessage(QString sText)
+{
+    QMessageBox::critical(XOptions::getMainWidget(this),tr("Error"),sText);
+}
+
+void XDialogProcess::onCompleted(qint64 nElapsed)
+{
+    Q_UNUSED(nElapsed)
+
+    if(isSuccess())
+    {
+        accept();
+    }
+    else
+    {
+        reject();
+    }
+}
+
+void XDialogProcess::timerSlot()
+{
+    _timerSlot();
+}
+
+qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
+{
+    qint32 nResult=Accepted;
+
+    for(quint64 i=0;i<nMsec;i+=50)
+    {
+        if(i)
+        {
+            QThread::msleep(50);
+        }
+
+        if(isSuccess())
+        {
+            break;
+        }
+    }
+
+    if(!isSuccess())
+    {
+        nResult=exec();
+    }
+
+    return nResult;
+}
+
+bool XDialogProcess::waitDelay(quint64 nMsec)
+{
+    bool nResult=true;
+
+    for(quint64 i=0;i<nMsec;i+=50)
+    {
+        if(i)
+        {
+            QThread::msleep(50);
+        }
+
+        if(isSuccess())
+        {
+            nResult=false;
+            break;
+        }
+    }
+
+    return nResult;
+}
+
+void XDialogProcess::_timerSlot()
+{
+    // TODO
 }

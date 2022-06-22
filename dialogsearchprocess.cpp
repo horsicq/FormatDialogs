@@ -22,7 +22,7 @@
 #include "ui_dialogsearchprocess.h"
 
 DialogSearchProcess::DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData) :
-    QDialog(pParent),
+    XDialogProcess(pParent),
     ui(new Ui::DialogSearchProcess)
 {
     ui->setupUi(this);

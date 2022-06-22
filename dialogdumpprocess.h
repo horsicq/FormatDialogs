@@ -27,13 +27,14 @@
 #include <QThread>
 #include "dumpprocess.h"
 #include "xoptions.h"
+#include "xdialogprocess.h"
 
 namespace Ui
 {
 class DialogDumpProcess;
 }
 
-class DialogDumpProcess : public QDialog // TODO XDialogProcess
+class DialogDumpProcess : public XDialogProcess
 {
     Q_OBJECT
 
