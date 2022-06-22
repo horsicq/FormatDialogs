@@ -40,7 +40,6 @@ public:
     void stop();
     bool isSuccess();
     qint32 showDialogDelay(quint64 nMsec);
-    bool waitDelay(quint64 nMsec);
 
 protected:
     virtual void _timerSlot();

@@ -105,27 +105,6 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
     return nResult;
 }
 
-bool XDialogProcess::waitDelay(quint64 nMsec)
-{
-    bool nResult=true;
-
-    for(quint64 i=0;i<nMsec;i+=50)
-    {
-        if(i)
-        {
-            QThread::msleep(50);
-        }
-
-        if(isSuccess())
-        {
-            nResult=false;
-            break;
-        }
-    }
-
-    return nResult;
-}
-
 void XDialogProcess::_timerSlot()
 {
     // TODO
