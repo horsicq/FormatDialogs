@@ -46,11 +46,13 @@ bool XDialogProcess::isSuccess()
 {
     bool bResult=false;
 
-    bResult=g_pdStruct.pdRecord.bSuccess;
-
     if(getPdStruct()->pdRecordOpt.bIsValid)
     {
-        bResult&=g_pdStruct.pdRecordOpt.bSuccess;
+        bResult=g_pdStruct.pdRecordOpt.bSuccess;
+    }
+    else
+    {
+        bResult=g_pdStruct.pdRecord.bSuccess;
     }
 
     return bResult;
