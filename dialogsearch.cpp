@@ -252,7 +252,7 @@ void DialogSearch::on_pushButtonOK_clicked()
 
     DialogSearchProcess dsp(this,g_pDevice,g_pSearchData);
 
-    done(dsp.exec());
+    done(dsp.showDialogDelay(1000));
 }
 
 void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)

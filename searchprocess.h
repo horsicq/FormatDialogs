@@ -72,23 +72,19 @@ public:
 
     explicit SearchProcess(QObject *pParent=nullptr);
 
-    void setData(QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
+    void setData(QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData,XBinary::PDSTRUCT *pPdStruct);
 
 signals:
     void errorMessage(QString sText);
     void completed(qint64 nElapsed);
-    void progressValueMinimum(qint32 nValue);
-    void progressValueMaximum(qint32 nValue);
-    void progressValueChanged(qint32 nValue);
 
 public slots:
-    void stop();
     void process();
 
 private:
-    XBinary g_binary;
     QIODevice *g_pDevice;
     SearchProcess::SEARCHDATA *g_pSearchData;
+    XBinary::PDSTRUCT *g_pPdStruct;
 };
 
 #endif // SEARCHPROCESS_H

@@ -29,6 +29,9 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent):
 
     g_pDump=nullptr;
     g_pThread=nullptr;
+
+    ui->progressBar->setMinimum(0);
+    ui->progressBar->setMaximum(1000);
 }
 
 DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType) :
@@ -42,17 +45,14 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 
     connect(g_pThread,SIGNAL(started()),g_pDump,SLOT(process()));
     connect(g_pDump,SIGNAL(completed(qint64)),this,SLOT(onCompleted(qint64)));
     connect(g_pDump,SIGNAL(errorMessage(QString)),this,SLOT(errorMessage(QString)));
-    connect(g_pDump,SIGNAL(progressValueChanged(qint32)),this,SLOT(progressValueChanged(qint32)));
-    connect(g_pDump,SIGNAL(progressValueMinimum(qint32)),this,SLOT(progressValueMinimum(qint32)));
-    connect(g_pDump,SIGNAL(progressValueMaximum(qint32)),this,SLOT(progressValueMaximum(qint32)));
 
-    g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType);
+    g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType,getPdStruct());
     g_pThread->start();
 }
 
 DialogDumpProcess::~DialogDumpProcess()
 {
-    g_pDump->stop();
+    stop();
 
     g_pThread->quit();
     g_pThread->wait();
@@ -65,32 +65,13 @@ DialogDumpProcess::~DialogDumpProcess()
 
 void DialogDumpProcess::on_pushButtonCancel_clicked()
 {
-    g_pDump->stop();
+    stop();
 }
 
-void DialogDumpProcess::errorMessage(QString sText)
+void DialogDumpProcess::_timerSlot()
 {
-    QMessageBox::critical(XOptions::getMainWidget(this),tr("Error"),sText);
-}
-
-void DialogDumpProcess::onCompleted(qint64 nElapsed)
-{
-    Q_UNUSED(nElapsed)
-
-    this->close();
-}
-
-void DialogDumpProcess::progressValueChanged(qint32 nValue)
-{
-    ui->progressBar->setValue(nValue);
-}
-
-void DialogDumpProcess::progressValueMaximum(qint32 nValue)
-{
-    ui->progressBar->setMaximum(nValue);
-}
-
-void DialogDumpProcess::progressValueMinimum(qint32 nValue)
-{
-    ui->progressBar->setMinimum(nValue);
+    if(getPdStruct()->pdRecord.nTotal)
+    {
+        ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*1000)/(getPdStruct()->pdRecord.nTotal));
+    }
 }

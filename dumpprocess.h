@@ -36,17 +36,12 @@ public:
 
     explicit DumpProcess(QObject *pParent=nullptr);
 
-    void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType);
+    void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType,XBinary::PDSTRUCT *pPdStruct);
 
 signals:
-    void errorMessage(QString sText);
     void completed(qint64 nElapsed);
-    void progressValueChanged(qint32 nValue);
-    void progressValueMinimum(qint32 nValue);
-    void progressValueMaximum(qint32 nValue);
 
 public slots:
-    void stop();
     void process();
 
 private:
@@ -55,7 +50,7 @@ private:
     qint64 g_nSize;
     QString g_sFileName;
     DT g_dumpType;
-    XBinary g_binary;
+    XBinary::PDSTRUCT *g_pPdStruct;
 };
 
 #endif // DUMPPROCESS_H
