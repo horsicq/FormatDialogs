@@ -19,19 +19,14 @@
  * SOFTWARE.
  */
 #include "dialogdumpprocess.h"
-#include "ui_dialogdumpprocess.h"
 
 DialogDumpProcess::DialogDumpProcess(QWidget *pParent):
-    XDialogProcess(pParent),
-    ui(new Ui::DialogDumpProcess)
+    XDialogProcess(pParent)
 {
-    ui->setupUi(this);
-
     g_pDump=nullptr;
     g_pThread=nullptr;
 
-    ui->progressBar->setMinimum(0);
-    ui->progressBar->setMaximum(1000);
+    setWindowTitle(tr("Dump"));
 }
 
 DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType) :
@@ -57,21 +52,6 @@ DialogDumpProcess::~DialogDumpProcess()
     g_pThread->quit();
     g_pThread->wait();
 
-    delete ui;
-
     delete g_pThread;
     delete g_pDump;
-}
-
-void DialogDumpProcess::on_pushButtonCancel_clicked()
-{
-    stop();
-}
-
-void DialogDumpProcess::_timerSlot()
-{
-    if(getPdStruct()->pdRecord.nTotal)
-    {
-        ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*1000)/(getPdStruct()->pdRecord.nTotal));
-    }
 }

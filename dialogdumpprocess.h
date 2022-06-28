@@ -29,11 +29,6 @@
 #include "xoptions.h"
 #include "xdialogprocess.h"
 
-namespace Ui
-{
-class DialogDumpProcess;
-}
-
 class DialogDumpProcess : public XDialogProcess
 {
     Q_OBJECT
@@ -44,14 +39,7 @@ public:
     DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
     ~DialogDumpProcess();
 
-private slots:
-    void on_pushButtonCancel_clicked();
-
-protected:
-    virtual void _timerSlot();
-
 private:
-    Ui::DialogDumpProcess *ui;
     DumpProcess *g_pDump;
     QThread *g_pThread;
 };

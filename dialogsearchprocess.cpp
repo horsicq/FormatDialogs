@@ -19,19 +19,12 @@
  * SOFTWARE.
  */
 #include "dialogsearchprocess.h"
-#include "ui_dialogsearchprocess.h"
 
 DialogSearchProcess::DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData) :
-    XDialogProcess(pParent),
-    ui(new Ui::DialogSearchProcess)
+    XDialogProcess(pParent)
 {
-    ui->setupUi(this);
-
     this->g_pDevice=pDevice;
     this->g_pSearchData=pSearchData;
-
-    ui->progressBarSearch->setMinimum(0);
-    ui->progressBarSearch->setMaximum(1000);
 
     g_pSearch=new SearchProcess;
     g_pThread=new QThread;
@@ -53,21 +46,7 @@ DialogSearchProcess::~DialogSearchProcess()
     g_pThread->quit();
     g_pThread->wait();
 
-    delete ui;
-
     delete g_pThread;
     delete g_pSearch;
 }
 
-void DialogSearchProcess::_timerSlot()
-{
-    if(getPdStruct()->pdRecord.nTotal)
-    {
-        ui->progressBarSearch->setValue((getPdStruct()->pdRecord.nCurrent*1000)/(getPdStruct()->pdRecord.nTotal));
-    }
-}
-
-void DialogSearchProcess::on_pushButtonCancel_clicked()
-{
-    stop();
-}

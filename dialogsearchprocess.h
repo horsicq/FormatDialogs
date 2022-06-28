@@ -28,10 +28,6 @@
 #include "xoptions.h"
 #include "xdialogprocess.h"
 
-namespace Ui {
-class DialogSearchProcess;
-}
-
 class DialogSearchProcess : public XDialogProcess
 {
     Q_OBJECT
@@ -40,14 +36,7 @@ public:
     explicit DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
     ~DialogSearchProcess();
 
-protected:
-    virtual void _timerSlot();
-
-private slots:
-    void on_pushButtonCancel_clicked();
-
 private:
-    Ui::DialogSearchProcess *ui;
     QIODevice *g_pDevice;
     SearchProcess::SEARCHDATA *g_pSearchData;
     SearchProcess *g_pSearch;

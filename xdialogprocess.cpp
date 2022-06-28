@@ -19,16 +19,32 @@
  * SOFTWARE.
  */
 #include "xdialogprocess.h"
+#include "ui_xdialogprocess.h"
 
-XDialogProcess::XDialogProcess(QWidget *pParent):
-    QDialog(pParent)
+XDialogProcess::XDialogProcess(QWidget *pParent) :
+    QDialog(pParent),
+    ui(new Ui::XDialogProcess)
 {
+    ui->setupUi(this);
+
+    ui->progressBar->setMinimum(0);
+    ui->progressBar->setMaximum(0);
+    ui->progressBarOpt->setMinimum(0);
+    ui->progressBarOpt->setMaximum(0);
+
     g_pdStruct={};
 
     g_pTimer=new QTimer(this);
     connect(g_pTimer,SIGNAL(timeout()),this,SLOT(timerSlot()));
 
     g_pTimer->start(1000); // TODO constt
+}
+
+XDialogProcess::~XDialogProcess()
+{
+    stop();
+
+    delete ui;
 }
 
 XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
@@ -79,7 +95,27 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 
 void XDialogProcess::timerSlot()
 {
-    _timerSlot();
+    if(getPdStruct()->pdRecord.nTotal)
+    {
+        ui->progressBar->setMaximum(1000);
+        ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*1000)/(getPdStruct()->pdRecord.nTotal));
+    }
+
+    if(getPdStruct()->pdRecordOpt.nTotal)
+    {
+        ui->progressBarOpt->setMaximum(1000);
+        ui->progressBarOpt->setValue((getPdStruct()->pdRecordOpt.nCurrent*1000)/(getPdStruct()->pdRecordOpt.nTotal));
+    }
+
+    ui->labelStatus1->setText(getPdStruct()->pdRecord.sStatus);
+    ui->labelStatus2->setText(getPdStruct()->pdRecordOpt.sStatus);
+    ui->labelStatus3->setText(getPdStruct()->sStatus);
+    ui->labelTotal->setText(QString::number(getPdStruct()->pdRecord.nTotal));
+    ui->labelCurrent->setText(QString::number(getPdStruct()->pdRecord.nCurrent));
+    ui->labelTotalOpt->setText(QString::number(getPdStruct()->pdRecordOpt.nTotal));
+    ui->labelCurrentOpt->setText(QString::number(getPdStruct()->pdRecordOpt.nCurrent));
+
+    // TODO time
 }
 
 qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
@@ -107,7 +143,8 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
     return nResult;
 }
 
-void XDialogProcess::_timerSlot()
+void XDialogProcess::on_pushButtonCancel_clicked()
 {
-    // TODO
+    stop();
 }
+

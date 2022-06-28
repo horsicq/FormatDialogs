@@ -28,12 +28,17 @@
 #include "xbinary.h"
 #include "xoptions.h"
 
+namespace Ui {
+class XDialogProcess;
+}
+
 class XDialogProcess : public QDialog
 {
     Q_OBJECT
 
 public:
     explicit XDialogProcess(QWidget *pParent);
+    ~XDialogProcess();
 
     XBinary::PDSTRUCT *getPdStruct();
 
@@ -41,15 +46,16 @@ public:
     bool isSuccess();
     qint32 showDialogDelay(quint64 nMsec);
 
-protected:
-    virtual void _timerSlot();
-
 public slots:
     void errorMessage(QString sErrorMessage);
     void onCompleted(qint64 nElapsed);
     void timerSlot();
 
+private slots:
+    void on_pushButtonCancel_clicked();
+
 private:
+    Ui::XDialogProcess *ui;
     XBinary::PDSTRUCT g_pdStruct;
     QTimer *g_pTimer;
 };
