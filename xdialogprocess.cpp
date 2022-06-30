@@ -37,7 +37,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) :
     g_pTimer=new QTimer(this);
     connect(g_pTimer,SIGNAL(timeout()),this,SLOT(timerSlot()));
 
-    g_pTimer->start(1000); // TODO constt
+    g_pTimer->start(1000); // TODO const
 }
 
 XDialogProcess::~XDialogProcess()
@@ -62,7 +62,11 @@ bool XDialogProcess::isSuccess()
 {
     bool bResult=false;
 
-    if(getPdStruct()->pdRecordOpt.bIsValid)
+    if(getPdStruct()->pdRecordObj.bIsValid)
+    {
+        bResult=g_pdStruct.pdRecordObj.bSuccess;
+    }
+    else if(getPdStruct()->pdRecordOpt.bIsValid)
     {
         bResult=g_pdStruct.pdRecordOpt.bSuccess;
     }
@@ -72,6 +76,34 @@ bool XDialogProcess::isSuccess()
     }
 
     return bResult;
+}
+
+void XDialogProcess::waitForFinished()
+{
+    while(true)
+    {
+        QThread::msleep(50);
+
+        bool bResult=false;
+
+        if(getPdStruct()->pdRecordObj.bIsValid)
+        {
+            bResult=g_pdStruct.pdRecordObj.bFinished;
+        }
+        else if(getPdStruct()->pdRecordOpt.bIsValid)
+        {
+            bResult=g_pdStruct.pdRecordOpt.bFinished;
+        }
+        else
+        {
+            bResult=g_pdStruct.pdRecord.bFinished;
+        }
+
+        if(bResult)
+        {
+            break;
+        }
+    }
 }
 
 void XDialogProcess::errorMessage(QString sText)
@@ -97,23 +129,27 @@ void XDialogProcess::timerSlot()
 {
     if(getPdStruct()->pdRecord.nTotal)
     {
-        ui->progressBar->setMaximum(1000);
-        ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*1000)/(getPdStruct()->pdRecord.nTotal));
+        ui->progressBar->setMaximum(100);
+        ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*100)/(getPdStruct()->pdRecord.nTotal));
     }
 
     if(getPdStruct()->pdRecordOpt.nTotal)
     {
-        ui->progressBarOpt->setMaximum(1000);
-        ui->progressBarOpt->setValue((getPdStruct()->pdRecordOpt.nCurrent*1000)/(getPdStruct()->pdRecordOpt.nTotal));
+        ui->progressBarOpt->setMaximum(100);
+        ui->progressBarOpt->setValue((getPdStruct()->pdRecordOpt.nCurrent*100)/(getPdStruct()->pdRecordOpt.nTotal));
     }
 
-    ui->labelStatus1->setText(getPdStruct()->pdRecord.sStatus);
-    ui->labelStatus2->setText(getPdStruct()->pdRecordOpt.sStatus);
-    ui->labelStatus3->setText(getPdStruct()->sStatus);
-    ui->labelTotal->setText(QString::number(getPdStruct()->pdRecord.nTotal));
-    ui->labelCurrent->setText(QString::number(getPdStruct()->pdRecord.nCurrent));
-    ui->labelTotalOpt->setText(QString::number(getPdStruct()->pdRecordOpt.nTotal));
-    ui->labelCurrentOpt->setText(QString::number(getPdStruct()->pdRecordOpt.nCurrent));
+    if(getPdStruct()->pdRecordObj.nTotal)
+    {
+        ui->progressBarObj->setMaximum(100);
+        ui->progressBarObj->setValue((getPdStruct()->pdRecordObj.nCurrent*100)/(getPdStruct()->pdRecordObj.nTotal));
+    }
+
+    ui->labelStatus->setText(getPdStruct()->sStatus);
+
+    ui->groupBox->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecord.nTotal),QString::number(getPdStruct()->pdRecord.nCurrent),getPdStruct()->pdRecord.sStatus));
+    ui->groupBoxOpt->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordOpt.nTotal),QString::number(getPdStruct()->pdRecordOpt.nCurrent),getPdStruct()->pdRecordOpt.sStatus));
+    ui->groupBoxObj->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
 
     // TODO time
 }

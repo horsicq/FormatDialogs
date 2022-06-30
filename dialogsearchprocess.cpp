@@ -42,6 +42,7 @@ DialogSearchProcess::DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,Sea
 DialogSearchProcess::~DialogSearchProcess()
 {
     stop();
+    waitForFinished();
 
     g_pThread->quit();
     g_pThread->wait();

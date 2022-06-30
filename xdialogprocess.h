@@ -44,6 +44,7 @@ public:
 
     void stop();
     bool isSuccess();
+    void waitForFinished();
     qint32 showDialogDelay(quint64 nMsec);
 
 public slots:

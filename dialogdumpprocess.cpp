@@ -48,6 +48,7 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 
 DialogDumpProcess::~DialogDumpProcess()
 {
     stop();
+    waitForFinished();
 
     g_pThread->quit();
     g_pThread->wait();

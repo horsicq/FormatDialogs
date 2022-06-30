@@ -27,7 +27,7 @@ SearchProcess::SearchProcess(QObject *pParent) : QObject(pParent)
     g_pPdStruct=nullptr;
 }
 
-void SearchProcess::setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct)
+void SearchProcess::setData(QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData,XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_pDevice=pDevice;
     this->g_pSearchData=pSearchData;

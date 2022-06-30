@@ -10,4 +10,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/xdialogprocess.cpp
 
-
+!contains(XCONFIG, xoptions) {
+    XCONFIG += xoptions
+    include($$PWD/../XOptions/xoptions.pri)
+}
