@@ -25,7 +25,7 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
     g_pPdStruct=nullptr;
 }
 
-void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType,XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_pDevice=pDevice;
     this->g_nOffset=nOffset;
