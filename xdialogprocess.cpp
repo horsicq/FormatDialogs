@@ -38,10 +38,15 @@ XDialogProcess::XDialogProcess(QWidget *pParent) :
     connect(g_pTimer,SIGNAL(timeout()),this,SLOT(timerSlot()));
 
     g_pTimer->start(1000); // TODO const
+
+    g_pScanTimer=new QElapsedTimer;
+    g_pScanTimer->start();
 }
 
 XDialogProcess::~XDialogProcess()
 {
+    delete g_pScanTimer;
+
     stop();
 
     delete ui;
@@ -151,7 +156,12 @@ void XDialogProcess::timerSlot()
     ui->groupBoxOpt->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordOpt.nTotal),QString::number(getPdStruct()->pdRecordOpt.nCurrent),getPdStruct()->pdRecordOpt.sStatus));
     ui->groupBoxObj->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
 
-    // TODO time
+    QDateTime dt;
+    dt=dt.addMSecs(g_pScanTimer->elapsed());
+//    dt=dt.addMSecs(1000);
+    QString sTime=dt.toString("yyyy-MM-dd hh-mm-ss");
+
+    ui->labelTime->setText(sTime);
 }
 
 qint32 XDialogProcess::showDialogDelay(quint64 nMsec)

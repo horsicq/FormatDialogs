@@ -59,6 +59,7 @@ private:
     Ui::XDialogProcess *ui;
     XBinary::PDSTRUCT g_pdStruct;
     QTimer *g_pTimer;
+    QElapsedTimer *g_pScanTimer;
 };
 
 #endif // XDIALOGPROCESS_H
