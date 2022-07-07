@@ -67,7 +67,11 @@ bool XDialogProcess::isSuccess()
 {
     bool bResult=false;
 
-    if(getPdStruct()->pdRecordObj.bIsValid)
+    if(getPdStruct()->pdRecordFiles.bIsValid)
+    {
+        bResult=g_pdStruct.pdRecordFiles.bSuccess;
+    }
+    else if(getPdStruct()->pdRecordObj.bIsValid)
     {
         bResult=g_pdStruct.pdRecordObj.bSuccess;
     }
@@ -91,7 +95,11 @@ void XDialogProcess::waitForFinished()
 
         bool bResult=false;
 
-        if(getPdStruct()->pdRecordObj.bIsValid)
+        if(getPdStruct()->pdRecordFiles.bIsValid)
+        {
+            bResult=g_pdStruct.pdRecordFiles.bFinished;
+        }
+        else if(getPdStruct()->pdRecordObj.bIsValid)
         {
             bResult=g_pdStruct.pdRecordObj.bFinished;
         }
@@ -150,16 +158,24 @@ void XDialogProcess::timerSlot()
         ui->progressBarObj->setValue((getPdStruct()->pdRecordObj.nCurrent*100)/(getPdStruct()->pdRecordObj.nTotal));
     }
 
+    if(getPdStruct()->pdRecordFiles.nTotal)
+    {
+        ui->progressBarFiles->setMaximum(100);
+        ui->progressBarFiles->setValue((getPdStruct()->pdRecordFiles.nCurrent*100)/(getPdStruct()->pdRecordFiles.nTotal));
+    }
+
     ui->labelStatus->setText(getPdStruct()->sStatus);
 
     ui->groupBox->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecord.nTotal),QString::number(getPdStruct()->pdRecord.nCurrent),getPdStruct()->pdRecord.sStatus));
     ui->groupBoxOpt->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordOpt.nTotal),QString::number(getPdStruct()->pdRecordOpt.nCurrent),getPdStruct()->pdRecordOpt.sStatus));
     ui->groupBoxObj->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
+    ui->groupBoxFiles->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordFiles.nTotal),QString::number(getPdStruct()->pdRecordFiles.nCurrent),getPdStruct()->pdRecordFiles.sStatus));
 
-    QDateTime dt;
-    dt=dt.addMSecs(g_pScanTimer->elapsed());
-//    dt=dt.addMSecs(1000);
-    QString sTime=dt.toString("yyyy-MM-dd hh-mm-ss");
+    QTime _time=QTime(0,0);
+    _time=_time.addMSecs(g_pScanTimer->elapsed());
+    QString sTime=_time.toString();
+    // TODO if more 60 sec add min
+    // If more 60 min add hours
 
     ui->labelTime->setText(sTime);
 }
