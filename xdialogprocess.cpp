@@ -31,6 +31,14 @@ XDialogProcess::XDialogProcess(QWidget *pParent) :
     ui->progressBar->setMaximum(0);
     ui->progressBarOpt->setMinimum(0);
     ui->progressBarOpt->setMaximum(0);
+    ui->progressBarObj->setMinimum(0);
+    ui->progressBarObj->setMaximum(0);
+    ui->progressBarFiles->setMinimum(0);
+    ui->progressBarFiles->setMaximum(0);
+
+    ui->groupBoxOpt->hide();
+    ui->progressBarObj->hide();
+    ui->progressBarFiles->hide();
 
     g_pdStruct={};
 
@@ -140,36 +148,66 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 
 void XDialogProcess::timerSlot()
 {
+    ui->labelStatus->setText(getPdStruct()->sStatus);
+
     if(getPdStruct()->pdRecord.nTotal)
     {
         ui->progressBar->setMaximum(100);
         ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*100)/(getPdStruct()->pdRecord.nTotal));
     }
 
-    if(getPdStruct()->pdRecordOpt.nTotal)
-    {
-        ui->progressBarOpt->setMaximum(100);
-        ui->progressBarOpt->setValue((getPdStruct()->pdRecordOpt.nCurrent*100)/(getPdStruct()->pdRecordOpt.nTotal));
-    }
-
-    if(getPdStruct()->pdRecordObj.nTotal)
-    {
-        ui->progressBarObj->setMaximum(100);
-        ui->progressBarObj->setValue((getPdStruct()->pdRecordObj.nCurrent*100)/(getPdStruct()->pdRecordObj.nTotal));
-    }
-
-    if(getPdStruct()->pdRecordFiles.nTotal)
-    {
-        ui->progressBarFiles->setMaximum(100);
-        ui->progressBarFiles->setValue((getPdStruct()->pdRecordFiles.nCurrent*100)/(getPdStruct()->pdRecordFiles.nTotal));
-    }
-
-    ui->labelStatus->setText(getPdStruct()->sStatus);
-
     ui->groupBox->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecord.nTotal),QString::number(getPdStruct()->pdRecord.nCurrent),getPdStruct()->pdRecord.sStatus));
-    ui->groupBoxOpt->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordOpt.nTotal),QString::number(getPdStruct()->pdRecordOpt.nCurrent),getPdStruct()->pdRecordOpt.sStatus));
-    ui->groupBoxObj->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
-    ui->groupBoxFiles->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordFiles.nTotal),QString::number(getPdStruct()->pdRecordFiles.nCurrent),getPdStruct()->pdRecordFiles.sStatus));
+
+    if(getPdStruct()->pdRecordOpt.bIsValid)
+    {
+        ui->groupBoxOpt->show();
+
+        ui->groupBoxOpt->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordOpt.nTotal),QString::number(getPdStruct()->pdRecordOpt.nCurrent),getPdStruct()->pdRecordOpt.sStatus));
+
+        if(getPdStruct()->pdRecordOpt.nTotal)
+        {
+            ui->progressBarOpt->setMaximum(100);
+            ui->progressBarOpt->setValue((getPdStruct()->pdRecordOpt.nCurrent*100)/(getPdStruct()->pdRecordOpt.nTotal));
+        }
+    }
+    else
+    {
+        ui->groupBoxOpt->hide();
+    }
+
+    if(getPdStruct()->pdRecordObj.bIsValid)
+    {
+        ui->groupBoxObj->show();
+
+        ui->groupBoxObj->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
+
+        if(getPdStruct()->pdRecordObj.nTotal)
+        {
+            ui->progressBarObj->setMaximum(100);
+            ui->progressBarObj->setValue((getPdStruct()->pdRecordObj.nCurrent*100)/(getPdStruct()->pdRecordObj.nTotal));
+        }
+    }
+    else
+    {
+        ui->groupBoxObj->hide();
+    }
+
+    if(getPdStruct()->pdRecordFiles.bIsValid)
+    {
+        ui->groupBoxFiles->show();
+
+        ui->groupBoxFiles->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
+
+        if(getPdStruct()->pdRecordFiles.nTotal)
+        {
+            ui->progressBarFiles->setMaximum(100);
+            ui->progressBarFiles->setValue((getPdStruct()->pdRecordFiles.nCurrent*100)/(getPdStruct()->pdRecordFiles.nTotal));
+        }
+    }
+    else
+    {
+        ui->groupBoxFiles->hide();
+    }
 
     QTime _time=QTime(0,0);
     _time=_time.addMSecs(g_pScanTimer->elapsed());
