@@ -37,8 +37,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) :
     ui->progressBarFiles->setMaximum(0);
 
     ui->groupBoxOpt->hide();
-    ui->progressBarObj->hide();
-    ui->progressBarFiles->hide();
+    ui->groupBoxObj->hide();
+    ui->groupBoxFiles->hide();
 
     g_pdStruct={};
 
@@ -196,7 +196,7 @@ void XDialogProcess::timerSlot()
     {
         ui->groupBoxFiles->show();
 
-        ui->groupBoxFiles->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
+        ui->groupBoxFiles->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordFiles.nTotal),QString::number(getPdStruct()->pdRecordFiles.nCurrent),getPdStruct()->pdRecordFiles.sStatus));
 
         if(getPdStruct()->pdRecordFiles.nTotal)
         {
