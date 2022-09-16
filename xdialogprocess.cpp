@@ -45,7 +45,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) :
     g_pTimer=new QTimer(this);
     connect(g_pTimer,SIGNAL(timeout()),this,SLOT(timerSlot()));
 
-    g_pTimer->start(1000); // TODO const
+    g_pTimer->start(1000); // TODO const !!!
 
     g_pScanTimer=new QElapsedTimer;
     g_pScanTimer->start();
