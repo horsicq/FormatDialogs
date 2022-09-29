@@ -19,3 +19,9 @@ SOURCES += \
     XCONFIG += xdialogprocess
     include($$PWD/xdialogprocess.pri)
 }
+
+# mb TODO cmake
+
+DISTFILES += \
+    $$PWD/LICENSE \
+    $$PWD/README.md
