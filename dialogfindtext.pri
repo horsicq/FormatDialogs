@@ -9,3 +9,5 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/dialogfindtext.cpp
+
+# mb TODO cmake
