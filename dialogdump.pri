@@ -1,9 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-FORMS += \
-    $$PWD/dialogdumpprocess.ui
-
 HEADERS += \
     $$PWD/dialogdumpprocess.h \
     $$PWD/dumpprocess.h
@@ -11,6 +8,9 @@ HEADERS += \
 SOURCES += \
     $$PWD/dialogdumpprocess.cpp \
     $$PWD/dumpprocess.cpp
+
+FORMS += \
+    $$PWD/dialogdumpprocess.ui
 
 !contains(XCONFIG, xdialogprocess) {
     XCONFIG += xdialogprocess
