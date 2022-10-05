@@ -1,14 +1,14 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-FORMS += \
-    $$PWD/dialogeditstring.ui
-
 HEADERS += \
     $$PWD/dialogeditstring.h
 
 SOURCES += \
     $$PWD/dialogeditstring.cpp
+
+FORMS += \
+    $$PWD/dialogeditstring.ui
 
 DISTFILES += \
     $$PWD/LICENSE \
