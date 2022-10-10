@@ -1,14 +1,14 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-FORMS += \
-    $$PWD/dialoggotoaddress.ui
-
 HEADERS += \
     $$PWD/dialoggotoaddress.h
 
 SOURCES += \
     $$PWD/dialoggotoaddress.cpp
+
+FORMS += \
+    $$PWD/dialoggotoaddress.ui
 
 !contains(XCONFIG, xlineedithex) {
     XCONFIG += xlineedithex
