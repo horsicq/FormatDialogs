@@ -1,10 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-FORMS += \
-    $$PWD/dialogsearch.ui \
-    $$PWD/dialogsearchprocess.ui
-
 HEADERS += \
     $$PWD/dialogsearch.h \
     $$PWD/dialogsearchprocess.h \
@@ -14,6 +10,10 @@ SOURCES += \
     $$PWD/dialogsearch.cpp \
     $$PWD/dialogsearchprocess.cpp \
     $$PWD/searchprocess.cpp
+
+FORMS += \
+    $$PWD/dialogsearch.ui \
+    $$PWD/dialogsearchprocess.ui
 
 !contains(XCONFIG, xdialogprocess) {
     XCONFIG += xdialogprocess
