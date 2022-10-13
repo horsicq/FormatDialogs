@@ -1,14 +1,14 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-FORMS += \
-    $$PWD/dialogtextinfo.ui
-
 HEADERS += \
     $$PWD/dialogtextinfo.h
 
 SOURCES += \
     $$PWD/dialogtextinfo.cpp
+
+FORMS += \
+    $$PWD/dialogtextinfo.ui
 
 contains(XCONFIG, use_archive) {
     DEFINES += USE_ARCHIVE
