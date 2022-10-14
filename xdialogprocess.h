@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QThread>
 #include <QTimer>
+#include <QProgressBar>
 #include "xbinary.h"
 #include "xoptions.h"
 
@@ -51,6 +52,7 @@ public slots:
     void errorMessage(QString sErrorMessage);
     void onCompleted(qint64 nElapsed);
     void timerSlot();
+    void setupProgressBar(qint32 nIndex,QProgressBar *pProgressBar);
 
 private slots:
     void on_pushButtonCancel_clicked();

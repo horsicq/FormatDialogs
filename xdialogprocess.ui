@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>205</height>
+    <width>582</width>
+    <height>177</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,151 +24,83 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string notr="true"/>
+    <widget class="QProgressBar" name="progressBar0">
+     <property name="maximum">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="leftMargin">
-       <number>1</number>
-      </property>
-      <property name="topMargin">
-       <number>1</number>
-      </property>
-      <property name="rightMargin">
-       <number>1</number>
-      </property>
-      <property name="bottomMargin">
-       <number>1</number>
-      </property>
-      <item>
-       <widget class="QProgressBar" name="progressBar">
-        <property name="maximum">
-         <number>0</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="format">
-         <string notr="true">%v/%m</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="format">
+      <string notr="true">%v/%m</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBoxOpt">
-     <property name="title">
-      <string notr="true"/>
+    <widget class="QProgressBar" name="progressBar1">
+     <property name="maximum">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>1</number>
-      </property>
-      <property name="topMargin">
-       <number>1</number>
-      </property>
-      <property name="rightMargin">
-       <number>1</number>
-      </property>
-      <property name="bottomMargin">
-       <number>1</number>
-      </property>
-      <item>
-       <widget class="QProgressBar" name="progressBarOpt">
-        <property name="maximum">
-         <number>0</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="format">
-         <string notr="true">%v/%m</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="format">
+      <string notr="true">%v/%m</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBoxObj">
-     <property name="title">
-      <string notr="true"/>
+    <widget class="QProgressBar" name="progressBar2">
+     <property name="maximum">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="leftMargin">
-       <number>1</number>
-      </property>
-      <property name="topMargin">
-       <number>1</number>
-      </property>
-      <property name="rightMargin">
-       <number>1</number>
-      </property>
-      <property name="bottomMargin">
-       <number>1</number>
-      </property>
-      <item>
-       <widget class="QProgressBar" name="progressBarObj">
-        <property name="maximum">
-         <number>0</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="format">
-         <string notr="true">%v/%m</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="format">
+      <string notr="true">%v/%m</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBoxFiles">
-     <property name="title">
-      <string notr="true"/>
+    <widget class="QProgressBar" name="progressBar3">
+     <property name="maximum">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <property name="leftMargin">
-       <number>1</number>
-      </property>
-      <property name="topMargin">
-       <number>1</number>
-      </property>
-      <property name="rightMargin">
-       <number>1</number>
-      </property>
-      <property name="bottomMargin">
-       <number>1</number>
-      </property>
-      <item>
-       <widget class="QProgressBar" name="progressBarFiles">
-        <property name="maximum">
-         <number>0</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="format">
-         <string notr="true">%v/%m</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="format">
+      <string notr="true">%v/%m</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBar4">
+     <property name="maximum">
+      <number>0</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="format">
+      <string notr="true">%v/%m</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -212,26 +144,17 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelStatus">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
+      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonCancel">

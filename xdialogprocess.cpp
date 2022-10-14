@@ -27,19 +27,6 @@ XDialogProcess::XDialogProcess(QWidget *pParent) :
 {
     ui->setupUi(this);
 
-    ui->progressBar->setMinimum(0);
-    ui->progressBar->setMaximum(0);
-    ui->progressBarOpt->setMinimum(0);
-    ui->progressBarOpt->setMaximum(0);
-    ui->progressBarObj->setMinimum(0);
-    ui->progressBarObj->setMaximum(0);
-    ui->progressBarFiles->setMinimum(0);
-    ui->progressBarFiles->setMaximum(0);
-
-    ui->groupBoxOpt->hide();
-    ui->groupBoxObj->hide();
-    ui->groupBoxFiles->hide();
-
     g_pdStruct={};
 
     g_pTimer=new QTimer(this);
@@ -75,22 +62,23 @@ bool XDialogProcess::isSuccess()
 {
     bool bResult=false;
 
-    if(getPdStruct()->pdRecordFiles.bIsValid)
-    {
-        bResult=g_pdStruct.pdRecordFiles.bSuccess;
-    }
-    else if(getPdStruct()->pdRecordObj.bIsValid)
-    {
-        bResult=g_pdStruct.pdRecordObj.bSuccess;
-    }
-    else if(getPdStruct()->pdRecordOpt.bIsValid)
-    {
-        bResult=g_pdStruct.pdRecordOpt.bSuccess;
-    }
-    else
-    {
-        bResult=g_pdStruct.pdRecord.bSuccess;
-    }
+//    if(getPdStruct()->pdRecordFiles.bIsValid)
+//    {
+//        bResult=g_pdStruct.pdRecordFiles.bSuccess;
+//    }
+//    else if(getPdStruct()->pdRecordObj.bIsValid)
+//    {
+//        bResult=g_pdStruct.pdRecordObj.bSuccess;
+//    }
+//    else if(getPdStruct()->pdRecordOpt.bIsValid)
+//    {
+//        bResult=g_pdStruct.pdRecordOpt.bSuccess;
+//    }
+//    else
+//    {
+//        bResult=g_pdStruct.pdRecord.bSuccess;
+//    }
+    bResult=XBinary::isPdStructSuccess(getPdStruct());
 
     return bResult;
 }
@@ -103,22 +91,24 @@ void XDialogProcess::waitForFinished()
 
         bool bResult=false;
 
-        if(getPdStruct()->pdRecordFiles.bIsValid)
-        {
-            bResult=g_pdStruct.pdRecordFiles.bFinished;
-        }
-        else if(getPdStruct()->pdRecordObj.bIsValid)
-        {
-            bResult=g_pdStruct.pdRecordObj.bFinished;
-        }
-        else if(getPdStruct()->pdRecordOpt.bIsValid)
-        {
-            bResult=g_pdStruct.pdRecordOpt.bFinished;
-        }
-        else
-        {
-            bResult=g_pdStruct.pdRecord.bFinished;
-        }
+//        if(getPdStruct()->pdRecordFiles.bIsValid)
+//        {
+//            bResult=g_pdStruct.pdRecordFiles.bFinished;
+//        }
+//        else if(getPdStruct()->pdRecordObj.bIsValid)
+//        {
+//            bResult=g_pdStruct.pdRecordObj.bFinished;
+//        }
+//        else if(getPdStruct()->pdRecordOpt.bIsValid)
+//        {
+//            bResult=g_pdStruct.pdRecordOpt.bFinished;
+//        }
+//        else
+//        {
+//            bResult=g_pdStruct.pdRecord.bFinished;
+//        }
+
+        bResult=XBinary::isPdStructFinished(getPdStruct());
 
         if(bResult)
         {
@@ -147,67 +137,12 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 }
 
 void XDialogProcess::timerSlot()
-{
-    ui->labelStatus->setText(getPdStruct()->sStatus);
-
-    if(getPdStruct()->pdRecord.nTotal)
-    {
-        ui->progressBar->setMaximum(100);
-        ui->progressBar->setValue((getPdStruct()->pdRecord.nCurrent*100)/(getPdStruct()->pdRecord.nTotal));
-    }
-
-    ui->groupBox->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecord.nTotal),QString::number(getPdStruct()->pdRecord.nCurrent),getPdStruct()->pdRecord.sStatus));
-
-    if(getPdStruct()->pdRecordOpt.bIsValid)
-    {
-        ui->groupBoxOpt->show();
-
-        ui->groupBoxOpt->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordOpt.nTotal),QString::number(getPdStruct()->pdRecordOpt.nCurrent),getPdStruct()->pdRecordOpt.sStatus));
-
-        if(getPdStruct()->pdRecordOpt.nTotal)
-        {
-            ui->progressBarOpt->setMaximum(100);
-            ui->progressBarOpt->setValue((getPdStruct()->pdRecordOpt.nCurrent*100)/(getPdStruct()->pdRecordOpt.nTotal));
-        }
-    }
-    else
-    {
-        ui->groupBoxOpt->hide();
-    }
-
-    if(getPdStruct()->pdRecordObj.bIsValid)
-    {
-        ui->groupBoxObj->show();
-
-        ui->groupBoxObj->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordObj.nTotal),QString::number(getPdStruct()->pdRecordObj.nCurrent),getPdStruct()->pdRecordObj.sStatus));
-
-        if(getPdStruct()->pdRecordObj.nTotal)
-        {
-            ui->progressBarObj->setMaximum(100);
-            ui->progressBarObj->setValue((getPdStruct()->pdRecordObj.nCurrent*100)/(getPdStruct()->pdRecordObj.nTotal));
-        }
-    }
-    else
-    {
-        ui->groupBoxObj->hide();
-    }
-
-    if(getPdStruct()->pdRecordFiles.bIsValid)
-    {
-        ui->groupBoxFiles->show();
-
-        ui->groupBoxFiles->setTitle(QString("[%1/%2] %3").arg(QString::number(getPdStruct()->pdRecordFiles.nTotal),QString::number(getPdStruct()->pdRecordFiles.nCurrent),getPdStruct()->pdRecordFiles.sStatus));
-
-        if(getPdStruct()->pdRecordFiles.nTotal)
-        {
-            ui->progressBarFiles->setMaximum(100);
-            ui->progressBarFiles->setValue((getPdStruct()->pdRecordFiles.nCurrent*100)/(getPdStruct()->pdRecordFiles.nTotal));
-        }
-    }
-    else
-    {
-        ui->groupBoxFiles->hide();
-    }
+{    
+    setupProgressBar(0,ui->progressBar0);
+    setupProgressBar(1,ui->progressBar1);
+    setupProgressBar(2,ui->progressBar2);
+    setupProgressBar(3,ui->progressBar3);
+    setupProgressBar(4,ui->progressBar4);
 
     QTime _time=QTime(0,0);
     _time=_time.addMSecs(g_pScanTimer->elapsed());
@@ -216,6 +151,37 @@ void XDialogProcess::timerSlot()
     // If more 60 min add hours
 
     ui->labelTime->setText(sTime);
+}
+
+void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar)
+{
+    if(getPdStruct()->_pdRecord[nIndex].bIsValid)
+    {
+        pProgressBar->show();
+
+        QString sStatus;
+
+        if(getPdStruct()->_pdRecord[nIndex].nTotal)
+        {
+            pProgressBar->setMaximum(100);
+            pProgressBar->setValue((getPdStruct()->_pdRecord[nIndex].nCurrent*100)/(getPdStruct()->_pdRecord[nIndex].nTotal));
+
+            sStatus+=QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nTotal),QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent));
+        }
+        else
+        {
+            pProgressBar->setMaximum(0);
+            pProgressBar->setValue(0);
+        }
+
+        sStatus+=getPdStruct()->_pdRecord[nIndex].sStatus;
+
+        pProgressBar->setFormat(sStatus);
+    }
+    else
+    {
+        pProgressBar->hide();
+    }
 }
 
 qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
