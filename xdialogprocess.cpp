@@ -62,22 +62,6 @@ bool XDialogProcess::isSuccess()
 {
     bool bResult=false;
 
-//    if(getPdStruct()->pdRecordFiles.bIsValid)
-//    {
-//        bResult=g_pdStruct.pdRecordFiles.bSuccess;
-//    }
-//    else if(getPdStruct()->pdRecordObj.bIsValid)
-//    {
-//        bResult=g_pdStruct.pdRecordObj.bSuccess;
-//    }
-//    else if(getPdStruct()->pdRecordOpt.bIsValid)
-//    {
-//        bResult=g_pdStruct.pdRecordOpt.bSuccess;
-//    }
-//    else
-//    {
-//        bResult=g_pdStruct.pdRecord.bSuccess;
-//    }
     bResult=XBinary::isPdStructSuccess(getPdStruct());
 
     return bResult;
@@ -90,23 +74,6 @@ void XDialogProcess::waitForFinished()
         QThread::msleep(50);
 
         bool bResult=false;
-
-//        if(getPdStruct()->pdRecordFiles.bIsValid)
-//        {
-//            bResult=g_pdStruct.pdRecordFiles.bFinished;
-//        }
-//        else if(getPdStruct()->pdRecordObj.bIsValid)
-//        {
-//            bResult=g_pdStruct.pdRecordObj.bFinished;
-//        }
-//        else if(getPdStruct()->pdRecordOpt.bIsValid)
-//        {
-//            bResult=g_pdStruct.pdRecordOpt.bFinished;
-//        }
-//        else
-//        {
-//            bResult=g_pdStruct.pdRecord.bFinished;
-//        }
 
         bResult=XBinary::isPdStructFinished(getPdStruct());
 
