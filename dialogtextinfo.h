@@ -32,6 +32,7 @@ namespace Ui {
 class DialogTextInfo;
 }
 
+// TODO XShortcutsWidget
 class DialogTextInfo : public QDialog
 {
     Q_OBJECT
