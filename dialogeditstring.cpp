@@ -32,17 +32,10 @@ DialogEditString::DialogEditString(QWidget *pParent,QIODevice *pDevice,DATA_STRU
 
     g_nSize=pData_struct->nSize;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
-    const QSignalBlocker blocker1(ui->comboBoxType);
-    const QSignalBlocker blocker2(ui->lineEditString);
-    const QSignalBlocker blocker3(ui->checkBoxKeepSize);
-    const QSignalBlocker blocker4(ui->checkBoxCStrings);
-#else
     const bool bBlocked1=ui->comboBoxType->blockSignals(true);
     const bool bBlocked2=ui->lineEditString->blockSignals(true);
     const bool bBlocked3=ui->checkBoxKeepSize->blockSignals(true);
     const bool bBlocked4=ui->checkBoxCStrings->blockSignals(true);
-#endif
 
     ui->comboBoxType->addItem(QString("ANSI"),XBinary::MS_RECORD_TYPE_ANSI);
     ui->comboBoxType->addItem(QString("Unicode"),XBinary::MS_RECORD_TYPE_UNICODE);
@@ -64,12 +57,10 @@ DialogEditString::DialogEditString(QWidget *pParent,QIODevice *pDevice,DATA_STRU
     ui->checkBoxKeepSize->setChecked(true);
     ui->checkBoxCStrings->setChecked(pData_struct->bIsCStrings);
 
-#if QT_VERSION < QT_VERSION_CHECK(5,3,0)
     ui->comboBoxType->blockSignals(bBlocked1);
     ui->lineEditString->blockSignals(bBlocked2);
     ui->checkBoxKeepSize->blockSignals(bBlocked3);
     ui->checkBoxCStrings->blockSignals(bBlocked4);
-#endif
 
     adjust();
 }
