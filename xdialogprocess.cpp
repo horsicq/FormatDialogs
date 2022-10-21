@@ -120,7 +120,7 @@ void XDialogProcess::timerSlot()
     ui->labelTime->setText(sTime);
 }
 
-void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar)
+void XDialogProcess::setupProgressBar(qint32 nIndex,QProgressBar *pProgressBar)
 {
     if(getPdStruct()->_pdRecord[nIndex].bIsValid)
     {
@@ -153,6 +153,7 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar)
 
 qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
 {
+    // mb TODO options
     qint32 nResult=Accepted;
 
     for(quint64 i=0;i<nMsec;i+=50)
