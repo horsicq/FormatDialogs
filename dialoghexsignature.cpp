@@ -137,8 +137,8 @@ void DialogHexSignature::reload()
 
 void DialogHexSignature::on_pushButtonCopy_clicked()
 {
-    QClipboard *clipboard=QApplication::clipboard();
-    clipboard->setText(ui->textEditSignature->toPlainText());
+    QClipboard *pClipboard=QApplication::clipboard();
+    pClipboard->setText(ui->textEditSignature->toPlainText());
 }
 
 void DialogHexSignature::on_checkBoxSpaces_toggled(bool bChecked)
