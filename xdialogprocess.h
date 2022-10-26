@@ -42,7 +42,6 @@ public:
     ~XDialogProcess();
 
     XBinary::PDSTRUCT *getPdStruct();
-
     void stop();
     bool isSuccess();
     void waitForFinished();
