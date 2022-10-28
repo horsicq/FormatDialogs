@@ -27,21 +27,6 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
 {
     ui->setupUi(this);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
-    const QSignalBlocker block1(ui->comboBoxEndianness);
-    const QSignalBlocker block2(ui->lineEditValue);
-    const QSignalBlocker block3(ui->tabWidgetSearch);
-    const QSignalBlocker block4(ui->radioButtonChar);
-    const QSignalBlocker block5(ui->radioButtonDouble);
-    const QSignalBlocker block6(ui->radioButtonFloat);
-    const QSignalBlocker block7(ui->radioButtonInt);
-    const QSignalBlocker block8(ui->radioButtonInt64);
-    const QSignalBlocker block9(ui->radioButtonShort);
-    const QSignalBlocker block10(ui->radioButtonUchar);
-    const QSignalBlocker block11(ui->radioButtonUint);
-    const QSignalBlocker block12(ui->radioButtonUint64);
-    const QSignalBlocker block13(ui->radioButtonUshort);
-#else
     const bool bBlocked1=ui->comboBoxEndianness->blockSignals(true);
     const bool bBlocked2=ui->lineEditValue->blockSignals(true);
     const bool bBlocked3=ui->tabWidgetSearch->blockSignals(true);
@@ -55,7 +40,6 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
     const bool bBlocked11=ui->radioButtonUint->blockSignals(true);
     const bool bBlocked12=ui->radioButtonUint64->blockSignals(true);
     const bool bBlocked13=ui->radioButtonUshort->blockSignals(true);
-#endif
 
     this->g_pDevice=pDevice;
     this->g_pSearchData=pSearchData;
@@ -97,7 +81,6 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
 
     ui->tabWidgetSearch->setCurrentIndex(nCurrentTab);
 
-#if QT_VERSION <  QT_VERSION_CHECK(5,3,0)
     ui->comboBoxEndianness->blockSignals(bBlocked1);
     ui->lineEditValue->blockSignals(bBlocked2);
     ui->tabWidgetSearch->blockSignals(bBlocked3);
@@ -111,7 +94,6 @@ DialogSearch::DialogSearch(QWidget *pParent,QIODevice *pDevice,SearchProcess::SE
     ui->radioButtonUint->blockSignals(bBlocked11);
     ui->radioButtonUint64->blockSignals(bBlocked12);
     ui->radioButtonUshort->blockSignals(bBlocked13);
-#endif
 }
 
 DialogSearch::~DialogSearch()
