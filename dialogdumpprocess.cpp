@@ -23,15 +23,6 @@
 DialogDumpProcess::DialogDumpProcess(QWidget *pParent):
     XDialogProcess(pParent)
 {
-    g_pDump=nullptr;
-    g_pThread=nullptr;
-
-    setWindowTitle(tr("Dump"));
-}
-
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType) :
-    DialogDumpProcess(pParent)
-{
     g_pDump=new DumpProcess;
     g_pThread=new QThread;
 
@@ -41,8 +32,13 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 
     connect(g_pDump,SIGNAL(completed(qint64)),this,SLOT(onCompleted(qint64)));
     connect(g_pDump,SIGNAL(errorMessage(QString)),this,SLOT(errorMessage(QString)));
 
-    g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType,getPdStruct());
-    g_pThread->start();
+    setWindowTitle(tr("Dump"));
+}
+
+DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType) :
+    DialogDumpProcess(pParent)
+{
+    setData(pDevice,nOffset,nSize,sFileName,dumpType);
 }
 
 DialogDumpProcess::~DialogDumpProcess()
@@ -55,4 +51,10 @@ DialogDumpProcess::~DialogDumpProcess()
 
     delete g_pThread;
     delete g_pDump;
+}
+
+void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType)
+{
+    g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType,getPdStruct());
+    g_pThread->start();
 }

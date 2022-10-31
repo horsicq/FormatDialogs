@@ -31,7 +31,8 @@ public:
     enum DT
     {
         DT_OFFSET=0,
-        DT_ADDRESS // TODO Check
+        DT_OFFSET_LIST,     // TODO
+        DT_ADDRESS          // TODO Check
     };
 
     explicit DumpProcess(QObject *pParent=nullptr);
