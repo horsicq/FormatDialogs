@@ -71,7 +71,7 @@ void XDialogProcess::waitForFinished()
 {
     while(true)
     {
-        QThread::msleep(50);
+        QThread::msleep(50); // TODO Consts
 
         bool bResult=false;
 
