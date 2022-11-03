@@ -25,12 +25,10 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
     g_pPdStruct=nullptr;
 }
 
-void DumpProcess::setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType,XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_pDevice=pDevice;
-    this->g_nOffset=nOffset;
-    this->g_nSize=nSize;
-    this->g_sFileName=sFileName;
+    this->g_listRecords=listRecords;
     this->g_dumpType=dumpType;
     this->g_pPdStruct=pPdStruct;
 }
@@ -44,9 +42,14 @@ void DumpProcess::process()
 
     connect(&binary,SIGNAL(errorMessage(QString)),this,SIGNAL(errorMessage(QString)));
 
-    if(g_dumpType==DT_OFFSET)
+    qint32 nNumberOfRecords=g_listRecords.count();
+
+    for(qint32 i=0;(i<nNumberOfRecords)&&(!(g_pPdStruct->bIsStop));i++)
     {
-        binary.dumpToFile(g_sFileName,g_nOffset,g_nSize,g_pPdStruct);
+        if(g_dumpType==DT_OFFSET)
+        {
+            binary.dumpToFile(g_listRecords.at(i).sFileName,g_listRecords.at(i).nOffset,g_listRecords.at(i).nSize,g_pPdStruct);
+        }
     }
 
     emit completed(scanTimer.elapsed());

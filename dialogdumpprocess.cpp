@@ -55,6 +55,16 @@ DialogDumpProcess::~DialogDumpProcess()
 
 void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType)
 {
-    g_pDump->setData(pDevice,nOffset,nSize,sFileName,dumpType,getPdStruct());
+    QList<DumpProcess::RECORD> listRecords;
+
+    DumpProcess::RECORD record={};
+
+    record.nOffset=nOffset;
+    record.nSize=nSize;
+    record.sFileName=sFileName;
+
+    listRecords.append(record);
+
+    g_pDump->setData(pDevice,listRecords,dumpType,getPdStruct());
     g_pThread->start();
 }

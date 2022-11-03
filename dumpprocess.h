@@ -31,13 +31,19 @@ public:
     enum DT
     {
         DT_OFFSET=0,
-        DT_OFFSET_LIST,     // TODO
         DT_ADDRESS          // TODO Check
+    };
+
+    struct RECORD
+    {
+        qint64 nOffset;
+        qint64 nSize;
+        QString sFileName;
     };
 
     explicit DumpProcess(QObject *pParent=nullptr);
 
-    void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DT dumpType,XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice,QList<RECORD> listRecords,DT dumpType,XBinary::PDSTRUCT *pPdStruct);
 
 signals:
     void completed(qint64 nElapsed);
@@ -47,9 +53,7 @@ public slots:
 
 private:
     QIODevice *g_pDevice;
-    qint64 g_nOffset;
-    qint64 g_nSize;
-    QString g_sFileName;
+    QList<RECORD> g_listRecords;
     DT g_dumpType;
     XBinary::PDSTRUCT *g_pPdStruct;
 };
