@@ -39,6 +39,7 @@ public:
     ~DialogDumpProcess();
 
     void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
+    void setData(QIODevice *pDevice,QList<DumpProcess::RECORD> listRecords,DumpProcess::DT dumpType);
 
 private:
     DumpProcess *g_pDump;

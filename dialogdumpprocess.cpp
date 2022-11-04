@@ -68,3 +68,9 @@ void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize
     g_pDump->setData(pDevice,listRecords,dumpType,getPdStruct());
     g_pThread->start();
 }
+
+void DialogDumpProcess::setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType)
+{
+    g_pDump->setData(pDevice,listRecords,dumpType,getPdStruct());
+    g_pThread->start();
+}
