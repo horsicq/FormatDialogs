@@ -53,7 +53,7 @@ DialogDumpProcess::~DialogDumpProcess()
     delete g_pDump;
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType)
+void DialogDumpProcess::setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType)
 {
     QList<DumpProcess::RECORD> listRecords;
 
