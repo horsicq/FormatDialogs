@@ -44,6 +44,8 @@ void DumpProcess::process()
 
     qint32 nNumberOfRecords=g_listRecords.count();
 
+    // TODO ProgressBar if more than 1
+
     for(qint32 i=0;(i<nNumberOfRecords)&&(!(g_pPdStruct->bIsStop));i++)
     {
         if(g_dumpType==DT_OFFSET)
