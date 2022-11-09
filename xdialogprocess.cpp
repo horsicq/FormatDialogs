@@ -114,7 +114,8 @@ void XDialogProcess::timerSlot()
     QTime _time=QTime(0,0);
     _time=_time.addMSecs(g_pScanTimer->elapsed());
     QString sTime=_time.toString();
-    // TODO if more 60 sec add min
+    // TODO
+    // If more 60 sec add min
     // If more 60 min add hours
 
     ui->labelTime->setText(sTime);
