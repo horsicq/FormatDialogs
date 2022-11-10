@@ -24,22 +24,22 @@
 #include <QClipboard>
 #include <QDialog>
 #include <QPushButton>
+
+#include "dialogsearchsignatures.h"
 #include "xbinary.h"
 #include "xoptions.h"
-#include "dialogsearchsignatures.h"
 
 namespace Ui {
 class DialogHexSignature;
 }
 
-class DialogHexSignature : public XShortcutsDialog
-{
+class DialogHexSignature : public XShortcutsDialog {
     Q_OBJECT
 
-static const qint32 G_N_MAX_BYTES=128;
+    static const qint32 G_N_MAX_BYTES = 128;
 
 public:
-    explicit DialogHexSignature(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize);
+    explicit DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogHexSignature();
 
 private slots:
@@ -58,4 +58,4 @@ private:
     QIODevice *g_pDevice;
 };
 
-#endif // DIALOGHEXSIGNATURE_H
+#endif  // DIALOGHEXSIGNATURE_H

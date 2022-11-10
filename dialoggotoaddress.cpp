@@ -19,143 +19,110 @@
  * SOFTWARE.
  */
 #include "dialoggotoaddress.h"
+
 #include "ui_dialoggotoaddress.h"
 
 // mb TODO gesamt constructor
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent,XBinary::_MEMORY_MAP *pMemoryMap,TYPE type) :
-    XShortcutsDialog(pParent),
-    ui(new Ui::DialogGoToAddress)
-{
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress) {
     ui->setupUi(this);
 
-    g_nMinValue=0;
-    g_nMaxValue=0;
-    g_nValue=0;
-    g_pMemoryMap=pMemoryMap;
-    g_type=type;
+    g_nMinValue = 0;
+    g_nMaxValue = 0;
+    g_nValue = 0;
+    g_pMemoryMap = pMemoryMap;
+    g_type = type;
 
     ui->checkBoxHex->setChecked(true);
 
     adjustTitle(type);
 }
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent,XADDR nMinValue,XADDR nMaxValue,DialogGoToAddress::TYPE type) :
-    XShortcutsDialog(pParent),
-    ui(new Ui::DialogGoToAddress)
-{
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type)
+    : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress) {
     ui->setupUi(this);
 
-    g_pMemoryMap=nullptr;
-    g_nMinValue=nMinValue;
-    g_nMaxValue=nMaxValue;
-    g_type=type;
-    g_nValue=0;
+    g_pMemoryMap = nullptr;
+    g_nMinValue = nMinValue;
+    g_nMaxValue = nMaxValue;
+    g_type = type;
+    g_nValue = 0;
 
     ui->checkBoxHex->setChecked(true);
 
     adjustTitle(type);
 }
 
-DialogGoToAddress::~DialogGoToAddress()
-{
+DialogGoToAddress::~DialogGoToAddress() {
     delete ui;
 }
 
-qint64 DialogGoToAddress::getValue()
-{
+qint64 DialogGoToAddress::getValue() {
     return g_nValue;
 }
 
-void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
-{
-    QString sTitle="";
-    QString sValue="";
+void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type) {
+    QString sTitle = "";
+    QString sValue = "";
 
-    if(type==TYPE_VIRTUALADDRESS)
-    {
-        sTitle=tr("Virtual address");
-        sValue=tr("Value");
-    }
-    else if(type==TYPE_OFFSET)
-    {
-        sTitle=tr("Offset");
-        sValue=tr("Value");
-    }
-    else if(type==TYPE_RELVIRTUALADDRESS)
-    {
-        sTitle=tr("Relative virtual address");
-        sValue=tr("Value");
-    }
-    else if(type==TYPE_ADDRESS)
-    {
-        sTitle=tr("Address");
-        sValue=tr("Value");
+    if (type == TYPE_VIRTUALADDRESS) {
+        sTitle = tr("Virtual address");
+        sValue = tr("Value");
+    } else if (type == TYPE_OFFSET) {
+        sTitle = tr("Offset");
+        sValue = tr("Value");
+    } else if (type == TYPE_RELVIRTUALADDRESS) {
+        sTitle = tr("Relative virtual address");
+        sValue = tr("Value");
+    } else if (type == TYPE_ADDRESS) {
+        sTitle = tr("Address");
+        sValue = tr("Value");
     }
 
     setWindowTitle(sTitle);
     ui->groupBoxValue->setTitle(sValue);
 }
 
-void DialogGoToAddress::on_pushButtonCancel_clicked()
-{
+void DialogGoToAddress::on_pushButtonCancel_clicked() {
     reject();
 }
 
-void DialogGoToAddress::on_pushButtonOK_clicked()
-{
-    XADDR nValue=(quint64)ui->lineEditValue->getValue();
+void DialogGoToAddress::on_pushButtonOK_clicked() {
+    XADDR nValue = (quint64)ui->lineEditValue->getValue();
 
-    bool bValid=false;
+    bool bValid = false;
 
-    if(g_pMemoryMap)
-    {
-        if((g_type==TYPE_VIRTUALADDRESS)||(g_type==TYPE_ADDRESS))
-        {
-            bValid=XBinary::isAddressValid(g_pMemoryMap,nValue)&&XBinary::isAddressPhysical(g_pMemoryMap,nValue);
+    if (g_pMemoryMap) {
+        if ((g_type == TYPE_VIRTUALADDRESS) || (g_type == TYPE_ADDRESS)) {
+            bValid = XBinary::isAddressValid(g_pMemoryMap, nValue) && XBinary::isAddressPhysical(g_pMemoryMap, nValue);
+        } else if (g_type == TYPE_OFFSET) {
+            bValid = XBinary::isOffsetValid(g_pMemoryMap, nValue);
+        } else if (g_type == TYPE_RELVIRTUALADDRESS) {
+            bValid = XBinary::isRelAddressValid(g_pMemoryMap, nValue) && XBinary::isRelAddressPhysical(g_pMemoryMap, nValue);
         }
-        else if(g_type==TYPE_OFFSET)
-        {
-            bValid=XBinary::isOffsetValid(g_pMemoryMap,nValue);
-        }
-        else if(g_type==TYPE_RELVIRTUALADDRESS)
-        {
-            bValid=XBinary::isRelAddressValid(g_pMemoryMap,nValue)&&XBinary::isRelAddressPhysical(g_pMemoryMap,nValue);
-        }
-    }
-    else
-    {
-        if((nValue>=g_nMinValue)&&(nValue<=g_nMaxValue))
-        {
-            bValid=true;
+    } else {
+        if ((nValue >= g_nMinValue) && (nValue <= g_nMaxValue)) {
+            bValid = true;
         }
     }
 
-    if(bValid)
-    {
-        this->g_nValue=nValue;
+    if (bValid) {
+        this->g_nValue = nValue;
         accept();
-    }
-    else
-    {
+    } else {
         ui->labelStatus->setText(tr("Invalid"));
     }
 }
 
-void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
-{
-    XADDR nValue=ui->lineEditValue->getValue();
+void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked) {
+    XADDR nValue = ui->lineEditValue->getValue();
 
-    if(bChecked)
-    {
-        ui->lineEditValue->setValue(nValue,HEXValidator::MODE_HEX);
-    }
-    else
-    {
-        ui->lineEditValue->setValue(nValue,HEXValidator::MODE_DEC);
+    if (bChecked) {
+        ui->lineEditValue->setValue(nValue, HEXValidator::MODE_HEX);
+    } else {
+        ui->lineEditValue->setValue(nValue, HEXValidator::MODE_DEC);
     }
 
-    if(!nValue)
-    {
+    if (!nValue) {
         ui->lineEditValue->clear();
     }
 }

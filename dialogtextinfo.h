@@ -33,8 +33,7 @@ class DialogTextInfo;
 }
 
 // TODO XShortcutsWidget
-class DialogTextInfo : public QDialog
-{
+class DialogTextInfo : public QDialog {
     Q_OBJECT
 
 public:
@@ -48,7 +47,7 @@ public:
     void setFile(QString sFileName);
     void setDevice(QIODevice *pDevice);
 #ifdef USE_ARCHIVE
-    void setArchive(QString sFileName,QString sRecordFileName);
+    void setArchive(QString sFileName, QString sRecordFileName);
 #endif
 private slots:
     void on_pushButtonClose_clicked();
@@ -58,4 +57,4 @@ private:
     Ui::DialogTextInfo *ui;
 };
 
-#endif // DIALOGTEXTINFO_H
+#endif  // DIALOGTEXTINFO_H

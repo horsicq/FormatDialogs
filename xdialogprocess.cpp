@@ -19,27 +19,24 @@
  * SOFTWARE.
  */
 #include "xdialogprocess.h"
+
 #include "ui_xdialogprocess.h"
 
-XDialogProcess::XDialogProcess(QWidget *pParent) :
-    QDialog(pParent),
-    ui(new Ui::XDialogProcess)
-{
+XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::XDialogProcess) {
     ui->setupUi(this);
 
-    g_pdStruct={};
+    g_pdStruct = {};
 
-    g_pTimer=new QTimer(this);
-    connect(g_pTimer,SIGNAL(timeout()),this,SLOT(timerSlot()));
+    g_pTimer = new QTimer(this);
+    connect(g_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
-    g_pTimer->start(1000); // TODO const !!!
+    g_pTimer->start(1000);  // TODO const !!!
 
-    g_pScanTimer=new QElapsedTimer;
+    g_pScanTimer = new QElapsedTimer;
     g_pScanTimer->start();
 }
 
-XDialogProcess::~XDialogProcess()
-{
+XDialogProcess::~XDialogProcess() {
     delete g_pScanTimer;
 
     stop();
@@ -47,73 +44,61 @@ XDialogProcess::~XDialogProcess()
     delete ui;
 }
 
-XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
-{
+XBinary::PDSTRUCT *XDialogProcess::getPdStruct() {
     return &g_pdStruct;
 }
 
-void XDialogProcess::stop()
-{
+void XDialogProcess::stop() {
     g_pTimer->stop();
-    g_pdStruct.bIsStop=true;
+    g_pdStruct.bIsStop = true;
 }
 
-bool XDialogProcess::isSuccess()
-{
-    bool bResult=false;
+bool XDialogProcess::isSuccess() {
+    bool bResult = false;
 
-    bResult=XBinary::isPdStructSuccess(getPdStruct());
+    bResult = XBinary::isPdStructSuccess(getPdStruct());
 
     return bResult;
 }
 
-void XDialogProcess::waitForFinished()
-{
-    while(true)
-    {
-        QThread::msleep(50); // TODO Consts
+void XDialogProcess::waitForFinished() {
+    while (true) {
+        QThread::msleep(50);  // TODO Consts
 
-        bool bResult=false;
+        bool bResult = false;
 
-        bResult=XBinary::isPdStructFinished(getPdStruct());
+        bResult = XBinary::isPdStructFinished(getPdStruct());
 
-        if(bResult)
-        {
+        if (bResult) {
             break;
         }
     }
 }
 
-void XDialogProcess::errorMessage(QString sText)
-{
-    QMessageBox::critical(XOptions::getMainWidget(this),tr("Error"),sText);
+void XDialogProcess::errorMessage(QString sText) {
+    QMessageBox::critical(XOptions::getMainWidget(this), tr("Error"), sText);
 }
 
-void XDialogProcess::onCompleted(qint64 nElapsed)
-{
+void XDialogProcess::onCompleted(qint64 nElapsed) {
     Q_UNUSED(nElapsed)
 
-    if(isSuccess())
-    {
+    if (isSuccess()) {
         accept();
-    }
-    else
-    {
+    } else {
         reject();
     }
 }
 
-void XDialogProcess::timerSlot()
-{    
-    setupProgressBar(0,ui->progressBar0);
-    setupProgressBar(1,ui->progressBar1);
-    setupProgressBar(2,ui->progressBar2);
-    setupProgressBar(3,ui->progressBar3);
-    setupProgressBar(4,ui->progressBar4);
+void XDialogProcess::timerSlot() {
+    setupProgressBar(0, ui->progressBar0);
+    setupProgressBar(1, ui->progressBar1);
+    setupProgressBar(2, ui->progressBar2);
+    setupProgressBar(3, ui->progressBar3);
+    setupProgressBar(4, ui->progressBar4);
 
-    QTime _time=QTime(0,0);
-    _time=_time.addMSecs(g_pScanTimer->elapsed());
-    QString sTime=_time.toString();
+    QTime _time = QTime(0, 0);
+    _time = _time.addMSecs(g_pScanTimer->elapsed());
+    QString sTime = _time.toString();
     // TODO
     // If more 60 sec add min
     // If more 60 min add hours
@@ -121,65 +106,52 @@ void XDialogProcess::timerSlot()
     ui->labelTime->setText(sTime);
 }
 
-void XDialogProcess::setupProgressBar(qint32 nIndex,QProgressBar *pProgressBar)
-{
-    if(getPdStruct()->_pdRecord[nIndex].bIsValid)
-    {
+void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar) {
+    if (getPdStruct()->_pdRecord[nIndex].bIsValid) {
         pProgressBar->show();
 
         QString sStatus;
 
         pProgressBar->setMaximum(100);
 
-        if(getPdStruct()->_pdRecord[nIndex].nTotal)
-        {
-            pProgressBar->setValue((getPdStruct()->_pdRecord[nIndex].nCurrent*100)/(getPdStruct()->_pdRecord[nIndex].nTotal));
+        if (getPdStruct()->_pdRecord[nIndex].nTotal) {
+            pProgressBar->setValue((getPdStruct()->_pdRecord[nIndex].nCurrent * 100) / (getPdStruct()->_pdRecord[nIndex].nTotal));
 
-            sStatus+=QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent),QString::number(getPdStruct()->_pdRecord[nIndex].nTotal));
-        }
-        else
-        {
+            sStatus +=
+                QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent), QString::number(getPdStruct()->_pdRecord[nIndex].nTotal));
+        } else {
             pProgressBar->setValue(0);
         }
 
-        sStatus+=getPdStruct()->_pdRecord[nIndex].sStatus;
+        sStatus += getPdStruct()->_pdRecord[nIndex].sStatus;
 
         pProgressBar->setFormat(sStatus);
-    }
-    else
-    {
+    } else {
         pProgressBar->hide();
     }
 }
 
-qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
-{
+qint32 XDialogProcess::showDialogDelay(quint64 nMsec) {
     // mb TODO options
-    qint32 nResult=Accepted;
+    qint32 nResult = Accepted;
 
-    for(quint64 i=0;i<nMsec;i+=50)
-    {
-        if(i)
-        {
+    for (quint64 i = 0; i < nMsec; i += 50) {
+        if (i) {
             QThread::msleep(50);
         }
 
-        if(isSuccess())
-        {
+        if (isSuccess()) {
             break;
         }
     }
 
-    if(!isSuccess())
-    {
-        nResult=exec();
+    if (!isSuccess()) {
+        nResult = exec();
     }
 
     return nResult;
 }
 
-void XDialogProcess::on_pushButtonCancel_clicked()
-{
+void XDialogProcess::on_pushButtonCancel_clicked() {
     stop();
 }
-

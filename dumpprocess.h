@@ -23,27 +23,24 @@
 
 #include "xbinary.h"
 
-class DumpProcess : public QObject
-{
+class DumpProcess : public QObject {
     Q_OBJECT
 
 public:
-    enum DT
-    {
-        DT_OFFSET=0,
-        DT_ADDRESS          // TODO Check
+    enum DT {
+        DT_OFFSET = 0,
+        DT_ADDRESS  // TODO Check
     };
 
-    struct RECORD
-    {
+    struct RECORD {
         qint64 nOffset;
         qint64 nSize;
         QString sFileName;
     };
 
-    explicit DumpProcess(QObject *pParent=nullptr);
+    explicit DumpProcess(QObject *pParent = nullptr);
 
-    void setData(QIODevice *pDevice,QList<RECORD> listRecords,DT dumpType,XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct);
 
 signals:
     void completed(qint64 nElapsed);
@@ -58,4 +55,4 @@ private:
     XBinary::PDSTRUCT *g_pPdStruct;
 };
 
-#endif // DUMPPROCESS_H
+#endif  // DUMPPROCESS_H

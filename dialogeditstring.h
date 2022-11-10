@@ -22,19 +22,18 @@
 #define DIALOGEDITSTRING_H
 
 #include <QDialog>
+
 #include "xbinary.h"
 
 namespace Ui {
 class DialogEditString;
 }
 
-class DialogEditString : public QDialog
-{
+class DialogEditString : public QDialog {
     Q_OBJECT
 
 public:
-    struct DATA_STRUCT
-    {
+    struct DATA_STRUCT {
         qint64 nOffset;
         qint64 nSize;
         XBinary::MS_RECORD_TYPE recordType;
@@ -42,7 +41,7 @@ public:
         bool bIsCStrings;
     };
 
-    explicit DialogEditString(QWidget *pParent,QIODevice *pDevice,DATA_STRUCT *pData_struct);
+    explicit DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct);
     ~DialogEditString();
 
 private slots:
@@ -61,4 +60,4 @@ private:
     qint64 g_nSize;
 };
 
-#endif // DIALOGEDITSTRING_H
+#endif  // DIALOGEDITSTRING_H

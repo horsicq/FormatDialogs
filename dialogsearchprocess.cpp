@@ -20,27 +20,24 @@
  */
 #include "dialogsearchprocess.h"
 
-DialogSearchProcess::DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData) :
-    XDialogProcess(pParent)
-{
-    this->g_pDevice=pDevice;
-    this->g_pSearchData=pSearchData;
+DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) : XDialogProcess(pParent) {
+    this->g_pDevice = pDevice;
+    this->g_pSearchData = pSearchData;
 
-    g_pSearch=new SearchProcess;
-    g_pThread=new QThread;
+    g_pSearch = new SearchProcess;
+    g_pThread = new QThread;
 
     g_pSearch->moveToThread(g_pThread);
 
-    connect(g_pThread,SIGNAL(started()),g_pSearch,SLOT(process()));
-    connect(g_pSearch,SIGNAL(completed(qint64)),this,SLOT(onCompleted(qint64)));
-    connect(g_pSearch,SIGNAL(errorMessage(QString)),this,SLOT(errorMessage(QString)));
+    connect(g_pThread, SIGNAL(started()), g_pSearch, SLOT(process()));
+    connect(g_pSearch, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(g_pSearch, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-    g_pSearch->setData(pDevice,pSearchData,getPdStruct());
+    g_pSearch->setData(pDevice, pSearchData, getPdStruct());
     g_pThread->start();
 }
 
-DialogSearchProcess::~DialogSearchProcess()
-{
+DialogSearchProcess::~DialogSearchProcess() {
     stop();
     waitForFinished();
 
@@ -50,4 +47,3 @@ DialogSearchProcess::~DialogSearchProcess()
     delete g_pThread;
     delete g_pSearch;
 }
-

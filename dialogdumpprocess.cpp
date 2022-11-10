@@ -20,29 +20,25 @@
  */
 #include "dialogdumpprocess.h"
 
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent):
-    XDialogProcess(pParent)
-{
-    g_pDump=new DumpProcess;
-    g_pThread=new QThread;
+DialogDumpProcess::DialogDumpProcess(QWidget *pParent) : XDialogProcess(pParent) {
+    g_pDump = new DumpProcess;
+    g_pThread = new QThread;
 
     g_pDump->moveToThread(g_pThread);
 
-    connect(g_pThread,SIGNAL(started()),g_pDump,SLOT(process()));
-    connect(g_pDump,SIGNAL(completed(qint64)),this,SLOT(onCompleted(qint64)));
-    connect(g_pDump,SIGNAL(errorMessage(QString)),this,SLOT(errorMessage(QString)));
+    connect(g_pThread, SIGNAL(started()), g_pDump, SLOT(process()));
+    connect(g_pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(g_pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
     setWindowTitle(tr("Dump"));
 }
 
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType) :
-    DialogDumpProcess(pParent)
-{
-    setData(pDevice,nOffset,nSize,sFileName,dumpType);
+DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType)
+    : DialogDumpProcess(pParent) {
+    setData(pDevice, nOffset, nSize, sFileName, dumpType);
 }
 
-DialogDumpProcess::~DialogDumpProcess()
-{
+DialogDumpProcess::~DialogDumpProcess() {
     stop();
     waitForFinished();
 
@@ -53,34 +49,31 @@ DialogDumpProcess::~DialogDumpProcess()
     delete g_pDump;
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType)
-{
+void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType) {
     QList<DumpProcess::RECORD> listRecords;
 
-    DumpProcess::RECORD record={};
+    DumpProcess::RECORD record = {};
 
-    record.nOffset=nOffset;
-    record.nSize=nSize;
-    record.sFileName=sFileName;
+    record.nOffset = nOffset;
+    record.nSize = nSize;
+    record.sFileName = sFileName;
 
     listRecords.append(record);
 
-    g_pDump->setData(pDevice,listRecords,dumpType,getPdStruct());
+    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
     g_pThread->start();
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice,QList<DumpProcess::RECORD> listRecords,DumpProcess::DT dumpType)
-{
-    g_pDump->setData(pDevice,listRecords,dumpType,getPdStruct());
+void DialogDumpProcess::setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType) {
+    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
     g_pThread->start();
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice,DumpProcess::RECORD record,DumpProcess::DT dumpType)
-{
+void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType) {
     QList<DumpProcess::RECORD> listRecords;
 
     listRecords.append(record);
 
-    g_pDump->setData(pDevice,listRecords,dumpType,getPdStruct());
+    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
     g_pThread->start();
 }

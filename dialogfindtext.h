@@ -27,18 +27,16 @@ namespace Ui {
 class DialogFindText;
 }
 
-class DialogFindText : public QDialog
-{
+class DialogFindText : public QDialog {
     Q_OBJECT
 
 public:
-    struct DATA
-    {
+    struct DATA {
         QString sText;
         bool bIsMatchCase;
     };
 
-    explicit DialogFindText(QWidget *pParent=nullptr);
+    explicit DialogFindText(QWidget *pParent = nullptr);
     ~DialogFindText();
 
     void setData(DATA *pData);
@@ -53,4 +51,4 @@ private:
     DATA *g_pData;
 };
 
-#endif // DIALOGFINDTEXT_H
+#endif  // DIALOGFINDTEXT_H

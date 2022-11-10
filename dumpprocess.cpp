@@ -20,37 +20,32 @@
  */
 #include "dumpprocess.h"
 
-DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
-{
-    g_pPdStruct=nullptr;
+DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent) {
+    g_pPdStruct = nullptr;
 }
 
-void DumpProcess::setData(QIODevice *pDevice,QList<RECORD> listRecords,DT dumpType,XBinary::PDSTRUCT *pPdStruct)
-{
-    this->g_pDevice=pDevice;
-    this->g_listRecords=listRecords;
-    this->g_dumpType=dumpType;
-    this->g_pPdStruct=pPdStruct;
+void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct) {
+    this->g_pDevice = pDevice;
+    this->g_listRecords = listRecords;
+    this->g_dumpType = dumpType;
+    this->g_pPdStruct = pPdStruct;
 }
 
-void DumpProcess::process()
-{
+void DumpProcess::process() {
     QElapsedTimer scanTimer;
     scanTimer.start();
 
     XBinary binary(g_pDevice);
 
-    connect(&binary,SIGNAL(errorMessage(QString)),this,SIGNAL(errorMessage(QString)));
+    connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
 
-    qint32 nNumberOfRecords=g_listRecords.count();
+    qint32 nNumberOfRecords = g_listRecords.count();
 
     // TODO ProgressBar if more than 1
 
-    for(qint32 i=0;(i<nNumberOfRecords)&&(!(g_pPdStruct->bIsStop));i++)
-    {
-        if(g_dumpType==DT_OFFSET)
-        {
-            binary.dumpToFile(g_listRecords.at(i).sFileName,g_listRecords.at(i).nOffset,g_listRecords.at(i).nSize,g_pPdStruct);
+    for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
+        if (g_dumpType == DT_OFFSET) {
+            binary.dumpToFile(g_listRecords.at(i).sFileName, g_listRecords.at(i).nOffset, g_listRecords.at(i).nSize, g_pPdStruct);
         }
     }
 

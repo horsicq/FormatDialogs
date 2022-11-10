@@ -24,16 +24,16 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QThread>
-#include "searchprocess.h"
-#include "xoptions.h"
-#include "xdialogprocess.h"
 
-class DialogSearchProcess : public XDialogProcess
-{
+#include "searchprocess.h"
+#include "xdialogprocess.h"
+#include "xoptions.h"
+
+class DialogSearchProcess : public XDialogProcess {
     Q_OBJECT
 
 public:
-    explicit DialogSearchProcess(QWidget *pParent,QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData);
+    explicit DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData);
     ~DialogSearchProcess();
 
 private:
@@ -43,4 +43,4 @@ private:
     QThread *g_pThread;
 };
 
-#endif // DIALOGSEARCHPROCESS_H
+#endif  // DIALOGSEARCHPROCESS_H

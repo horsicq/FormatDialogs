@@ -25,26 +25,26 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QThread>
-#include "dumpprocess.h"
-#include "xoptions.h"
-#include "xdialogprocess.h"
 
-class DialogDumpProcess : public XDialogProcess
-{
+#include "dumpprocess.h"
+#include "xdialogprocess.h"
+#include "xoptions.h"
+
+class DialogDumpProcess : public XDialogProcess {
     Q_OBJECT
 
 public:
     explicit DialogDumpProcess(QWidget *pParent);
-    DialogDumpProcess(QWidget *pParent,QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
+    DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType);
     ~DialogDumpProcess();
 
-    void setData(QIODevice *pDevice,qint64 nOffset,qint64 nSize,QString sFileName,DumpProcess::DT dumpType);
-    void setData(QIODevice *pDevice,QList<DumpProcess::RECORD> listRecords,DumpProcess::DT dumpType);
-    void setData(QIODevice *pDevice,DumpProcess::RECORD record,DumpProcess::DT dumpType);
+    void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType);
+    void setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType);
+    void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
 
 private:
     DumpProcess *g_pDump;
     QThread *g_pThread;
 };
 
-#endif // DIALOGDUMPPROCESS_H
+#endif  // DIALOGDUMPPROCESS_H

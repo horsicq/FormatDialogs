@@ -23,9 +23,10 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QProgressBar>
 #include <QThread>
 #include <QTimer>
-#include <QProgressBar>
+
 #include "xbinary.h"
 #include "xoptions.h"
 
@@ -33,8 +34,7 @@ namespace Ui {
 class XDialogProcess;
 }
 
-class XDialogProcess : public QDialog
-{
+class XDialogProcess : public QDialog {
     Q_OBJECT
 
 public:
@@ -51,7 +51,7 @@ public slots:
     void errorMessage(QString sErrorMessage);
     void onCompleted(qint64 nElapsed);
     void timerSlot();
-    void setupProgressBar(qint32 nIndex,QProgressBar *pProgressBar);
+    void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar);
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -63,4 +63,4 @@ private:
     QElapsedTimer *g_pScanTimer;
 };
 
-#endif // XDIALOGPROCESS_H
+#endif  // XDIALOGPROCESS_H

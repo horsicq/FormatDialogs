@@ -19,39 +19,33 @@
  * SOFTWARE.
  */
 #include "dialogfindtext.h"
+
 #include "ui_dialogfindtext.h"
 
-DialogFindText::DialogFindText(QWidget *pParent) :
-    QDialog(pParent),
-    ui(new Ui::DialogFindText)
-{
+DialogFindText::DialogFindText(QWidget *pParent) : QDialog(pParent), ui(new Ui::DialogFindText) {
     ui->setupUi(this);
 
-    g_pData=nullptr;
+    g_pData = nullptr;
 }
 
-DialogFindText::~DialogFindText()
-{
+DialogFindText::~DialogFindText() {
     delete ui;
 }
 
-void DialogFindText::setData(DATA *pData)
-{
-    g_pData=pData;
+void DialogFindText::setData(DATA *pData) {
+    g_pData = pData;
 
     ui->lineEditText->setText(pData->sText);
     ui->checkBoxMatchCase->setChecked(pData->bIsMatchCase);
 }
 
-void DialogFindText::on_pushButtonCancel_clicked()
-{
+void DialogFindText::on_pushButtonCancel_clicked() {
     reject();
 }
 
-void DialogFindText::on_pushButtonOK_clicked()
-{
-    g_pData->sText=ui->lineEditText->text();
-    g_pData->bIsMatchCase=ui->checkBoxMatchCase->isChecked();
+void DialogFindText::on_pushButtonOK_clicked() {
+    g_pData->sText = ui->lineEditText->text();
+    g_pData->bIsMatchCase = ui->checkBoxMatchCase->isChecked();
 
     accept();
 }

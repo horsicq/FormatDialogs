@@ -23,14 +23,12 @@
 
 #include "xbinary.h"
 
-class SearchProcess : public QObject
-{
+class SearchProcess : public QObject {
     Q_OBJECT
 
 public:
-    enum TYPE
-    {
-        TYPE_UNKNOWN=0,
+    enum TYPE {
+        TYPE_UNKNOWN = 0,
         TYPE_ANSISTRING,
         TYPE_ANSISTRING_I,
         TYPE_UNICODESTRING,
@@ -52,14 +50,9 @@ public:
         // TODO pascal strings(A/U)
     };
 
-    enum SF
-    {
-        SF_BEGIN=0,
-        SF_CURRENTOFFSET
-    };
+    enum SF { SF_BEGIN = 0, SF_CURRENTOFFSET };
 
-    struct SEARCHDATA
-    {
+    struct SEARCHDATA {
         qint64 nResultOffset;
         qint64 nResultSize;
         qint64 nCurrentOffset;
@@ -70,9 +63,9 @@ public:
         bool bInit;
     };
 
-    explicit SearchProcess(QObject *pParent=nullptr);
+    explicit SearchProcess(QObject *pParent = nullptr);
 
-    void setData(QIODevice *pDevice,SearchProcess::SEARCHDATA *pSearchData,XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct);
 
 signals:
     void errorMessage(QString sText);
@@ -87,4 +80,4 @@ private:
     XBinary::PDSTRUCT *g_pPdStruct;
 };
 
-#endif // SEARCHPROCESS_H
+#endif  // SEARCHPROCESS_H
