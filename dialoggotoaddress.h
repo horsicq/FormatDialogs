@@ -32,7 +32,12 @@ class DialogGoToAddress : public XShortcutsDialog {
     Q_OBJECT
 
 public:
-    enum TYPE { TYPE_VIRTUALADDRESS = 0, TYPE_RELVIRTUALADDRESS, TYPE_OFFSET, TYPE_ADDRESS };
+    enum TYPE {
+        TYPE_VIRTUALADDRESS = 0,
+        TYPE_RELVIRTUALADDRESS,
+        TYPE_OFFSET,
+        TYPE_ADDRESS
+    };
 
     DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type);
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type);

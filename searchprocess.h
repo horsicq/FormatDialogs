@@ -50,7 +50,10 @@ public:
         // TODO pascal strings(A/U)
     };
 
-    enum SF { SF_BEGIN = 0, SF_CURRENTOFFSET };
+    enum SF {
+        SF_BEGIN = 0,
+        SF_CURRENTOFFSET
+    };
 
     struct SEARCHDATA {
         qint64 nResultOffset;
