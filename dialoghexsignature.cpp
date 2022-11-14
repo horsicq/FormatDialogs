@@ -22,8 +22,7 @@
 
 #include "ui_dialoghexsignature.h"
 
-DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize)
-    : XShortcutsDialog(pParent), ui(new Ui::DialogHexSignature) {
+DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent), ui(new Ui::DialogHexSignature) {
     ui->setupUi(this);
 
     g_pDevice = pDevice;

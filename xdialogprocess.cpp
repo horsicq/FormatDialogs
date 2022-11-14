@@ -117,8 +117,7 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar)
         if (getPdStruct()->_pdRecord[nIndex].nTotal) {
             pProgressBar->setValue((getPdStruct()->_pdRecord[nIndex].nCurrent * 100) / (getPdStruct()->_pdRecord[nIndex].nTotal));
 
-            sStatus +=
-                QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent), QString::number(getPdStruct()->_pdRecord[nIndex].nTotal));
+            sStatus += QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent), QString::number(getPdStruct()->_pdRecord[nIndex].nTotal));
         } else {
             pProgressBar->setValue(0);
         }
