@@ -22,7 +22,8 @@
 
 #include "ui_dialoghexsignature.h"
 
-DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent), ui(new Ui::DialogHexSignature) {
+DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent), ui(new Ui::DialogHexSignature)
+{
     ui->setupUi(this);
 
     g_pDevice = pDevice;
@@ -72,15 +73,18 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qin
     XOptions::setMonoFont(ui->textEditSignature);
 }
 
-DialogHexSignature::~DialogHexSignature() {
+DialogHexSignature::~DialogHexSignature()
+{
     delete ui;
 }
 
-void DialogHexSignature::on_pushButtonOK_clicked() {
+void DialogHexSignature::on_pushButtonOK_clicked()
+{
     this->close();
 }
 
-void DialogHexSignature::reload() {
+void DialogHexSignature::reload()
+{
     qint32 _nMax = G_N_MAX_BYTES;
     qint32 nSize = qMin(_nMax, g_baData.size());
     QString sSignature;
@@ -108,30 +112,35 @@ void DialogHexSignature::reload() {
     ui->textEditSignature->setText(sSignature);
 }
 
-void DialogHexSignature::on_pushButtonCopy_clicked() {
+void DialogHexSignature::on_pushButtonCopy_clicked()
+{
     QClipboard *pClipboard = QApplication::clipboard();
     pClipboard->setText(ui->textEditSignature->toPlainText());
 }
 
-void DialogHexSignature::on_checkBoxSpaces_toggled(bool bChecked) {
+void DialogHexSignature::on_checkBoxSpaces_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     reload();
 }
 
-void DialogHexSignature::on_checkBoxUpper_toggled(bool bChecked) {
+void DialogHexSignature::on_checkBoxUpper_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     reload();
 }
 
-void DialogHexSignature::on_lineEditWildcard_textChanged(const QString &sText) {
+void DialogHexSignature::on_lineEditWildcard_textChanged(const QString &sText)
+{
     Q_UNUSED(sText)
 
     reload();
 }
 
-void DialogHexSignature::on_pushButtonScan_clicked() {
+void DialogHexSignature::on_pushButtonScan_clicked()
+{
     SearchSignaturesWidget::OPTIONS options = {};
     options.bMenu_Hex = false;
     options.sUserSignature = ui->textEditSignature->toPlainText();

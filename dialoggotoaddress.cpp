@@ -23,7 +23,8 @@
 #include "ui_dialoggotoaddress.h"
 
 // mb TODO gesamt constructor
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress) {
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
+{
     ui->setupUi(this);
 
     g_nMinValue = 0;
@@ -37,7 +38,8 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     adjustTitle(type);
 }
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress) {
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
+{
     ui->setupUi(this);
 
     g_pMemoryMap = nullptr;
@@ -51,15 +53,18 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nM
     adjustTitle(type);
 }
 
-DialogGoToAddress::~DialogGoToAddress() {
+DialogGoToAddress::~DialogGoToAddress()
+{
     delete ui;
 }
 
-qint64 DialogGoToAddress::getValue() {
+qint64 DialogGoToAddress::getValue()
+{
     return g_nValue;
 }
 
-void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type) {
+void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
+{
     QString sTitle = "";
     QString sValue = "";
 
@@ -81,11 +86,13 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type) {
     ui->groupBoxValue->setTitle(sValue);
 }
 
-void DialogGoToAddress::on_pushButtonCancel_clicked() {
+void DialogGoToAddress::on_pushButtonCancel_clicked()
+{
     reject();
 }
 
-void DialogGoToAddress::on_pushButtonOK_clicked() {
+void DialogGoToAddress::on_pushButtonOK_clicked()
+{
     XADDR nValue = (quint64)ui->lineEditValue->getValue();
 
     bool bValid = false;
@@ -112,7 +119,8 @@ void DialogGoToAddress::on_pushButtonOK_clicked() {
     }
 }
 
-void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked) {
+void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
+{
     XADDR nValue = ui->lineEditValue->getValue();
 
     if (bChecked) {

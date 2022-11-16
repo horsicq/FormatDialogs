@@ -22,7 +22,8 @@
 
 #include "ui_dialogeditstring.h"
 
-DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct) : QDialog(pParent), ui(new Ui::DialogEditString) {
+DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct) : QDialog(pParent), ui(new Ui::DialogEditString)
+{
     ui->setupUi(this);
 
     this->g_pDevice = pDevice;
@@ -61,43 +62,51 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     adjust();
 }
 
-DialogEditString::~DialogEditString() {
+DialogEditString::~DialogEditString()
+{
     delete ui;
 }
 
-void DialogEditString::on_pushButtonCancel_clicked() {
+void DialogEditString::on_pushButtonCancel_clicked()
+{
     this->close();
 }
 
-void DialogEditString::on_pushButtonOK_clicked() {
+void DialogEditString::on_pushButtonOK_clicked()
+{
     accept();
 }
 
-void DialogEditString::on_comboBoxType_currentIndexChanged(int nIndex) {
+void DialogEditString::on_comboBoxType_currentIndexChanged(int nIndex)
+{
     Q_UNUSED(nIndex)
 
     adjust();
 }
 
-void DialogEditString::on_checkBoxKeepSize_toggled(bool bChecked) {
+void DialogEditString::on_checkBoxKeepSize_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     adjust();
 }
 
-void DialogEditString::on_lineEditString_textChanged(const QString &sStrings) {
+void DialogEditString::on_lineEditString_textChanged(const QString &sStrings)
+{
     Q_UNUSED(sStrings)
 
     adjust();
 }
 
-void DialogEditString::on_checkBoxCStrings_toggled(bool bChecked) {
+void DialogEditString::on_checkBoxCStrings_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     adjust();
 }
 
-void DialogEditString::adjust() {
+void DialogEditString::adjust()
+{
     qint32 nMax = g_nSize;
 
     if (ui->checkBoxCStrings->isChecked()) {

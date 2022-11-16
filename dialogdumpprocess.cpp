@@ -20,7 +20,8 @@
  */
 #include "dialogdumpprocess.h"
 
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent) : XDialogProcess(pParent) {
+DialogDumpProcess::DialogDumpProcess(QWidget *pParent) : XDialogProcess(pParent)
+{
     g_pDump = new DumpProcess;
     g_pThread = new QThread;
 
@@ -33,11 +34,13 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent) : XDialogProcess(pParent)
     setWindowTitle(tr("Dump"));
 }
 
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType) : DialogDumpProcess(pParent) {
+DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType) : DialogDumpProcess(pParent)
+{
     setData(pDevice, nOffset, nSize, sFileName, dumpType);
 }
 
-DialogDumpProcess::~DialogDumpProcess() {
+DialogDumpProcess::~DialogDumpProcess()
+{
     stop();
     waitForFinished();
 
@@ -48,7 +51,8 @@ DialogDumpProcess::~DialogDumpProcess() {
     delete g_pDump;
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType) {
+void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType)
+{
     QList<DumpProcess::RECORD> listRecords;
 
     DumpProcess::RECORD record = {};
@@ -63,12 +67,14 @@ void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize
     g_pThread->start();
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType) {
+void DialogDumpProcess::setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType)
+{
     g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
     g_pThread->start();
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType) {
+void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType)
+{
     QList<DumpProcess::RECORD> listRecords;
 
     listRecords.append(record);

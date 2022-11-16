@@ -22,15 +22,18 @@
 
 #include "ui_dialogtextinfo.h"
 
-DialogTextInfo::DialogTextInfo(QWidget *pParent) : QDialog(pParent), ui(new Ui::DialogTextInfo) {
+DialogTextInfo::DialogTextInfo(QWidget *pParent) : QDialog(pParent), ui(new Ui::DialogTextInfo)
+{
     ui->setupUi(this);
 }
 
-DialogTextInfo::~DialogTextInfo() {
+DialogTextInfo::~DialogTextInfo()
+{
     delete ui;
 }
 
-void DialogTextInfo::setWrap(bool bState) {
+void DialogTextInfo::setWrap(bool bState)
+{
     if (bState) {
         ui->textEditInfo->setLineWrapMode(QTextEdit::WidgetWidth);
     } else {
@@ -38,15 +41,18 @@ void DialogTextInfo::setWrap(bool bState) {
     }
 }
 
-void DialogTextInfo::setTitle(QString sTitle) {
+void DialogTextInfo::setTitle(QString sTitle)
+{
     setWindowTitle(sTitle);
 }
 
-void DialogTextInfo::setText(QString sText) {
+void DialogTextInfo::setText(QString sText)
+{
     ui->textEditInfo->setPlainText(sText);
 }
 
-void DialogTextInfo::setByteArray(QByteArray baData) {
+void DialogTextInfo::setByteArray(QByteArray baData)
+{
     QString sString = QString::fromUtf8(baData.data());
 
     if (Qt::mightBeRichText(sString)) {
@@ -56,7 +62,8 @@ void DialogTextInfo::setByteArray(QByteArray baData) {
     }
 }
 
-void DialogTextInfo::setFile(QString sFileName) {
+void DialogTextInfo::setFile(QString sFileName)
+{
     QFile file;
 
     file.setFileName(sFileName);
@@ -69,22 +76,26 @@ void DialogTextInfo::setFile(QString sFileName) {
     }
 }
 
-void DialogTextInfo::setDevice(QIODevice *pDevice) {
+void DialogTextInfo::setDevice(QIODevice *pDevice)
+{
     Q_UNUSED(pDevice)
     // TODO
 }
 #ifdef USE_ARCHIVE
-void DialogTextInfo::setArchive(QString sFileName, QString sRecordFileName) {
+void DialogTextInfo::setArchive(QString sFileName, QString sRecordFileName)
+{
     QByteArray baData = XArchives::decompress(sFileName, sRecordFileName);
 
     setByteArray(baData);
 }
 #endif
-void DialogTextInfo::on_pushButtonClose_clicked() {
+void DialogTextInfo::on_pushButtonClose_clicked()
+{
     this->close();
 }
 
-void DialogTextInfo::on_pushButtonSave_clicked() {
+void DialogTextInfo::on_pushButtonSave_clicked()
+{
     QString sFilter;
     sFilter += QString("%1 (*.txt)").arg(tr("Text documents"));
     QString sFileName = QFileDialog::getSaveFileName(this, tr("Save result"), QString("%1.txt").arg(tr("Result")), sFilter);

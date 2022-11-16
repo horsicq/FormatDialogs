@@ -20,18 +20,21 @@
  */
 #include "dumpprocess.h"
 
-DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent) {
+DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
+{
     g_pPdStruct = nullptr;
 }
 
-void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct) {
+void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
+{
     this->g_pDevice = pDevice;
     this->g_listRecords = listRecords;
     this->g_dumpType = dumpType;
     this->g_pPdStruct = pPdStruct;
 }
 
-void DumpProcess::process() {
+void DumpProcess::process()
+{
     QElapsedTimer scanTimer;
     scanTimer.start();
 

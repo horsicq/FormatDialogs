@@ -22,7 +22,8 @@
 
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, SEARCHMODE searchMode) : QDialog(pParent), ui(new Ui::DialogSearch) {
+DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, SEARCHMODE searchMode) : QDialog(pParent), ui(new Ui::DialogSearch)
+{
     ui->setupUi(this);
 
     const bool bBlocked1 = ui->comboBoxEndianness->blockSignals(true);
@@ -89,15 +90,18 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::
     ui->radioButtonUshort->blockSignals(bBlocked13);
 }
 
-DialogSearch::~DialogSearch() {
+DialogSearch::~DialogSearch()
+{
     delete ui;
 }
 
-void DialogSearch::on_pushButtonCancel_clicked() {
+void DialogSearch::on_pushButtonCancel_clicked()
+{
     this->close();
 }
 
-void DialogSearch::on_pushButtonOK_clicked() {
+void DialogSearch::on_pushButtonOK_clicked()
+{
     if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_STRING)  // Strings
     {
         bool bMatchCase = ui->checkBoxMatchCase->isChecked();
@@ -193,7 +197,8 @@ void DialogSearch::on_pushButtonOK_clicked() {
     done(dsp.showDialogDelay(1000));
 }
 
-void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex) {
+void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
+{
     if (nIndex == SEARCHMODE_STRING) {
         ui->plainTextEditString->setFocus();
     } else if (nIndex == SEARCHMODE_SIGNATURE) {
@@ -203,79 +208,92 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex) {
     }
 }
 
-void DialogSearch::on_lineEditValue_textChanged(const QString &sText) {
+void DialogSearch::on_lineEditValue_textChanged(const QString &sText)
+{
     Q_UNUSED(sText)
 
     ajustValue();
 }
 
-void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int nIndex) {
+void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int nIndex)
+{
     Q_UNUSED(nIndex)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonChar_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonChar_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUchar_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonUchar_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonShort_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonShort_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUshort_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonUshort_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonInt_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonInt_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUint_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonUint_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonInt64_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonInt64_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonUint64_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonUint64_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonFloat_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonFloat_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::on_radioButtonDouble_toggled(bool bChecked) {
+void DialogSearch::on_radioButtonDouble_toggled(bool bChecked)
+{
     Q_UNUSED(bChecked)
 
     ajustValue();
 }
 
-void DialogSearch::ajustValue() {
+void DialogSearch::ajustValue()
+{
     QString sValue = ui->lineEditValue->text();
     QString sHex;
 
@@ -328,7 +346,8 @@ void DialogSearch::ajustValue() {
     checkValid();
 }
 
-void DialogSearch::checkValid() {
+void DialogSearch::checkValid()
+{
     bool bIsValid = false;
 
     if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_STRING)  // Strings
@@ -345,10 +364,12 @@ void DialogSearch::checkValid() {
     ui->pushButtonOK->setEnabled(bIsValid);
 }
 
-void DialogSearch::on_plainTextEditString_textChanged() {
+void DialogSearch::on_plainTextEditString_textChanged()
+{
     checkValid();
 }
 
-void DialogSearch::on_plainTextEditSignature_textChanged() {
+void DialogSearch::on_plainTextEditSignature_textChanged()
+{
     checkValid();
 }
