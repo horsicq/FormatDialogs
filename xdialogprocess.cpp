@@ -28,6 +28,12 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 
     g_pdStruct = {};
 
+    ui->progressBar0->hide();
+    ui->progressBar1->hide();
+    ui->progressBar2->hide();
+    ui->progressBar3->hide();
+    ui->progressBar4->hide();
+
     g_pTimer = new QTimer(this);
     connect(g_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
