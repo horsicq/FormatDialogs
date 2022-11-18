@@ -22,7 +22,8 @@
 
 #include "ui_xdialogprocess.h"
 
-XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::XDialogProcess)
+XDialogProcess::XDialogProcess(QWidget *pParent)
+    : QDialog(pParent), ui(new Ui::XDialogProcess)
 {
     ui->setupUi(this);
 

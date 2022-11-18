@@ -23,7 +23,8 @@
 #include "ui_dialoggotoaddress.h"
 
 // mb TODO gesamt constructor
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type)
+    : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
 
@@ -38,7 +39,8 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
     adjustTitle(type);
 }
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type) : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type)
+    : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
 

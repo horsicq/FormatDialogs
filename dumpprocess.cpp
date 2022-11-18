@@ -20,7 +20,8 @@
  */
 #include "dumpprocess.h"
 
-DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
+DumpProcess::DumpProcess(QObject *pParent)
+    : QObject(pParent)
 {
     g_pPdStruct = nullptr;
 }

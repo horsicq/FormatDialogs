@@ -20,7 +20,8 @@
  */
 #include "searchprocess.h"
 
-SearchProcess::SearchProcess(QObject *pParent) : QObject(pParent)
+SearchProcess::SearchProcess(QObject *pParent)
+    : QObject(pParent)
 {
     g_pDevice = nullptr;
     g_pSearchData = nullptr;
