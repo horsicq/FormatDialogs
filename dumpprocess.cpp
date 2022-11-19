@@ -45,13 +45,18 @@ void DumpProcess::process()
 
     qint32 nNumberOfRecords = g_listRecords.count();
 
-    // TODO ProgressBar if more than 1
+    qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
+    XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
 
     for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
         if (g_dumpType == DT_OFFSET) {
             binary.dumpToFile(g_listRecords.at(i).sFileName, g_listRecords.at(i).nOffset, g_listRecords.at(i).nSize, g_pPdStruct);
         }
+
+        XBinary::setPdStructCurrentIncrement(g_pPdStruct, _nFreeIndex);
     }
+
+    XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
 
     emit completed(scanTimer.elapsed());
 }

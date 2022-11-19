@@ -42,6 +42,9 @@ public:
     void setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
 
+signals:
+    void errorMessage(QString sText);
+
 private:
     DumpProcess *g_pDump;
     QThread *g_pThread;
