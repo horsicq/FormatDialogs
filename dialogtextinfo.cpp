@@ -22,8 +22,7 @@
 
 #include "ui_dialogtextinfo.h"
 
-DialogTextInfo::DialogTextInfo(QWidget *pParent)
-    : QDialog(pParent), ui(new Ui::DialogTextInfo)
+DialogTextInfo::DialogTextInfo(QWidget *pParent) : QDialog(pParent), ui(new Ui::DialogTextInfo)
 {
     ui->setupUi(this);
 }
