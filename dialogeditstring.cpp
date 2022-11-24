@@ -127,7 +127,8 @@ void DialogEditString::adjust()
         ui->lineEditString->setMaxLength(nMax);
     }
 
-    QByteArray baString = XBinary::getStringData((XBinary::MS_RECORD_TYPE)(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxCStrings->isChecked());
+    QByteArray baString =
+        XBinary::getStringData((XBinary::MS_RECORD_TYPE)(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxCStrings->isChecked());
 
     QString sStatus = QString("%1: %2").arg(tr("Bytes available"), QString::number(nMax - baString.size()));
 
