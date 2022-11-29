@@ -102,6 +102,12 @@ void DialogSearch::on_pushButtonCancel_clicked()
 
 void DialogSearch::on_pushButtonOK_clicked()
 {
+    if (ui->comboBoxSearchFrom->currentIndex() == 0) {
+        g_pSearchData->startFrom = SearchProcess::SF_BEGIN;
+    } else {
+        g_pSearchData->startFrom = SearchProcess::SF_CURRENTOFFSET;
+    }
+
     if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_STRING)  // Strings
     {
         bool bMatchCase = ui->checkBoxMatchCase->isChecked();
