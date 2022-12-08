@@ -154,6 +154,8 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
     for (quint64 i = 0; i < nMsec; i += 50) {
         if (i) {
             QThread::msleep(50);
+        } else {
+            QThread::msleep(10);
         }
 
         if (isSuccess()) {
