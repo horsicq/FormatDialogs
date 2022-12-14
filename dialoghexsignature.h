@@ -26,6 +26,7 @@
 #include <QPushButton>
 
 #include "dialogsearchsignatures.h"
+#include "dialogsearchvalues.h"
 #include "xbinary.h"
 #include "xoptions.h"
 

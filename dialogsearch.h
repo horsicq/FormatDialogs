@@ -39,7 +39,7 @@ public:
         SEARCHMODE_VALUE
     };
 
-    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, SEARCHMODE searchMode);
+    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode);
     ~DialogSearch();
 
 private slots:
@@ -66,7 +66,7 @@ private slots:
 private:
     Ui::DialogSearch *ui;
     QIODevice *g_pDevice;
-    SearchProcess::SEARCHDATA *g_pSearchData;
+    XBinary::SEARCHDATA *g_pSearchData;
 };
 
 #endif  // DIALOGSEARCH_H

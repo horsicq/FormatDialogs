@@ -33,12 +33,12 @@ class DialogSearchProcess : public XDialogProcess {
     Q_OBJECT
 
 public:
-    explicit DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData);
+    explicit DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData);
     ~DialogSearchProcess();
 
 private:
     QIODevice *g_pDevice;
-    SearchProcess::SEARCHDATA *g_pSearchData;
+    XBinary::SEARCHDATA *g_pSearchData;
     SearchProcess *g_pSearch;
     QThread *g_pThread;
 };

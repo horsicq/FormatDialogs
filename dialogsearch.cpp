@@ -22,7 +22,7 @@
 
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, SEARCHMODE searchMode)
+DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode)
     : QDialog(pParent), ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
@@ -104,9 +104,9 @@ void DialogSearch::on_pushButtonCancel_clicked()
 void DialogSearch::on_pushButtonOK_clicked()
 {
     if (ui->comboBoxSearchFrom->currentIndex() == 0) {
-        g_pSearchData->startFrom = SearchProcess::SF_BEGIN;
+        g_pSearchData->startFrom = XBinary::SF_BEGIN;
     } else {
-        g_pSearchData->startFrom = SearchProcess::SF_CURRENTOFFSET;
+        g_pSearchData->startFrom = XBinary::SF_CURRENTOFFSET;
     }
 
     if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_STRING)  // Strings
@@ -116,23 +116,23 @@ void DialogSearch::on_pushButtonOK_clicked()
         if (ui->comboBoxType->currentIndex() == 0)  // ANSI
         {
             if (bMatchCase) {
-                g_pSearchData->type = SearchProcess::TYPE_ANSISTRING;
+                g_pSearchData->valueType = XBinary::VT_ANSISTRING;
             } else {
-                g_pSearchData->type = SearchProcess::TYPE_ANSISTRING_I;
+                g_pSearchData->valueType = XBinary::VT_ANSISTRING_I;
             }
         } else if (ui->comboBoxType->currentIndex() == 1)  // UNICODE
         {
             if (bMatchCase) {
-                g_pSearchData->type = SearchProcess::TYPE_UNICODESTRING;
+                g_pSearchData->valueType = XBinary::VT_UNICODESTRING;
             } else {
-                g_pSearchData->type = SearchProcess::TYPE_UNICODESTRING_I;
+                g_pSearchData->valueType = XBinary::VT_UNICODESTRING_I;
             }
         } else if (ui->comboBoxType->currentIndex() == 2)  // UTF8
         {
             if (bMatchCase) {
-                g_pSearchData->type = SearchProcess::TYPE_UTF8STRING;
+                g_pSearchData->valueType = XBinary::VT_UTF8STRING;
             } else {
-                g_pSearchData->type = SearchProcess::TYPE_UTF8STRING_I;
+                g_pSearchData->valueType = XBinary::VT_UTF8STRING_I;
             }
         }
 
@@ -144,7 +144,6 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
 
         g_pSearchData->variant = sText;
-        g_pSearchData->nResultSize = sText.size();
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_SIGNATURE)  // Signature
     {
         QString sText = ui->plainTextEditSignature->toPlainText();
@@ -154,9 +153,8 @@ void DialogSearch::on_pushButtonOK_clicked()
             sText.resize(256);
         }
 
-        g_pSearchData->type = SearchProcess::TYPE_SIGNATURE;
-        g_pSearchData->variant = sText;
-        g_pSearchData->nResultSize = 1;                                  // TODO Check
+        g_pSearchData->valueType = XBinary::VT_SIGNATURE;
+        g_pSearchData->variant = sText;                               // TODO Check
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
     {
         g_pSearchData->bIsBigEndian = (ui->comboBoxEndianness->currentIndex() == 1);
@@ -164,44 +162,31 @@ void DialogSearch::on_pushButtonOK_clicked()
         g_pSearchData->variant = ui->lineEditValue->text();
 
         if (ui->radioButtonChar->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_CHAR;
-            g_pSearchData->nResultSize = 1;
+            g_pSearchData->valueType = XBinary::VT_CHAR;
         } else if (ui->radioButtonUchar->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_UCHAR;
-            g_pSearchData->nResultSize = 1;
+            g_pSearchData->valueType = XBinary::VT_UCHAR;
         } else if (ui->radioButtonDouble->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_DOUBLE;
-            g_pSearchData->nResultSize = 8;
+            g_pSearchData->valueType = XBinary::VT_DOUBLE;
         } else if (ui->radioButtonFloat->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_FLOAT;
-            g_pSearchData->nResultSize = 4;
+            g_pSearchData->valueType = XBinary::VT_FLOAT;
         } else if (ui->radioButtonInt->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_INT;
-            g_pSearchData->nResultSize = 4;
+            g_pSearchData->valueType = XBinary::VT_INT;
         } else if (ui->radioButtonInt64->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_INT64;
-            g_pSearchData->nResultSize = 8;
+            g_pSearchData->valueType = XBinary::VT_INT64;
         } else if (ui->radioButtonShort->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_SHORT;
-            g_pSearchData->nResultSize = 2;
+            g_pSearchData->valueType = XBinary::VT_SHORT;
         } else if (ui->radioButtonUchar->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_UCHAR;
-            g_pSearchData->nResultSize = 1;
+            g_pSearchData->valueType = XBinary::VT_UCHAR;
         } else if (ui->radioButtonUint->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_UINT;
-            g_pSearchData->nResultSize = 4;
+            g_pSearchData->valueType = XBinary::VT_UINT;
         } else if (ui->radioButtonUint64->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_UINT64;
-            g_pSearchData->nResultSize = 8;
+            g_pSearchData->valueType = XBinary::VT_UINT64;
         } else if (ui->radioButtonUshort->isChecked()) {
-            g_pSearchData->type = SearchProcess::TYPE_VALUE_USHORT;
-            g_pSearchData->nResultSize = 2;
+            g_pSearchData->valueType = XBinary::VT_USHORT;
         }
     }
 
-    DialogSearchProcess dsp(this, g_pDevice, g_pSearchData);
-
-    done(dsp.showDialogDelay(1000));
+    QDialog::accept();
 }
 
 void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)

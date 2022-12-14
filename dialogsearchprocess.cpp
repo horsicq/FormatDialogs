@@ -20,7 +20,7 @@
  */
 #include "dialogsearchprocess.h"
 
-DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData) : XDialogProcess(pParent)
+DialogSearchProcess::DialogSearchProcess(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData) : XDialogProcess(pParent)
 {
     this->g_pDevice = pDevice;
     this->g_pSearchData = pSearchData;

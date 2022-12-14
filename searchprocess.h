@@ -27,48 +27,9 @@ class SearchProcess : public QObject {
     Q_OBJECT
 
 public:
-    enum TYPE {
-        TYPE_UNKNOWN = 0,
-        TYPE_ANSISTRING,
-        TYPE_ANSISTRING_I,
-        TYPE_UNICODESTRING,
-        TYPE_UNICODESTRING_I,
-        TYPE_UTF8STRING,
-        TYPE_UTF8STRING_I,
-        TYPE_SIGNATURE,
-        TYPE_VALUE_CHAR,
-        TYPE_VALUE_UCHAR,
-        TYPE_VALUE_SHORT,
-        TYPE_VALUE_USHORT,
-        TYPE_VALUE_INT,
-        TYPE_VALUE_UINT,
-        TYPE_VALUE_INT64,
-        TYPE_VALUE_UINT64,
-        TYPE_VALUE_DOUBLE,
-        TYPE_VALUE_FLOAT,
-        // TODO UTF8
-        // TODO pascal strings(A/U)
-    };
-
-    enum SF {
-        SF_BEGIN = 0,
-        SF_CURRENTOFFSET
-    };
-
-    struct SEARCHDATA {
-        qint64 nResultOffset;
-        qint64 nResultSize;
-        qint64 nCurrentOffset;
-        SF startFrom;
-        TYPE type;
-        bool bIsBigEndian;
-        QVariant variant;
-        bool bInit;
-    };
-
     explicit SearchProcess(QObject *pParent = nullptr);
 
-    void setData(QIODevice *pDevice, SearchProcess::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct);
 
 signals:
     void errorMessage(QString sText);
@@ -79,7 +40,7 @@ public slots:
 
 private:
     QIODevice *g_pDevice;
-    SearchProcess::SEARCHDATA *g_pSearchData;
+    XBinary::SEARCHDATA *g_pSearchData;
     XBinary::PDSTRUCT *g_pPdStruct;
 };
 
