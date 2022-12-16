@@ -54,7 +54,7 @@ void SearchProcess::process()
 
     XBinary::_MEMORY_MAP memoryMap = binary.getMemoryMap(g_pPdStruct);
 
-    g_pSearchData->nResultOffset = binary.find_value(&memoryMap, nStartOffset, -1, g_pSearchData->variant, g_pSearchData->valueType, g_pSearchData->bIsBigEndian, &(g_pSearchData->nResultSize), g_pPdStruct);
+    g_pSearchData->nResultOffset = binary.find_value(&memoryMap, nStartOffset, -1, g_pSearchData->varValue, g_pSearchData->valueType, g_pSearchData->bIsBigEndian, &(g_pSearchData->nResultSize), g_pPdStruct);
 
     if (g_pSearchData->nResultOffset != -1) {
         g_pSearchData->bInit = true;

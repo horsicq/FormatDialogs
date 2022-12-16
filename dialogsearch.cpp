@@ -22,7 +22,7 @@
 
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode)
+DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, OPTIONS options)
     : QDialog(pParent), ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
@@ -60,7 +60,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 
     ui->lineEditValue->setText("0");
 
-    ui->radioButtonUint->setChecked(true);
+    ui->radioButtonDword->setChecked(true);
 
     ajustValue();
 
@@ -89,6 +89,12 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
     ui->radioButtonUint->blockSignals(bBlocked11);
     ui->radioButtonUint64->blockSignals(bBlocked12);
     ui->radioButtonUshort->blockSignals(bBlocked13);
+
+    if (options.bShowBegin) {
+        ui->groupBoxSearchFrom->show();
+    } else {
+        ui->groupBoxSearchFrom->hide();
+    }
 }
 
 DialogSearch::~DialogSearch()
@@ -143,7 +149,7 @@ void DialogSearch::on_pushButtonOK_clicked()
             sText.resize(256);
         }
 
-        g_pSearchData->variant = sText;
+        g_pSearchData->varValue = sText;
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_SIGNATURE)  // Signature
     {
         QString sText = ui->plainTextEditSignature->toPlainText();
@@ -154,14 +160,22 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
 
         g_pSearchData->valueType = XBinary::VT_SIGNATURE;
-        g_pSearchData->variant = sText;                               // TODO Check
+        g_pSearchData->varValue = sText;                               // TODO Check
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
     {
         g_pSearchData->bIsBigEndian = (ui->comboBoxEndianness->currentIndex() == 1);
 
-        g_pSearchData->variant = ui->lineEditValue->text();
+        g_pSearchData->varValue = ui->lineEditValue->text();
 
-        if (ui->radioButtonChar->isChecked()) {
+        if (ui->radioButtonByte->isChecked()) {
+            g_pSearchData->valueType = XBinary::VT_BYTE;
+        } else if (ui->radioButtonWord->isChecked()) {
+            g_pSearchData->valueType = XBinary::VT_WORD;
+        } else if (ui->radioButtonDword->isChecked()) {
+            g_pSearchData->valueType = XBinary::VT_DWORD;
+        } else if (ui->radioButtonQword->isChecked()) {
+            g_pSearchData->valueType = XBinary::VT_QWORD;
+        } else if (ui->radioButtonChar->isChecked()) {
             g_pSearchData->valueType = XBinary::VT_CHAR;
         } else if (ui->radioButtonUchar->isChecked()) {
             g_pSearchData->valueType = XBinary::VT_UCHAR;
@@ -210,6 +224,34 @@ void DialogSearch::on_lineEditValue_textChanged(const QString &sText)
 void DialogSearch::on_comboBoxEndianness_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
+
+    ajustValue();
+}
+
+void DialogSearch::on_radioButtonByte_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
+
+    ajustValue();
+}
+
+void DialogSearch::on_radioButtonWord_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
+
+    ajustValue();
+}
+
+void DialogSearch::on_radioButtonDword_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
+
+    ajustValue();
+}
+
+void DialogSearch::on_radioButtonQword_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
 
     ajustValue();
 }
@@ -291,7 +333,23 @@ void DialogSearch::ajustValue()
 
     bool bIsBigEndian = (ui->comboBoxEndianness->currentIndex() == 1);
 
-    if (ui->radioButtonChar->isChecked()) {
+    if (ui->radioButtonByte->isChecked()) {
+        if (XBinary::checkString_byte(sValue)) {
+            sHex = XBinary::valueToHex((quint8)sValue.toUShort(nullptr,16));
+        }
+    } else if (ui->radioButtonWord->isChecked()) {
+        if (XBinary::checkString_word(sValue)) {
+            sHex = XBinary::valueToHex((quint16)sValue.toUShort(nullptr,16), bIsBigEndian);
+        }
+    } else if (ui->radioButtonDword->isChecked()) {
+        if (XBinary::checkString_dword(sValue)) {
+            sHex = XBinary::valueToHex((qint32)sValue.toUInt(nullptr,16), bIsBigEndian);
+        }
+    } else if (ui->radioButtonQword->isChecked()) {
+        if (XBinary::checkString_qword(sValue)) {
+            sHex = XBinary::valueToHex((quint64)sValue.toULongLong(nullptr,16), bIsBigEndian);
+        }
+    } else if (ui->radioButtonChar->isChecked()) {
         if (XBinary::checkString_int8(sValue)) {
             sHex = XBinary::valueToHex((qint8)sValue.toShort(), bIsBigEndian);
         }

@@ -39,7 +39,11 @@ public:
         SEARCHMODE_VALUE
     };
 
-    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode);
+    struct OPTIONS {
+        bool bShowBegin;
+    };
+
+    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, OPTIONS options);
     ~DialogSearch();
 
 private slots:
@@ -48,6 +52,10 @@ private slots:
     void on_tabWidgetSearch_currentChanged(int nIndex);
     void on_lineEditValue_textChanged(const QString &sText);
     void on_comboBoxEndianness_currentIndexChanged(int nIndex);
+    void on_radioButtonByte_toggled(bool bChecked);
+    void on_radioButtonWord_toggled(bool bChecked);
+    void on_radioButtonDword_toggled(bool bChecked);
+    void on_radioButtonQword_toggled(bool bChecked);
     void on_radioButtonChar_toggled(bool bChecked);
     void on_radioButtonUchar_toggled(bool bChecked);
     void on_radioButtonShort_toggled(bool bChecked);

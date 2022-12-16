@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>419</width>
-    <height>278</height>
+    <width>421</width>
+    <height>342</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,7 +64,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidgetSearch">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabString">
       <attribute name="title">
@@ -176,47 +176,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBoxHex">
-           <property name="title">
-            <string notr="true">Hex</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLineEdit" name="lineEditHex">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_7">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
           <widget class="QGroupBox" name="groupBoxEndianness">
            <property name="title">
             <string>Endianness</string>
@@ -244,17 +203,17 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButtonChar">
+         <item row="3" column="1">
+          <widget class="QRadioButton" name="radioButtonUshort">
            <property name="text">
-            <string notr="true">char</string>
+            <string notr="true">ushort</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QRadioButton" name="radioButtonShort">
+          <widget class="QRadioButton" name="radioButtonChar">
            <property name="text">
-            <string notr="true">short</string>
+            <string notr="true">char</string>
            </property>
           </widget>
          </item>
@@ -265,10 +224,17 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QRadioButton" name="radioButtonInt64">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radioButtonByte">
            <property name="text">
-            <string notr="true">int64</string>
+            <string notr="true">byte</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QRadioButton" name="radioButtonShort">
+           <property name="text">
+            <string notr="true">short</string>
            </property>
           </widget>
          </item>
@@ -279,17 +245,31 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="1" column="1">
           <widget class="QRadioButton" name="radioButtonUchar">
            <property name="text">
             <string notr="true">uchar</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QRadioButton" name="radioButtonUshort">
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="radioButtonWord">
            <property name="text">
-            <string notr="true">ushort</string>
+            <string notr="true">word</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QRadioButton" name="radioButtonDword">
+           <property name="text">
+            <string notr="true">dword</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QRadioButton" name="radioButtonQword">
+           <property name="text">
+            <string notr="true">qword</string>
            </property>
           </widget>
          </item>
@@ -300,7 +280,14 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="2" column="2">
+          <widget class="QRadioButton" name="radioButtonInt64">
+           <property name="text">
+            <string notr="true">int64</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
           <widget class="QRadioButton" name="radioButtonUint64">
            <property name="text">
             <string notr="true">uint64</string>
@@ -328,6 +315,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditHex">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

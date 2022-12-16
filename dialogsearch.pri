@@ -12,8 +12,7 @@ SOURCES += \
     $$PWD/searchprocess.cpp
 
 FORMS += \
-    $$PWD/dialogsearch.ui \
-    $$PWD/dialogsearchprocess.ui
+    $$PWD/dialogsearch.ui
 
 !contains(XCONFIG, xdialogprocess) {
     XCONFIG += xdialogprocess
