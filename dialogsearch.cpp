@@ -160,7 +160,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
 
         g_pSearchData->valueType = XBinary::VT_SIGNATURE;
-        g_pSearchData->varValue = sText;                               // TODO Check
+        g_pSearchData->varValue = sText;                                 // TODO Check
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
     {
         g_pSearchData->bIsBigEndian = (ui->comboBoxEndianness->currentIndex() == 1);
@@ -335,19 +335,19 @@ void DialogSearch::ajustValue()
 
     if (ui->radioButtonByte->isChecked()) {
         if (XBinary::checkString_byte(sValue)) {
-            sHex = XBinary::valueToHex((quint8)sValue.toUShort(nullptr,16));
+            sHex = XBinary::valueToHex((quint8)sValue.toUShort(nullptr, 16));
         }
     } else if (ui->radioButtonWord->isChecked()) {
         if (XBinary::checkString_word(sValue)) {
-            sHex = XBinary::valueToHex((quint16)sValue.toUShort(nullptr,16), bIsBigEndian);
+            sHex = XBinary::valueToHex((quint16)sValue.toUShort(nullptr, 16), bIsBigEndian);
         }
     } else if (ui->radioButtonDword->isChecked()) {
         if (XBinary::checkString_dword(sValue)) {
-            sHex = XBinary::valueToHex((qint32)sValue.toUInt(nullptr,16), bIsBigEndian);
+            sHex = XBinary::valueToHex((qint32)sValue.toUInt(nullptr, 16), bIsBigEndian);
         }
     } else if (ui->radioButtonQword->isChecked()) {
         if (XBinary::checkString_qword(sValue)) {
-            sHex = XBinary::valueToHex((quint64)sValue.toULongLong(nullptr,16), bIsBigEndian);
+            sHex = XBinary::valueToHex((quint64)sValue.toULongLong(nullptr, 16), bIsBigEndian);
         }
     } else if (ui->radioButtonChar->isChecked()) {
         if (XBinary::checkString_int8(sValue)) {
