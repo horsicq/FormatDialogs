@@ -212,6 +212,8 @@ void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
     } else if (nIndex == SEARCHMODE_VALUE) {
         ui->lineEditValue->setFocus();
     }
+
+    checkValid();
 }
 
 void DialogSearch::on_lineEditValue_textChanged(const QString &sText)
@@ -405,7 +407,7 @@ void DialogSearch::checkValid()
         bIsValid = !(ui->plainTextEditString->toPlainText().isEmpty());
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_SIGNATURE)  // Signature
     {
-        bIsValid = !(ui->plainTextEditSignature->toPlainText().isEmpty());
+        bIsValid = XBinary::isSignatureValid(ui->plainTextEditSignature->toPlainText());
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
     {
         bIsValid = !(ui->lineEditHex->text().isEmpty());
