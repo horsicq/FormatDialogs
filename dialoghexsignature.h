@@ -29,6 +29,7 @@
 #include "dialogsearchvalues.h"
 #include "xbinary.h"
 #include "xoptions.h"
+#include "xshortcuts.h"
 
 namespace Ui {
 class DialogHexSignature;
