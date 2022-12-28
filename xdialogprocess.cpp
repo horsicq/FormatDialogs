@@ -28,6 +28,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 
     g_pdStruct = {};
 
+    XBinary::_pdStructInit(&g_pdStruct);
+
     ui->progressBar0->hide();
     ui->progressBar1->hide();
     ui->progressBar2->hide();
