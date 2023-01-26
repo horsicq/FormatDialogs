@@ -10,4 +10,5 @@ SOURCES += \
 FORMS += \
     $$PWD/dialoghexsignature.ui
 
-# mb TODO cmake
+DISTFILES += \
+    $$PWD/dialoghexsignature.cmake
