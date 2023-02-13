@@ -45,7 +45,7 @@ public:
     void stop();
     bool isSuccess();
     void waitForFinished();
-    qint32 showDialogDelay(quint64 nMsec);
+    qint32 showDialogDelay(quint64 nMsec = 1000);
 
 public slots:
     void errorMessage(QString sErrorMessage);
