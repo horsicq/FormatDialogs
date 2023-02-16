@@ -10,5 +10,11 @@ SOURCES += \
 FORMS += \
     $$PWD/dialoghexsignature.ui
 
+!contains(XCONFIG, searchvalueswidget) {
+    XCONFIG += searchvalueswidget
+    include($$PWD/../FormatWidgets/SearchValues/searchvalueswidget.pri)
+}
+
 DISTFILES += \
     $$PWD/dialoghexsignature.cmake
+

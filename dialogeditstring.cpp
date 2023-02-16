@@ -36,9 +36,9 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     const bool bBlocked3 = ui->checkBoxKeepSize->blockSignals(true);
     const bool bBlocked4 = ui->checkBoxCStrings->blockSignals(true);
 
-    ui->comboBoxType->addItem(QString("ANSI"), XBinary::MS_RECORD_TYPE_ANSI);
-    ui->comboBoxType->addItem(QString("Unicode"), XBinary::MS_RECORD_TYPE_UNICODE);
-    ui->comboBoxType->addItem(QString("UTF8"), XBinary::MS_RECORD_TYPE_UTF8);
+    ui->comboBoxType->addItem(QString("ANSI"), XBinary::MS_RECORD_TYPE_STRING_ANSI);
+    ui->comboBoxType->addItem(QString("Unicode"), XBinary::MS_RECORD_TYPE_STRING_UNICODE);
+    ui->comboBoxType->addItem(QString("UTF8"), XBinary::MS_RECORD_TYPE_STRING_UTF8);
 
     qint32 nNumberOfRecords = ui->comboBoxType->count();
 
@@ -110,7 +110,7 @@ void DialogEditString::adjust()
     qint32 nMax = g_nSize;
 
     if (ui->checkBoxCStrings->isChecked()) {
-        if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_UNICODE) {
+        if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_STRING_UNICODE) {
             nMax -= 2;
         } else {
             nMax--;
@@ -121,7 +121,7 @@ void DialogEditString::adjust()
         nMax = qMin((qint64)0x100, g_pDevice->size() - (g_pData_struct->nOffset));
     }
 
-    if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_UNICODE) {
+    if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_STRING_UNICODE) {
         ui->lineEditString->setMaxLength(nMax / 2);
     } else {
         ui->lineEditString->setMaxLength(nMax);
@@ -139,7 +139,7 @@ void DialogEditString::adjust()
     g_pData_struct->nSize = baString.size();
 
     if (ui->checkBoxCStrings->isChecked()) {
-        if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_UNICODE) {
+        if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_STRING_UNICODE) {
             g_pData_struct->nSize -= 2;
         } else {
             g_pData_struct->nSize--;
