@@ -43,7 +43,7 @@ public:
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type);
     ~DialogGoToAddress();
 
-    qint64 getValue();
+    qint64 getValue(); // mb TODO XADDR
 
 private:
     void adjustTitle(TYPE type);
