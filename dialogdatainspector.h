@@ -49,6 +49,7 @@ class DialogDataInspector : public QDialog {
         // TODO Strings
         __DATAINS_SIZE
     };
+
 public:
     explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice);
     ~DialogDataInspector();

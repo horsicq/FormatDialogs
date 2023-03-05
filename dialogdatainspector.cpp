@@ -22,8 +22,7 @@
 
 #include "ui_dialogdatainspector.h"
 
-DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice)
-    : QDialog(pParent), ui(new Ui::DialogDataInspector)
+DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice) : QDialog(pParent), ui(new Ui::DialogDataInspector)
 {
     ui->setupUi(this);
 
