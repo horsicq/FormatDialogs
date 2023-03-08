@@ -21,7 +21,7 @@
 #ifndef DIALOGDATAINSPECTOR_H
 #define DIALOGDATAINSPECTOR_H
 
-#include <QDialog>
+#include "xshortcutsdialog.h"
 #include "xlineedithex.h"
 #include "xbinary.h"
 
@@ -29,7 +29,7 @@ namespace Ui {
 class DialogDataInspector;
 }
 
-class DialogDataInspector : public QDialog {
+class DialogDataInspector : public XShortcutsDialog {
     Q_OBJECT
 
     enum DATAINS {
@@ -57,11 +57,15 @@ public:
 public slots:
     void selectionChangedSlot(qint64 nOffset, qint64 nSize);
 
+signals:
+    void dataChanged(qint64 nOffset, qint64 nSize);
+
 private:
     void addValue(QString sTitle, DATAINS datains);
 
 private slots:
     void valueChangedSlot(QVariant varValue);
+    void on_pushButtonClose_clicked();
 
 private:
     Ui::DialogDataInspector *ui;
@@ -69,6 +73,7 @@ private:
     QIODevice *g_pDevice;
     qint64 g_nOffset;
     qint64 g_nSize;
+    bool g_bSync;
 };
 
 #endif  // DIALOGDATAINSPECTOR_H

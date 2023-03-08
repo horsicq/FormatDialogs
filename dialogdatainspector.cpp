@@ -22,13 +22,14 @@
 
 #include "ui_dialogdatainspector.h"
 
-DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice) : QDialog(pParent), ui(new Ui::DialogDataInspector)
+DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice) : XShortcutsDialog(pParent), ui(new Ui::DialogDataInspector)
 {
     ui->setupUi(this);
 
     g_pDevice = pDevice;
     g_nOffset = 0;
     g_nSize = 0;
+    g_bSync = false;
 
     memset(g_lineEdit, 0, sizeof g_lineEdit);
 
@@ -68,21 +69,23 @@ void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
     g_nOffset = nOffset;
     g_nSize = nSize;
 
+    // TODO block signals
+
     XBinary binary(g_pDevice);
 
-    // TODO block signals
-    g_lineEdit[DATAINS_BYTE]->setValue(binary.read_uint8(nOffset));
-    g_lineEdit[DATAINS_WORD]->setValue(binary.read_uint16(nOffset));
-    g_lineEdit[DATAINS_DWORD]->setValue(binary.read_uint32(nOffset));
-    g_lineEdit[DATAINS_QWORD]->setValue(binary.read_uint64(nOffset));
-    g_lineEdit[DATAINS_UINT8]->setValue(binary.read_uint8(nOffset), HEXValidator::MODE_DEC);
-    g_lineEdit[DATAINS_INT8]->setValue(binary.read_int8(nOffset), HEXValidator::MODE_SIGN_DEC);
-    g_lineEdit[DATAINS_UINT16]->setValue(binary.read_uint16(nOffset), HEXValidator::MODE_DEC);
-    g_lineEdit[DATAINS_INT16]->setValue(binary.read_int16(nOffset), HEXValidator::MODE_SIGN_DEC);
-    g_lineEdit[DATAINS_UINT32]->setValue(binary.read_uint32(nOffset), HEXValidator::MODE_DEC);
-    g_lineEdit[DATAINS_INT32]->setValue(binary.read_int32(nOffset), HEXValidator::MODE_SIGN_DEC);
-    g_lineEdit[DATAINS_UINT64]->setValue(binary.read_uint64(nOffset), HEXValidator::MODE_DEC);
-    g_lineEdit[DATAINS_INT64]->setValue(binary.read_int64(nOffset), HEXValidator::MODE_SIGN_DEC);
+    if (!g_lineEdit[DATAINS_BYTE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_BYTE]->setValue(binary.read_uint8(nOffset));
+    if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_WORD]->setValue(binary.read_uint16(nOffset));
+    if (!g_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_DWORD]->setValue(binary.read_uint32(nOffset));
+    if (!g_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_QWORD]->setValue(binary.read_uint64(nOffset));
+    if (!g_lineEdit[DATAINS_UINT8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT8]->setValue(binary.read_uint8(nOffset), HEXValidator::MODE_DEC);
+    if (!g_lineEdit[DATAINS_INT8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT8]->setValue(binary.read_int8(nOffset), HEXValidator::MODE_SIGN_DEC);
+    if (!g_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT16]->setValue(binary.read_uint16(nOffset), HEXValidator::MODE_DEC);
+    if (!g_lineEdit[DATAINS_INT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT16]->setValue(binary.read_int16(nOffset), HEXValidator::MODE_SIGN_DEC);
+    if (!g_lineEdit[DATAINS_UINT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT32]->setValue(binary.read_uint32(nOffset), HEXValidator::MODE_DEC);
+    if (!g_lineEdit[DATAINS_INT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT32]->setValue(binary.read_int32(nOffset), HEXValidator::MODE_SIGN_DEC);
+    if (!g_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT64]->setValue(binary.read_uint64(nOffset), HEXValidator::MODE_DEC);
+    if (!g_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT64]->setValue(binary.read_int64(nOffset), HEXValidator::MODE_SIGN_DEC);
+
     // TODO
 }
 
@@ -103,5 +106,58 @@ void DialogDataInspector::addValue(QString sTitle, DATAINS datains)
 
 void DialogDataInspector::valueChangedSlot(QVariant varValue)
 {
-    // TODO
+    XLineEditHEX *pLineEdit = qobject_cast<XLineEditHEX *>(sender());
+
+    DATAINS nType = (DATAINS)(pLineEdit->property("STYPE").toInt());
+
+    g_bSync = true;
+
+    bool bSuccess = true;
+
+    // TODO Backup device
+    if ((getGlobalOptions()->isSaveBackup()) && (!XBinary::isBackupPresent(g_pDevice))) {
+        bSuccess = XBinary::saveBackup(g_pDevice);
+    }
+
+    if (bSuccess) {
+        if (g_pDevice->isWritable()) {
+            XBinary binary(g_pDevice);
+
+            if (nType == DATAINS_BYTE)
+                binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
+            else if (nType == DATAINS_WORD)
+                binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
+            else if (nType == DATAINS_DWORD)
+                binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
+            else if (nType == DATAINS_QWORD)
+                binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
+            else if (nType == DATAINS_UINT8)
+                binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
+            else if (nType == DATAINS_INT8)
+                binary.write_int8(g_nOffset, (qint8)varValue.toULongLong());
+            else if (nType == DATAINS_UINT16)
+                binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
+            else if (nType == DATAINS_INT16)
+                binary.write_int16(g_nOffset, (qint16)varValue.toULongLong());
+            else if (nType == DATAINS_UINT32)
+                binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
+            else if (nType == DATAINS_INT32)
+                binary.write_int32(g_nOffset, (qint32)varValue.toULongLong());
+            else if (nType == DATAINS_UINT64)
+                binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
+            else if (nType == DATAINS_INT64)
+                binary.write_int64(g_nOffset, (qint64)varValue.toULongLong());
+
+            selectionChangedSlot(g_nOffset, g_nSize);
+
+            emit dataChanged(g_nOffset, g_nSize);
+        }
+    }
+
+    g_bSync = false;
+}
+
+void DialogDataInspector::on_pushButtonClose_clicked()
+{
+    this->close();
 }
