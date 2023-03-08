@@ -51,7 +51,7 @@ public slots:
     void errorMessage(QString sErrorMessage);
     void onCompleted(qint64 nElapsed);
     void timerSlot();
-    void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar);
+    void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel);
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -61,6 +61,7 @@ private:
     XBinary::PDSTRUCT g_pdStruct;
     QTimer *g_pTimer;
     QElapsedTimer *g_pScanTimer;
+    quint64 nSpeed[5];
 };
 
 #endif  // XDIALOGPROCESS_H

@@ -26,6 +26,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 {
     ui->setupUi(this);
 
+    memset(nSpeed, 0, sizeof nSpeed);
+
     g_pdStruct = XBinary::createPdStruct();
 
     ui->progressBar0->hide();
@@ -105,23 +107,20 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 
 void XDialogProcess::timerSlot()
 {
-    setupProgressBar(0, ui->progressBar0);
-    setupProgressBar(1, ui->progressBar1);
-    setupProgressBar(2, ui->progressBar2);
-    setupProgressBar(3, ui->progressBar3);
-    setupProgressBar(4, ui->progressBar4);
+    setupProgressBar(0, ui->progressBar0, ui->labelSpeed0);
+    setupProgressBar(1, ui->progressBar1, ui->labelSpeed1);
+    setupProgressBar(2, ui->progressBar2, ui->labelSpeed2);
+    setupProgressBar(3, ui->progressBar3, ui->labelSpeed3);
+    setupProgressBar(4, ui->progressBar4, ui->labelSpeed4);
 
     QTime _time = QTime(0, 0);
     _time = _time.addMSecs(g_pScanTimer->elapsed());
     QString sTime = _time.toString();
-    // TODO
-    // If more 60 sec add min
-    // If more 60 min add hours
 
     ui->labelTime->setText(sTime);
 }
 
-void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar)
+void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel)
 {
     if (getPdStruct()->_pdRecord[nIndex].bIsValid) {
         pProgressBar->show();
@@ -138,11 +137,25 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar)
             pProgressBar->setValue(0);
         }
 
+        if (getPdStruct()->_pdRecord[nIndex].nCurrent == 0) {
+            nSpeed[nIndex] = 0;
+        }
+
+        nSpeed[nIndex]++;
+
+        if (nSpeed[nIndex]) {
+            quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
+
+            nCurrent = nCurrent/nSpeed[nIndex];
+            pLabel->setText(QString::number(nCurrent));
+        }
+
         sStatus += getPdStruct()->_pdRecord[nIndex].sStatus;
 
         pProgressBar->setFormat(sStatus);
     } else {
         pProgressBar->hide();
+        pLabel->hide();
     }
 }
 
