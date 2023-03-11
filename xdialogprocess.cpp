@@ -61,7 +61,7 @@ XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
 
 void XDialogProcess::stop()
 {
-//    g_pTimer->stop();
+    //    g_pTimer->stop();
     g_pdStruct.bIsStop = true;
 }
 
@@ -148,7 +148,7 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
         if (nSpeed[nIndex]) {
             quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
 
-            nCurrent = nCurrent/nSpeed[nIndex];
+            nCurrent = nCurrent / nSpeed[nIndex];
             pLabel->setText(QString::number(nCurrent));
         }
 
