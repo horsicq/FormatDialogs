@@ -61,7 +61,7 @@ XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
 
 void XDialogProcess::stop()
 {
-    g_pTimer->stop();
+//    g_pTimer->stop();
     g_pdStruct.bIsStop = true;
 }
 
@@ -97,6 +97,8 @@ void XDialogProcess::errorMessage(QString sText)
 void XDialogProcess::onCompleted(qint64 nElapsed)
 {
     Q_UNUSED(nElapsed)
+
+    g_pTimer->stop();
 
     if (isSuccess()) {
         accept();
