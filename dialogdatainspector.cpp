@@ -22,13 +22,14 @@
 
 #include "ui_dialogdatainspector.h"
 
-DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice) : XShortcutsDialog(pParent), ui(new Ui::DialogDataInspector)
+DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) :
+    XShortcutsDialog(pParent), ui(new Ui::DialogDataInspector)
 {
     ui->setupUi(this);
 
     g_pDevice = pDevice;
-    g_nOffset = 0;
-    g_nSize = 0;
+    g_nOffset = nOffset;
+    g_nSize = nSize;
     g_bSync = false;
 
     memset(g_lineEdit, 0, sizeof g_lineEdit);
@@ -45,18 +46,20 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice) :
 
     ui->tableWidgetDataInspector->setColumnWidth(0, 100);  // TODO consts
 
-    addValue("BYTE", DATAINS_BYTE);
-    addValue("WORD", DATAINS_WORD);
-    addValue("DWORD", DATAINS_DWORD);
-    addValue("QWORD", DATAINS_QWORD);
-    addValue("uint8", DATAINS_UINT8);
-    addValue("int8", DATAINS_INT8);
-    addValue("uint16", DATAINS_UINT16);
-    addValue("int16", DATAINS_INT16);
-    addValue("uint32", DATAINS_UINT32);
-    addValue("int32", DATAINS_INT32);
-    addValue("uint64", DATAINS_UINT64);
-    addValue("int64", DATAINS_INT64);
+    addRecord("BYTE", DATAINS_BYTE);
+    addRecord("WORD", DATAINS_WORD);
+    addRecord("DWORD", DATAINS_DWORD);
+    addRecord("QWORD", DATAINS_QWORD);
+    addRecord("uint8", DATAINS_UINT8);
+    addRecord("int8", DATAINS_INT8);
+    addRecord("uint16", DATAINS_UINT16);
+    addRecord("int16", DATAINS_INT16);
+    addRecord("uint32", DATAINS_UINT32);
+    addRecord("int32", DATAINS_INT32);
+    addRecord("uint64", DATAINS_UINT64);
+    addRecord("int64", DATAINS_INT64);
+
+    showData(nOffset, nSize);
 }
 
 DialogDataInspector::~DialogDataInspector()
@@ -66,10 +69,44 @@ DialogDataInspector::~DialogDataInspector()
 
 void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
 {
+//    qDebug("void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)");
+    showData(nOffset, nSize);
+}
+
+void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)
+{
+//    qDebug("void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)");
+    showData(nOffset, nSize);
+}
+
+void DialogDataInspector::addRecord(QString sTitle, DATAINS datains)
+{
+    QTableWidgetItem *pItemName = new QTableWidgetItem;
+    pItemName->setText(sTitle);
+    ui->tableWidgetDataInspector->setItem(datains, 0, pItemName);
+
+    g_lineEdit[datains] = new XLineEditHEX(this);
+    g_lineEdit[datains]->setProperty("STYPE", datains);
+
+    connect(g_lineEdit[datains], SIGNAL(valueChanged(QVariant)), this, SLOT(valueChangedSlot(QVariant)));
+
+    ui->tableWidgetDataInspector->setCellWidget(datains, 1, g_lineEdit[datains]);
+    // TODO Strings
+}
+
+void DialogDataInspector::blockSignals(bool bState)
+{
+    for (qint32 i = 0; i < __DATAINS_SIZE; i++) {
+        g_lineEdit[i]->blockSignals(bState);
+    }
+}
+
+void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
+{
     g_nOffset = nOffset;
     g_nSize = nSize;
 
-    // TODO block signals
+    blockSignals(true);
 
     XBinary binary(g_pDevice);
 
@@ -86,22 +123,7 @@ void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
     if (!g_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT64]->setValue(binary.read_uint64(nOffset), HEXValidator::MODE_DEC);
     if (!g_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT64]->setValue(binary.read_int64(nOffset), HEXValidator::MODE_SIGN_DEC);
 
-    // TODO
-}
-
-void DialogDataInspector::addValue(QString sTitle, DATAINS datains)
-{
-    QTableWidgetItem *pItemName = new QTableWidgetItem;
-    pItemName->setText(sTitle);
-    ui->tableWidgetDataInspector->setItem(datains, 0, pItemName);
-
-    g_lineEdit[datains] = new XLineEditHEX(this);
-    g_lineEdit[datains]->setProperty("STYPE", datains);
-
-    connect(g_lineEdit[datains], SIGNAL(valueChanged(QVariant)), this, SLOT(valueChangedSlot(QVariant)));
-
-    ui->tableWidgetDataInspector->setCellWidget(datains, 1, g_lineEdit[datains]);
-    // TODO Strings
+    blockSignals(false);
 }
 
 void DialogDataInspector::valueChangedSlot(QVariant varValue)
@@ -148,7 +170,8 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
             else if (nType == DATAINS_INT64)
                 binary.write_int64(g_nOffset, (qint64)varValue.toULongLong());
 
-            selectionChangedSlot(g_nOffset, g_nSize);
+            //selectionChangedSlot(g_nOffset, g_nSize);
+            showData(g_nOffset, g_nSize);
 
             emit dataChanged(g_nOffset, g_nSize);
         }

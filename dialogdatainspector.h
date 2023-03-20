@@ -51,17 +51,20 @@ class DialogDataInspector : public XShortcutsDialog {
     };
 
 public:
-    explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice);
+    explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogDataInspector();
 
 public slots:
     void selectionChangedSlot(qint64 nOffset, qint64 nSize);
+    void dataChangedSlot(qint64 nOffset, qint64 nSize);
 
 signals:
     void dataChanged(qint64 nOffset, qint64 nSize);
 
 private:
-    void addValue(QString sTitle, DATAINS datains);
+    void addRecord(QString sTitle, DATAINS datains);
+    void blockSignals(bool bState);
+    void showData(qint64 nOffset, qint64 nSize);
 
 private slots:
     void valueChangedSlot(QVariant varValue);
