@@ -69,6 +69,7 @@ private:
 private slots:
     void valueChangedSlot(QVariant varValue);
     void on_pushButtonClose_clicked();
+    void on_checkBoxReadOnly_stateChanged(int nArg);
 
 private:
     Ui::DialogDataInspector *ui;

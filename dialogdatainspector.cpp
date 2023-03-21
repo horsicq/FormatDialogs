@@ -184,3 +184,8 @@ void DialogDataInspector::on_pushButtonClose_clicked()
 {
     this->close();
 }
+
+void DialogDataInspector::on_checkBoxReadOnly_stateChanged(int nArg)
+{
+    // TODO
+}
