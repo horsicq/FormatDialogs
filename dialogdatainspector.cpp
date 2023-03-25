@@ -60,6 +60,11 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     addRecord("int64", DATAINS_INT64);
 
     showData(nOffset, nSize);
+
+    ui->checkBoxReadonly->setEnabled(pDevice->isWritable());
+    ui->checkBoxReadonly->setChecked(true);
+
+    setReadonly(true);
 }
 
 DialogDataInspector::~DialogDataInspector()
@@ -98,6 +103,13 @@ void DialogDataInspector::blockSignals(bool bState)
 {
     for (qint32 i = 0; i < __DATAINS_SIZE; i++) {
         g_lineEdit[i]->blockSignals(bState);
+    }
+}
+
+void DialogDataInspector::setReadonly(bool bState)
+{
+    for (qint32 i = 0; i < __DATAINS_SIZE; i++) {
+        g_lineEdit[i]->setReadOnly(bState);
     }
 }
 
@@ -185,7 +197,9 @@ void DialogDataInspector::on_pushButtonClose_clicked()
     this->close();
 }
 
-void DialogDataInspector::on_checkBoxReadOnly_stateChanged(int nArg)
+void DialogDataInspector::on_checkBoxReadonly_stateChanged(int nArg)
 {
-    // TODO
+    Q_UNUSED(nArg)
+
+    setReadonly(ui->checkBoxReadonly->isChecked());
 }

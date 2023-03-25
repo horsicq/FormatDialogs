@@ -36,7 +36,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBoxReadOnly">
+      <widget class="QCheckBox" name="checkBoxReadonly">
        <property name="text">
         <string>Readonly</string>
        </property>

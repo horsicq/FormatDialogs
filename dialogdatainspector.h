@@ -64,12 +64,13 @@ signals:
 private:
     void addRecord(QString sTitle, DATAINS datains);
     void blockSignals(bool bState);
+    void setReadonly(bool bState);
     void showData(qint64 nOffset, qint64 nSize);
 
 private slots:
     void valueChangedSlot(QVariant varValue);
     void on_pushButtonClose_clicked();
-    void on_checkBoxReadOnly_stateChanged(int nArg);
+    void on_checkBoxReadonly_stateChanged(int nArg);
 
 private:
     Ui::DialogDataInspector *ui;
