@@ -22,8 +22,7 @@
 
 #include "ui_dialogdatainspector.h"
 
-DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) :
-    XShortcutsDialog(pParent), ui(new Ui::DialogDataInspector)
+DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent), ui(new Ui::DialogDataInspector)
 {
     ui->setupUi(this);
 
@@ -74,13 +73,13 @@ DialogDataInspector::~DialogDataInspector()
 
 void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
 {
-//    qDebug("void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)");
+    //    qDebug("void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)");
     showData(nOffset, nSize);
 }
 
 void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)
 {
-//    qDebug("void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)");
+    //    qDebug("void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)");
     showData(nOffset, nSize);
 }
 
@@ -182,7 +181,7 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
             else if (nType == DATAINS_INT64)
                 binary.write_int64(g_nOffset, (qint64)varValue.toULongLong());
 
-            //selectionChangedSlot(g_nOffset, g_nSize);
+            // selectionChangedSlot(g_nOffset, g_nSize);
             showData(g_nOffset, g_nSize);
 
             emit dataChanged(g_nOffset, g_nSize);
