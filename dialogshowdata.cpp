@@ -30,8 +30,22 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     g_nOffset = nOffset;
     g_nSize = qMin(nSize, (qint64)0x10000);
 
-    reload();
+    _addItem("C", DTYPE_C);
+    _addItem("C++", DTYPE_CPP);
+
+    ui->listWidgetType->setCurrentRow(0);
 }
+
+//const uint8_t data[101] = {
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1C, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+//    0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x68, 0x05, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x68, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00,
+//    0x00, 0x00, 0x00, 0x00, 0x00
+//};
+
 
 DialogShowData::~DialogShowData()
 {
@@ -45,12 +59,43 @@ void DialogShowData::on_pushButtonOK_clicked()
 
 void DialogShowData::reload()
 {
-    QString sData = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
+    if (ui->listWidgetType->currentRow() != -1) {
+        DTYPE dtype = (DTYPE)(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
 
-    ui->plainTextEditData->setPlainText(sData);
+        QString sData = getDataString(dtype);
+
+        ui->plainTextEditData->setPlainText(sData);
+    }
 }
 
 void DialogShowData::on_pushButtonCopy_clicked()
 {
     QApplication::clipboard()->setText(ui->plainTextEditData->toPlainText());
 }
+
+void DialogShowData::on_listWidgetType_currentRowChanged(int nCurrentRow)
+{
+    Q_UNUSED(nCurrentRow)
+
+    reload();
+}
+
+QString DialogShowData::getDataString(DTYPE dtype)
+{
+    // TODO
+    QString sResult;
+
+    sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
+
+    return sResult;
+}
+
+void DialogShowData::_addItem(QString sName, DTYPE dtype)
+{
+    QListWidgetItem *pItem = new QListWidgetItem;
+    pItem->setText(sName);
+    pItem->setData(Qt::UserRole, dtype);
+
+    ui->listWidgetType->addItem(pItem);
+}
+

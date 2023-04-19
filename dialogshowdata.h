@@ -33,6 +33,11 @@ class DialogShowData;
 class DialogShowData : public QDialog {
     Q_OBJECT
 
+    enum DTYPE {
+        DTYPE_C = 0,
+        DTYPE_CPP
+    };
+
 public:
     explicit DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogShowData();
@@ -41,6 +46,9 @@ private slots:
     void on_pushButtonOK_clicked();
     void reload();
     void on_pushButtonCopy_clicked();
+    void on_listWidgetType_currentRowChanged(int nCurrentRow);
+    QString getDataString(DTYPE dtype);
+    void _addItem(QString sName, DTYPE dtype);
 
 private:
     Ui::DialogShowData *ui;
