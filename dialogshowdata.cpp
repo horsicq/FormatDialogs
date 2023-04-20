@@ -82,6 +82,7 @@ void DialogShowData::on_listWidgetType_currentRowChanged(int nCurrentRow)
 
 QString DialogShowData::getDataString(DTYPE dtype)
 {
+    Q_UNUSED(dtype)
     // TODO
     QString sResult;
 
