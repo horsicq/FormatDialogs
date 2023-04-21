@@ -86,7 +86,20 @@ QString DialogShowData::getDataString(DTYPE dtype)
     // TODO
     QString sResult;
 
-    sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
+    if (dtype == DTYPE_C) {
+        sResult += QString("const uint8_t data[%1] = {").arg(g_nSize);
+    } else if (dtype == DTYPE_CPP) {
+
+    }
+
+    // TODO
+
+    if ((dtype == DTYPE_C) ||
+        (dtype == DTYPE_CPP)) {
+        sResult += "};";
+    }
+
+    //sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
 
     return sResult;
 }
