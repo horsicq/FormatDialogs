@@ -93,13 +93,17 @@ QString DialogShowData::getDataString(DTYPE dtype)
     XBinary binary(g_pDevice);
 
     for (qint32 i = 0; i < g_nSize; i++) {
+        if ((i % 8) == 0) {
+            sResult += "    ";
+        }
+
         sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i));
 
         if (i != (g_nSize - 1)) {
             sResult += ",";
         }
 
-        if (((i > 0) && (i % 8 == 0)) || (i == (g_nSize - 1))) {
+        if (((i + 1) % 8 == 0) || (i == (g_nSize - 1))) {
             sResult += "\n";
         } else {
             sResult += " ";
