@@ -31,7 +31,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     g_nSize = qMin(nSize, (qint64)0x10000);
 
     _addItem("C", DTYPE_C);
-    _addItem("C++", DTYPE_CPP);
+//    _addItem("C++", DTYPE_CPP);
 
     ui->listWidgetType->setCurrentRow(0);
 }
@@ -86,11 +86,25 @@ QString DialogShowData::getDataString(DTYPE dtype)
     QString sResult;
 
     if (dtype == DTYPE_C) {
-        sResult += QString("const uint8_t data[%1] = {").arg(g_nSize);
+        sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
     } else if (dtype == DTYPE_CPP) {
     }
 
-    // TODO
+    XBinary binary(g_pDevice);
+
+    for (qint32 i = 0; i < g_nSize; i++) {
+        sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i));
+
+        if (i != (g_nSize - 1)) {
+            sResult += ",";
+        }
+
+        if (((i > 0) && (i % 8 == 0)) || (i == (g_nSize - 1))) {
+            sResult += "\n";
+        } else {
+            sResult += " ";
+        }
+    }
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP)) {
         sResult += "};";
