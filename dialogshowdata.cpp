@@ -31,7 +31,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     g_nSize = qMin(nSize, (qint64)0x10000);
 
     _addItem("C", DTYPE_C);
-//    _addItem("C++", DTYPE_CPP);
+    //    _addItem("C++", DTYPE_CPP);
 
     ui->listWidgetType->setCurrentRow(0);
 }
