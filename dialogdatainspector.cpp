@@ -83,7 +83,7 @@ void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)
     showData(nOffset, nSize);
 }
 
-void DialogDataInspector::addRecord(QString sTitle, DATAINS datains)
+void DialogDataInspector::addRecord(const QString &sTitle, DATAINS datains)
 {
     QTableWidgetItem *pItemName = new QTableWidgetItem;
     pItemName->setText(sTitle);

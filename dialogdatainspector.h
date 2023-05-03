@@ -62,7 +62,7 @@ signals:
     void dataChanged(qint64 nOffset, qint64 nSize);
 
 private:
-    void addRecord(QString sTitle, DATAINS datains);
+    void addRecord(const QString &sTitle, DATAINS datains);
     void blockSignals(bool bState);
     void setReadonly(bool bState);
     void showData(qint64 nOffset, qint64 nSize);
