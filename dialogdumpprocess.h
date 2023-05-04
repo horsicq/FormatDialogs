@@ -35,7 +35,7 @@ class DialogDumpProcess : public XDialogProcess {
 
 public:
     explicit DialogDumpProcess(QWidget *pParent);
-    DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType);
+    DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DumpProcess::DT dumpType);
     ~DialogDumpProcess();
 
     void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType);
