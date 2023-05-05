@@ -38,7 +38,7 @@ public:
     DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DumpProcess::DT dumpType);
     ~DialogDumpProcess();
 
-    void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, QString sFileName, DumpProcess::DT dumpType);
+    void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, QList<DumpProcess::RECORD> listRecords, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
 
