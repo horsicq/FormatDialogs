@@ -41,7 +41,7 @@ public:
     ~DialogTextInfo();
 
     void setWrap(bool bState);
-    void setTitle(QString sTitle);
+    void setTitle(const QString &sTitle);
     void setText(QString sText);
     void setByteArray(QByteArray baData);
     void setFile(QString sFileName);

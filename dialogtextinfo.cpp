@@ -41,7 +41,7 @@ void DialogTextInfo::setWrap(bool bState)
     }
 }
 
-void DialogTextInfo::setTitle(QString sTitle)
+void DialogTextInfo::setTitle(const QString &sTitle)
 {
     setWindowTitle(sTitle);
 }
