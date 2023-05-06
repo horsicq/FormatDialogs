@@ -48,7 +48,7 @@ private slots:
     void on_pushButtonCopy_clicked();
     void on_listWidgetType_currentRowChanged(int nCurrentRow);
     QString getDataString(DTYPE dtype);
-    void _addItem(QString sName, DTYPE dtype);
+    void _addItem(const QString &sName, DTYPE dtype);
 
 private:
     Ui::DialogShowData *ui;

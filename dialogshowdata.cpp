@@ -119,7 +119,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
     return sResult;
 }
 
-void DialogShowData::_addItem(QString sName, DTYPE dtype)
+void DialogShowData::_addItem(const QString &sName, DTYPE dtype)
 {
     QListWidgetItem *pItem = new QListWidgetItem;
     pItem->setText(sName);
