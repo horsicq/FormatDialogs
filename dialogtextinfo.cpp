@@ -46,7 +46,7 @@ void DialogTextInfo::setTitle(const QString &sTitle)
     setWindowTitle(sTitle);
 }
 
-void DialogTextInfo::setText(QString sText)
+void DialogTextInfo::setText(const QString &sText)
 {
     ui->textEditInfo->setPlainText(sText);
 }

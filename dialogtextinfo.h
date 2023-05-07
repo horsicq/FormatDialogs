@@ -42,7 +42,7 @@ public:
 
     void setWrap(bool bState);
     void setTitle(const QString &sTitle);
-    void setText(QString sText);
+    void setText(const QString &sText);
     void setByteArray(QByteArray baData);
     void setFile(QString sFileName);
     void setDevice(QIODevice *pDevice);
