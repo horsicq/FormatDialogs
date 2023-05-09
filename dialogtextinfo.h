@@ -44,7 +44,7 @@ public:
     void setTitle(const QString &sTitle);
     void setText(const QString &sText);
     void setByteArray(QByteArray baData);
-    void setFile(QString sFileName);
+    void setFileName(const QString &sFileName);
     void setDevice(QIODevice *pDevice);
 #ifdef USE_ARCHIVE
     void setArchive(QString sFileName, QString sRecordFileName);

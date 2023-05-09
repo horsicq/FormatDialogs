@@ -62,7 +62,7 @@ void DialogTextInfo::setByteArray(QByteArray baData)
     }
 }
 
-void DialogTextInfo::setFile(QString sFileName)
+void DialogTextInfo::setFileName(const QString &sFileName)
 {
     QFile file;
 
