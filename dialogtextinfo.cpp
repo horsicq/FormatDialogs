@@ -82,7 +82,7 @@ void DialogTextInfo::setDevice(QIODevice *pDevice)
     // TODO
 }
 #ifdef USE_ARCHIVE
-void DialogTextInfo::setArchive(QString sFileName, QString sRecordFileName)
+void DialogTextInfo::setArchive(const QString &sFileName, const QString &sRecordFileName)
 {
     QByteArray baData = XArchives::decompress(sFileName, sRecordFileName);
 
