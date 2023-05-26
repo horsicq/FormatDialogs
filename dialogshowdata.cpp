@@ -32,6 +32,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
 
     _addItem("C", DTYPE_C);
     //    _addItem("C++", DTYPE_CPP);
+    _addItem("Base64", DTYPE_BASE64);
 
     ui->listWidgetType->setCurrentRow(0);
 }
@@ -90,24 +91,32 @@ QString DialogShowData::getDataString(DTYPE dtype)
     } else if (dtype == DTYPE_CPP) {
     }
 
-    XBinary binary(g_pDevice);
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP)) {
+        XBinary binary(g_pDevice);
 
-    for (qint32 i = 0; i < g_nSize; i++) {
-        if ((i % 8) == 0) {
-            sResult += "    ";
+        for (qint32 i = 0; i < g_nSize; i++) {
+            if ((i % 8) == 0) {
+                sResult += "    ";
+            }
+
+            sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i));
+
+            if (i != (g_nSize - 1)) {
+                sResult += ",";
+            }
+
+            if (((i + 1) % 8 == 0) || (i == (g_nSize - 1))) {
+                sResult += "\n";
+            } else {
+                sResult += " ";
+            }
         }
+    } else if (dtype == DTYPE_BASE64) {
+        XBinary binary(g_pDevice);
 
-        sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i));
+        QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
 
-        if (i != (g_nSize - 1)) {
-            sResult += ",";
-        }
-
-        if (((i + 1) % 8 == 0) || (i == (g_nSize - 1))) {
-            sResult += "\n";
-        } else {
-            sResult += " ";
-        }
+        sResult = baArray.toBase64();
     }
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP)) {
