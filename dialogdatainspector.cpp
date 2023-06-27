@@ -156,30 +156,18 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
         if (g_pDevice->isWritable()) {
             XBinary binary(g_pDevice);
 
-            if (nType == DATAINS_BYTE)
-                binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
-            else if (nType == DATAINS_WORD)
-                binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
-            else if (nType == DATAINS_DWORD)
-                binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
-            else if (nType == DATAINS_QWORD)
-                binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
-            else if (nType == DATAINS_UINT8)
-                binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
-            else if (nType == DATAINS_INT8)
-                binary.write_int8(g_nOffset, (qint8)varValue.toULongLong());
-            else if (nType == DATAINS_UINT16)
-                binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
-            else if (nType == DATAINS_INT16)
-                binary.write_int16(g_nOffset, (qint16)varValue.toULongLong());
-            else if (nType == DATAINS_UINT32)
-                binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
-            else if (nType == DATAINS_INT32)
-                binary.write_int32(g_nOffset, (qint32)varValue.toULongLong());
-            else if (nType == DATAINS_UINT64)
-                binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
-            else if (nType == DATAINS_INT64)
-                binary.write_int64(g_nOffset, (qint64)varValue.toULongLong());
+            if (nType == DATAINS_BYTE) binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
+            else if (nType == DATAINS_WORD) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
+            else if (nType == DATAINS_DWORD) binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
+            else if (nType == DATAINS_QWORD) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
+            else if (nType == DATAINS_UINT8) binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
+            else if (nType == DATAINS_INT8) binary.write_int8(g_nOffset, (qint8)varValue.toULongLong());
+            else if (nType == DATAINS_UINT16) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
+            else if (nType == DATAINS_INT16) binary.write_int16(g_nOffset, (qint16)varValue.toULongLong());
+            else if (nType == DATAINS_UINT32) binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
+            else if (nType == DATAINS_INT32) binary.write_int32(g_nOffset, (qint32)varValue.toULongLong());
+            else if (nType == DATAINS_UINT64) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
+            else if (nType == DATAINS_INT64) binary.write_int64(g_nOffset, (qint64)varValue.toULongLong());
 
             // selectionChangedSlot(g_nOffset, g_nSize);
             showData(g_nOffset, g_nSize);
