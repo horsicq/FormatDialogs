@@ -146,9 +146,8 @@ void DialogHexSignature::on_pushButtonScan_clicked()
     options.sUserSignature = ui->textEditSignature->toPlainText();
 
     DialogSearchSignatures dialogSearchSignatures(this);
-
-    dialogSearchSignatures.setData(g_pDevice, XBinary::FT_BINARY, options, true);
     dialogSearchSignatures.setGlobal(getShortcuts(), getGlobalOptions());
+    dialogSearchSignatures.setData(g_pDevice, XBinary::FT_BINARY, options, true);
 
     dialogSearchSignatures.exec();
 }
