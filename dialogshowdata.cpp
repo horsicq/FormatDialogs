@@ -31,7 +31,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     g_nSize = qMin(nSize, (qint64)0x10000);
 
     _addItem(QString("C"), DTYPE_C);
-    //    _addItem("C++", DTYPE_CPP);
+    _addItem(QString("C++"), DTYPE_CPP);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->listWidgetType->setCurrentRow(0);
@@ -79,6 +79,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
     if (dtype == DTYPE_C) {
         sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
     } else if (dtype == DTYPE_CPP) {
+        sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
     }
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP)) {
