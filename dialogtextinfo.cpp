@@ -65,7 +65,6 @@ void DialogTextInfo::setByteArray(QByteArray baData)
 void DialogTextInfo::setFileName(const QString &sFileName)
 {
     QFile file;
-
     file.setFileName(sFileName);
 
     if (file.open(QFile::ReadOnly)) {
