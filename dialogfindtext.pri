@@ -10,4 +10,5 @@ SOURCES += \
 FORMS += \
     $$PWD/dialogfindtext.ui
 
-# mb TODO cmake
+DISTFILES += \
+    $$PWD/dialogfindtext.cmake

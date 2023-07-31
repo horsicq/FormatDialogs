@@ -19,8 +19,7 @@ FORMS += \
     include($$PWD/xdialogprocess.pri)
 }
 
-# mb TODO cmake
-
 DISTFILES += \
     $$PWD/LICENSE \
-    $$PWD/README.md
+    $$PWD/README.md \
+    $$PWD/dialogsearch.cmake
