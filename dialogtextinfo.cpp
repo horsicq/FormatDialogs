@@ -70,7 +70,6 @@ void DialogTextInfo::setFileName(const QString &sFileName)
     if (file.open(QFile::ReadOnly)) {
         QByteArray baData = file.readAll();
         setByteArray(baData);
-
         file.close();
     }
 }
@@ -95,8 +94,7 @@ void DialogTextInfo::on_pushButtonClose_clicked()
 
 void DialogTextInfo::on_pushButtonSave_clicked()
 {
-    QString sFilter;
-    sFilter += QString("%1 (*.txt)").arg(tr("Text documents"));
+    QString sFilter = QString("%1 (*.txt)").arg(tr("Text documents"));
     QString sFileName = QFileDialog::getSaveFileName(this, tr("Save result"), QString("%1.txt").arg(tr("Result")), sFilter);
 
     if (!sFileName.isEmpty()) {
@@ -105,9 +103,7 @@ void DialogTextInfo::on_pushButtonSave_clicked()
 
         if (file.open(QIODevice::ReadWrite)) {
             QString sText = ui->textEditInfo->toPlainText();
-
             file.write(sText.toUtf8().data());
-
             file.close();
         }
     }
