@@ -10,8 +10,7 @@ SOURCES += \
 FORMS += \
     $$PWD/dialogdatainspector.ui
 
-# mb TODO cmake
-
 DISTFILES += \
     $$PWD/LICENSE \
-    $$PWD/README.md
+    $$PWD/README.md \
+    $$PWD/dialogdatainspector.cmake
