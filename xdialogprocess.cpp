@@ -61,7 +61,6 @@ XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
 
 void XDialogProcess::stop()
 {
-    //    g_pTimer->stop();
     g_pdStruct.bIsStop = true;
 }
 
