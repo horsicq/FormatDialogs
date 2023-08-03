@@ -48,7 +48,7 @@ public:
     qint32 showDialogDelay(quint64 nMsec = 1000);
 
 public slots:
-    void errorMessage(QString sErrorMessage);
+    void errorMessage(const QString &sText);
     void onCompleted(qint64 nElapsed);
     void timerSlot();
     void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel);

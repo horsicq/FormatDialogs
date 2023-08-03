@@ -43,7 +43,7 @@ public:
     void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
 
 signals:
-    void errorMessage(QString sText);
+    void errorMessage(const QString &sText); // TODO mb remove
 
 private:
     DumpProcess *g_pDump;
