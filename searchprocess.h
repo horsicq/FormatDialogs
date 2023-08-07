@@ -32,7 +32,7 @@ public:
     void setData(QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct);
 
 signals:
-    void errorMessage(QString sText);
+    void errorMessage(const QString &sText);
     void completed(qint64 nElapsed);
 
 public slots:
