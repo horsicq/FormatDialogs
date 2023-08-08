@@ -44,7 +44,7 @@ public:
 
 signals:
     void completed(qint64 nElapsed);
-    void errorMessage(QString sText);
+    void errorMessage(const QString &sText);
 
 public slots:
     void process();
