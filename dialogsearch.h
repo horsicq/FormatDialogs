@@ -43,7 +43,7 @@ public:
         bool bShowBegin;
     };
 
-    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, OPTIONS options);
+    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options);
     ~DialogSearch();
 
 private slots:

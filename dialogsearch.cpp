@@ -22,7 +22,7 @@
 
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, OPTIONS options)
+DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options)
     : QDialog(pParent), ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
