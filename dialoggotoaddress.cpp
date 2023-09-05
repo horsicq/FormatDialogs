@@ -125,9 +125,9 @@ void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
     XADDR nValue = ui->lineEditValue->getValue();
 
     if (bChecked) {
-        ui->lineEditValue->setValue(nValue, HEXValidator::MODE_HEX);
+        ui->lineEditValue->setValue(nValue, XLineEditHEX::_MODE_HEX);
     } else {
-        ui->lineEditValue->setValue(nValue, HEXValidator::MODE_DEC);
+        ui->lineEditValue->setValue(nValue, XLineEditHEX::_MODE_DEC);
     }
 
     if (!nValue) {
