@@ -88,7 +88,7 @@ void XDialogProcess::waitForFinished()
     }
 }
 
-void XDialogProcess::errorMessage(const QString &sText)
+void XDialogProcess::errorMessageSlot(const QString &sText)
 {
     QMessageBox::critical(XOptions::getMainWidget(this), tr("Error"), sText);
 }
