@@ -51,7 +51,7 @@ void DialogTextInfo::setText(const QString &sText)
     ui->textEditInfo->setPlainText(sText);
 }
 
-void DialogTextInfo::setByteArray(QByteArray baData)
+void DialogTextInfo::setByteArray(const QByteArray &baData)
 {
     QString sString = QString::fromUtf8(baData.data());
 

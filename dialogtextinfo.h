@@ -43,7 +43,7 @@ public:
     void setWrap(bool bState);
     void setTitle(const QString &sTitle);
     void setText(const QString &sText);
-    void setByteArray(QByteArray baData);
+    void setByteArray(const QByteArray &baData);
     void setFileName(const QString &sFileName);
     void setDevice(QIODevice *pDevice);
 #ifdef USE_ARCHIVE
