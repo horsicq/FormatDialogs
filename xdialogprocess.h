@@ -61,7 +61,7 @@ private:
     XBinary::PDSTRUCT g_pdStruct;
     QTimer *g_pTimer;
     QElapsedTimer *g_pScanTimer;
-    quint64 nSpeed[5];
+    quint64 g_nSpeed[5];
 };
 
 #endif  // XDIALOGPROCESS_H

@@ -26,7 +26,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 {
     ui->setupUi(this);
 
-    memset(nSpeed, 0, sizeof nSpeed);
+    memset(g_nSpeed, 0, sizeof g_nSpeed);
 
     g_pdStruct = XBinary::createPdStruct();
 
@@ -131,7 +131,8 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
         pProgressBar->setMaximum(100);
 
         if (getPdStruct()->_pdRecord[nIndex].nTotal) {
-            pProgressBar->setValue((getPdStruct()->_pdRecord[nIndex].nCurrent * 100) / (getPdStruct()->_pdRecord[nIndex].nTotal));
+            qint32 nValue = (getPdStruct()->_pdRecord[nIndex].nCurrent * 100) / (getPdStruct()->_pdRecord[nIndex].nTotal);
+            pProgressBar->setValue(nValue);
 
             sStatus += QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent), QString::number(getPdStruct()->_pdRecord[nIndex].nTotal));
         } else {
@@ -139,19 +140,21 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
         }
 
         if (getPdStruct()->_pdRecord[nIndex].nCurrent == 0) {
-            nSpeed[nIndex] = 0;
+            g_nSpeed[nIndex] = 0;
         }
 
-        nSpeed[nIndex]++;
+        g_nSpeed[nIndex]++;
 
-        if (nSpeed[nIndex]) {
+        if (g_nSpeed[nIndex]) {
             quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
 
-            nCurrent = nCurrent / nSpeed[nIndex];
-            pLabel->setText(QString::number(nCurrent));
+            double dCurrent = (double)nCurrent / g_nSpeed[nIndex];
+            pLabel->setText(QString::number(dCurrent));
         }
 
-        sStatus += getPdStruct()->_pdRecord[nIndex].sStatus;
+        QString _sStatus = getPdStruct()->_pdRecord[nIndex].sStatus;
+
+        sStatus += _sStatus;
 
         pProgressBar->setFormat(sStatus);
     } else {
