@@ -73,13 +73,11 @@ DialogDataInspector::~DialogDataInspector()
 
 void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
 {
-    //    qDebug("void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)");
     showData(nOffset, nSize);
 }
 
 void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)
 {
-    //    qDebug("void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)");
     showData(nOffset, nSize);
 }
 
