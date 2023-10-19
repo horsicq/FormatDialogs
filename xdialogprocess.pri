@@ -20,3 +20,6 @@ FORMS += \
     include($$PWD/../XShortcuts/xshortcuts.pri)
 }
 
+DISTFILES += \
+    $$PWD/xdialogprocess.cmake
+
