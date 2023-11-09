@@ -94,7 +94,7 @@ void DialogGoToAddress::on_pushButtonCancel_clicked()
 
 void DialogGoToAddress::on_pushButtonOK_clicked()
 {
-    XADDR nValue = (quint64)ui->lineEditValue->getValue();
+    XADDR nValue = (quint64)ui->lineEditValue->getIntValue();
 
     bool bValid = false;
 
@@ -122,15 +122,12 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
 void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
 {
-    XADDR nValue = ui->lineEditValue->getValue();
-
     if (bChecked) {
-        ui->lineEditValue->setValue(nValue, XLineEditHEX::_MODE_HEX);
+        ui->lineEditValue->setMode(XLineEditHEX::_MODE_HEX);
     } else {
-        ui->lineEditValue->setValue(nValue, XLineEditHEX::_MODE_DEC);
+        ui->lineEditValue->setMode(XLineEditHEX::_MODE_DEC);
     }
-
-    if (!nValue) {
-        ui->lineEditValue->clear();
-    }
+//    if (!nValue) {
+//        ui->lineEditValue->clear();
+//    }
 }
