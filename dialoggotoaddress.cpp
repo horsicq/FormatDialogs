@@ -127,7 +127,7 @@ void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
     } else {
         ui->lineEditValue->setMode(XLineEditHEX::_MODE_DEC);
     }
-//    if (!nValue) {
-//        ui->lineEditValue->clear();
-//    }
+    //    if (!nValue) {
+    //        ui->lineEditValue->clear();
+    //    }
 }
