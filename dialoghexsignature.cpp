@@ -90,22 +90,59 @@ void DialogHexSignature::reload()
     QString sSignature;
     QString sTemp;
 
+    bool bIsSpace = ui->checkBoxSpaces->isChecked();
+    bool bIsUpper = ui->checkBoxUpper->isChecked();
+    bool bIsANSI = ui->checkBoxANSI->isChecked();
+    QString sWildcard = ui->lineEditWildcard->text();
+
+    bool bIsCurrentANSI = false;
+
     for (qint32 i = 0; i < nSize; i++) {
-        if (g_pushButton[i]->isChecked()) {
-            sTemp = ui->lineEditWildcard->text();
-            sTemp += sTemp;
-        } else {
-            sTemp = QString("%1").arg((unsigned char)(g_baData.data()[i]), 2, 16, QChar('0'));
+        bool bIsWildCard = g_pushButton[i]->isChecked();
+
+        quint8 cSymbol = g_baData.data()[i];
+
+        bool bIsSymbolAnsi = false;
+
+        if (bIsANSI) {
+            bIsSymbolAnsi = (cSymbol >= 20) && (cSymbol < 0x7F) && (cSymbol != 0x27) && (cSymbol != 0x22) && (!bIsWildCard);
         }
 
-        if (ui->checkBoxUpper->isChecked()) {
-            sTemp = sTemp.toUpper();
+        if (bIsANSI) {
+            if (bIsSymbolAnsi != bIsCurrentANSI) {
+                sSignature += "'";
+            }
+        }
+
+        if (bIsWildCard) {
+            sTemp = sWildcard + sWildcard;
+        } else {
+            if (bIsSymbolAnsi) {
+                sTemp = cSymbol;
+            } else {
+                sTemp = QString("%1").arg(cSymbol, 2, 16, QChar('0'));
+                if (bIsUpper) {
+                    sTemp = sTemp.toUpper();
+                }
+            }
         }
 
         sSignature += sTemp;
 
-        if (ui->checkBoxSpaces->isChecked()) {
-            sSignature += " ";
+        if (bIsANSI) {
+            if ((i == (nSize - 1)) && bIsSymbolAnsi) {
+                sSignature += "'";
+            }
+        }
+
+        if (bIsANSI) {
+            bIsCurrentANSI = bIsSymbolAnsi;
+        }
+
+        if ((bIsSpace) && (i != (nSize - 1))) {
+            if (!bIsSymbolAnsi) {
+                sSignature += " ";
+            }
         }
     }
 
@@ -150,4 +187,11 @@ void DialogHexSignature::on_pushButtonScan_clicked()
     dialogSearchSignatures.setData(g_pDevice, XBinary::FT_BINARY, options, true);
 
     dialogSearchSignatures.exec();
+}
+
+void DialogHexSignature::on_checkBoxANSI_toggled(bool bChecked)
+{
+    Q_UNUSED(bChecked)
+
+    reload();
 }

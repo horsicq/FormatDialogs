@@ -52,6 +52,7 @@ private slots:
     void on_checkBoxUpper_toggled(bool bChecked);
     void on_lineEditWildcard_textChanged(const QString &sText);
     void on_pushButtonScan_clicked();
+    void on_checkBoxANSI_toggled(bool bChecked);
 
 private:
     Ui::DialogHexSignature *ui;
