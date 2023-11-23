@@ -38,6 +38,8 @@ class DialogShowData : public QDialog {
         DTYPE_CPP,
         DTYPE_BASE64,
         // TODO more
+        // TODO ASM
+        // TODO PASCAL
     };
 
 public:
