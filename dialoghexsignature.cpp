@@ -118,7 +118,7 @@ void DialogHexSignature::reload()
             sTemp = sWildcard + sWildcard;
         } else {
             if (bIsSymbolAnsi) {
-                sTemp = cSymbol;
+                sTemp = (char)cSymbol;
             } else {
                 sTemp = QString("%1").arg(cSymbol, 2, 16, QChar('0'));
                 if (bIsUpper) {
