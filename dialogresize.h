@@ -33,8 +33,8 @@ class DialogResize : public XShortcutsDialog {
 
 public:
     struct DATA {
-        quint64 nOldSize;
-        quint64 nNewSize;
+        qint64 nOldSize;
+        qint64 nNewSize;
     };
 
     DialogResize(QWidget *pParent, DATA *pData);

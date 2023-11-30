@@ -35,8 +35,8 @@ public:
     struct DATA {
         quint64 nDeviceOffset;
         quint64 nDeviceSize;
-        quint64 nOldSize;
-        quint64 nNewSize;
+        qint64 nOldSize;
+        qint64 nNewSize;
     };
 
     DialogRemove(QWidget *pParent, DATA *pData);

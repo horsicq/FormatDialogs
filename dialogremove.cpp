@@ -28,7 +28,7 @@ DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
 
     g_pData = pData;
 
-    ui->lineEditValue->setValue(pData->nNewSize);
+    ui->lineEditValue->setValue_uint64(pData->nNewSize);
 }
 
 DialogRemove::~DialogRemove()

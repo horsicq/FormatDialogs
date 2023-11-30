@@ -74,6 +74,23 @@ void DialogTextInfo::setFileName(const QString &sFileName)
     }
 }
 
+void DialogTextInfo::setStringList(const QList<QString> listString)
+{
+    qint32 nNumberOfStrings = listString.count();
+
+    QString sText;
+
+    for (qint32 i = 0; i < nNumberOfStrings; i++) {
+        sText += listString.at(i);
+
+        if (i != (nNumberOfStrings - 1)) {
+            sText += "\r\n";
+        }
+    }
+
+    setText(sText);
+}
+
 void DialogTextInfo::setDevice(QIODevice *pDevice)
 {
     Q_UNUSED(pDevice)

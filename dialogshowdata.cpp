@@ -32,6 +32,8 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
 
     _addItem(QString("C"), DTYPE_C);
     _addItem(QString("C++"), DTYPE_CPP);
+    _addItem(QString("Java"), DTYPE_JAVA);
+    _addItem(QString("VB.NET"), DTYPE_VBNET);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->listWidgetType->setCurrentRow(0);
@@ -80,9 +82,15 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
     } else if (dtype == DTYPE_CPP) {
         sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
+    } else if (dtype == DTYPE_JAVA) {
+        sResult += QString("final byte[] data = {\n").arg(g_nSize);
+    } else if (dtype == DTYPE_VBNET) {
+        sResult += QString("new Integer() {\n").arg(g_nSize);
     }
 
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP)) {
+    //new Integer() { &H01, &H3A, &H72}
+
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
@@ -90,7 +98,11 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 sResult += "    ";
             }
 
-            sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i));
+            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_JAVA)) {
+                sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+            } else if (dtype == DTYPE_VBNET) {
+                sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+            }
 
             if (i != (g_nSize - 1)) {
                 sResult += ",";
@@ -110,7 +122,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult = baArray.toBase64();
     }
 
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP)) {
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
         sResult += "};";
     }
 
