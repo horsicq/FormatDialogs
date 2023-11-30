@@ -33,7 +33,9 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("C"), DTYPE_C);
     _addItem(QString("C++"), DTYPE_CPP);
     _addItem(QString("Java"), DTYPE_JAVA);
+    _addItem(QString("C#"), DTYPE_CSHARP);
     _addItem(QString("VB.NET"), DTYPE_VBNET);
+    _addItem(QString("Rust"), DTYPE_RUST);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->listWidgetType->setCurrentRow(0);
@@ -83,14 +85,16 @@ QString DialogShowData::getDataString(DTYPE dtype)
     } else if (dtype == DTYPE_CPP) {
         sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
     } else if (dtype == DTYPE_JAVA) {
-        sResult += QString("final byte[] data = {\n").arg(g_nSize);
+        sResult += QString("final byte[] data = {\n");
+    } else if (dtype == DTYPE_CSHARP) {
+        sResult += QString("const byte[] data = {\n");
     } else if (dtype == DTYPE_VBNET) {
-        sResult += QString("new Integer() {\n").arg(g_nSize);
+        sResult += QString("Dim data As Byte(%1) {\n").arg(g_nSize);
+    } else if (dtype == DTYPE_RUST) {
+        sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 16);
     }
 
-    //new Integer() { &H01, &H3A, &H72}
-
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
@@ -98,7 +102,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 sResult += "    ";
             }
 
-            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_JAVA)) {
+            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
@@ -116,14 +120,14 @@ QString DialogShowData::getDataString(DTYPE dtype)
         }
     } else if (dtype == DTYPE_BASE64) {
         XBinary binary(g_pDevice);
-
         QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
-
         sResult = baArray.toBase64();
     }
 
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
         sResult += "};";
+    } else if (dtype == DTYPE_RUST) {
+        sResult += "];";
     }
 
     // sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
