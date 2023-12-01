@@ -33,9 +33,12 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("C"), DTYPE_C);
     _addItem(QString("C++"), DTYPE_CPP);
     _addItem(QString("Java"), DTYPE_JAVA);
+    _addItem(QString("JavaScript"), DTYPE_JAVASCRIPT);
+    _addItem(QString("Python"), DTYPE_PYTHON);
     _addItem(QString("C#"), DTYPE_CSHARP);
     _addItem(QString("VB.NET"), DTYPE_VBNET);
     _addItem(QString("Rust"), DTYPE_RUST);
+    _addItem(QString("Pascal"), DTYPE_PASCAL);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->listWidgetType->setCurrentRow(0);
@@ -86,15 +89,21 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
     } else if (dtype == DTYPE_JAVA) {
         sResult += QString("final byte[] data = {\n");
+    } else if (dtype == DTYPE_JAVASCRIPT) {
+        sResult += QString("const data = new Uint8Array([\n");
+    } else if (dtype == DTYPE_PYTHON) {
+        sResult += QString("data = bytes([\n");
     } else if (dtype == DTYPE_CSHARP) {
         sResult += QString("const byte[] data = {\n");
     } else if (dtype == DTYPE_VBNET) {
         sResult += QString("Dim data As Byte(%1) {\n").arg(g_nSize);
     } else if (dtype == DTYPE_RUST) {
-        sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 16);
+        sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize,0, 16);
+    } else if (dtype == DTYPE_PASCAL) {
+        sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
     }
 
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL)) {
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
@@ -102,10 +111,12 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 sResult += "    ";
             }
 
-            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST)) {
+            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+            } else if (dtype == DTYPE_PASCAL) {
+                sResult += "$" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             }
 
             if (i != (g_nSize - 1)) {
@@ -128,6 +139,12 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += "};";
     } else if (dtype == DTYPE_RUST) {
         sResult += "];";
+    } else if (dtype == DTYPE_PYTHON) {
+        sResult += "])";
+    } else if (dtype == DTYPE_JAVASCRIPT) {
+        sResult += "]);";
+    } else if (dtype == DTYPE_PASCAL) {
+        sResult += ")";
     }
 
     // sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();

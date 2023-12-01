@@ -43,7 +43,7 @@ void DialogRemove::on_pushButtonCancel_clicked()
 
 void DialogRemove::on_pushButtonOK_clicked()
 {
-    g_pData->nNewSize = ui->lineEditValue->getIntValue();
+    g_pData->nNewSize = ui->lineEditValue->_getValue().toULongLong();
 
     accept();
 }

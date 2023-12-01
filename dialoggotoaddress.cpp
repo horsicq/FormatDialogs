@@ -94,7 +94,7 @@ void DialogGoToAddress::on_pushButtonCancel_clicked()
 
 void DialogGoToAddress::on_pushButtonOK_clicked()
 {
-    XADDR nValue = (quint64)ui->lineEditValue->getIntValue();
+    XADDR nValue = (XADDR)ui->lineEditValue->_getValue().toULongLong();
 
     bool bValid = false;
 

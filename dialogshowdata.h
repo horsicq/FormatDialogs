@@ -37,9 +37,12 @@ class DialogShowData : public QDialog {
         DTYPE_C = 0,
         DTYPE_CPP,
         DTYPE_JAVA,
+        DTYPE_JAVASCRIPT,
+        DTYPE_PYTHON,
         DTYPE_CSHARP,
         DTYPE_VBNET,
         DTYPE_RUST,
+        DTYPE_PASCAL,
         DTYPE_BASE64,
         // TODO more
         // TODO ASM
