@@ -43,6 +43,7 @@ class DialogShowData : public QDialog {
         DTYPE_VBNET,
         DTYPE_RUST,
         DTYPE_PASCAL,
+        DTYPE_LUA,
         DTYPE_BASE64,
         // TODO more
         // TODO ASM

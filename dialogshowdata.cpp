@@ -39,6 +39,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("VB.NET"), DTYPE_VBNET);
     _addItem(QString("Rust"), DTYPE_RUST);
     _addItem(QString("Pascal"), DTYPE_PASCAL);
+    _addItem(QString("Lua"), DTYPE_LUA);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->listWidgetType->setCurrentRow(0);
@@ -101,10 +102,12 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 0, 16);
     } else if (dtype == DTYPE_PASCAL) {
         sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
+    } else if (dtype == DTYPE_LUA) {
+        sResult += QString("data = {\n").arg(g_nSize);
     }
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
-        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL)) {
+        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA)) {
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
@@ -113,7 +116,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
             }
 
             if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
-                (dtype == DTYPE_JAVASCRIPT)) {
+                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
@@ -147,6 +150,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += "]);";
     } else if (dtype == DTYPE_PASCAL) {
         sResult += ")";
+    } else if (dtype == DTYPE_LUA) {
+        sResult += "}";
     }
 
     // sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
