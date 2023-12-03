@@ -98,12 +98,13 @@ QString DialogShowData::getDataString(DTYPE dtype)
     } else if (dtype == DTYPE_VBNET) {
         sResult += QString("Dim data As Byte(%1) {\n").arg(g_nSize);
     } else if (dtype == DTYPE_RUST) {
-        sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize,0, 16);
+        sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 0, 16);
     } else if (dtype == DTYPE_PASCAL) {
         sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
     }
 
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL)) {
+    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
+        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL)) {
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
@@ -111,7 +112,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 sResult += "    ";
             }
 
-            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT)) {
+            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
+                (dtype == DTYPE_JAVASCRIPT)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
