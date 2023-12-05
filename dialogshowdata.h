@@ -61,6 +61,7 @@ private slots:
     void on_listWidgetType_currentRowChanged(int nCurrentRow);
     QString getDataString(DTYPE dtype);
     void _addItem(const QString &sName, DTYPE dtype);
+    void on_spinBoxElementsProLine_valueChanged(int nArg);
 
 private:
     Ui::DialogShowData *ui;

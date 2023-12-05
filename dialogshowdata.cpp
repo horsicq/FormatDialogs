@@ -42,6 +42,10 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("Lua"), DTYPE_LUA);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
+    ui->spinBoxElementsProLine->blockSignals(true);
+    ui->spinBoxElementsProLine->setValue(16);
+    ui->spinBoxElementsProLine->blockSignals(false);
+
     ui->listWidgetType->setCurrentRow(0);
 }
 
@@ -59,6 +63,12 @@ void DialogShowData::reload()
 {
     if (ui->listWidgetType->currentRow() != -1) {
         DTYPE dtype = (DTYPE)(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
+
+        if (dtype == DTYPE_BASE64) {
+            ui->spinBoxElementsProLine->setEnabled(false);
+        } else {
+            ui->spinBoxElementsProLine->setEnabled(true);
+        }
 
         QString sData = getDataString(dtype);
 
@@ -84,34 +94,37 @@ QString DialogShowData::getDataString(DTYPE dtype)
     // TODO
     QString sResult;
 
-    if (dtype == DTYPE_C) {
-        sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
-    } else if (dtype == DTYPE_CPP) {
-        sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
-    } else if (dtype == DTYPE_JAVA) {
-        sResult += QString("final byte[] data = {\n");
-    } else if (dtype == DTYPE_JAVASCRIPT) {
-        sResult += QString("const data = new Uint8Array([\n");
-    } else if (dtype == DTYPE_PYTHON) {
-        sResult += QString("data = bytes([\n");
-    } else if (dtype == DTYPE_CSHARP) {
-        sResult += QString("const byte[] data = {\n");
-    } else if (dtype == DTYPE_VBNET) {
-        sResult += QString("Dim data As Byte(%1) {\n").arg(g_nSize);
-    } else if (dtype == DTYPE_RUST) {
-        sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 0, 16);
-    } else if (dtype == DTYPE_PASCAL) {
-        sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
-    } else if (dtype == DTYPE_LUA) {
-        sResult += QString("data = {\n").arg(g_nSize);
-    }
-
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
         (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA)) {
+
+        if (dtype == DTYPE_C) {
+            sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
+        } else if (dtype == DTYPE_CPP) {
+            sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
+        } else if (dtype == DTYPE_JAVA) {
+            sResult += QString("final byte[] data = {\n");
+        } else if (dtype == DTYPE_JAVASCRIPT) {
+            sResult += QString("const data = new Uint8Array([\n");
+        } else if (dtype == DTYPE_PYTHON) {
+            sResult += QString("data = bytes([\n");
+        } else if (dtype == DTYPE_CSHARP) {
+            sResult += QString("const byte[] data = {\n");
+        } else if (dtype == DTYPE_VBNET) {
+            sResult += QString("Dim data As Byte(%1) {\n").arg(g_nSize);
+        } else if (dtype == DTYPE_RUST) {
+            sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 0, 16);
+        } else if (dtype == DTYPE_PASCAL) {
+            sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
+        } else if (dtype == DTYPE_LUA) {
+            sResult += QString("data = {\n").arg(g_nSize);
+        }
+
+        qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
+
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
-            if ((i % 8) == 0) {
+            if ((i % nElementsProLine) == 0) {
                 sResult += "    ";
             }
 
@@ -128,7 +141,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 sResult += ",";
             }
 
-            if (((i + 1) % 8 == 0) || (i == (g_nSize - 1))) {
+            if (((i + 1) % nElementsProLine == 0) || (i == (g_nSize - 1))) {
                 sResult += "\n";
             } else {
                 sResult += " ";
@@ -166,4 +179,11 @@ void DialogShowData::_addItem(const QString &sName, DTYPE dtype)
     pItem->setData(Qt::UserRole, dtype);
 
     ui->listWidgetType->addItem(pItem);
+}
+
+void DialogShowData::on_spinBoxElementsProLine_valueChanged(int nArg)
+{
+    Q_UNUSED(nArg)
+
+    reload();
 }
