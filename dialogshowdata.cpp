@@ -40,6 +40,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("Rust"), DTYPE_RUST);
     _addItem(QString("Pascal"), DTYPE_PASCAL);
     _addItem(QString("Lua"), DTYPE_LUA);
+    _addItem(QString("Go"), DTYPE_GO);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->spinBoxElementsProLine->blockSignals(true);
@@ -95,7 +96,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
     QString sResult;
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
-        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA)) {
+        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO)) {
 
         if (dtype == DTYPE_C) {
             sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
@@ -117,6 +118,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
             sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
         } else if (dtype == DTYPE_LUA) {
             sResult += QString("data = {\n").arg(g_nSize);
+        } else if (dtype == DTYPE_GO) {
+            sResult += QString("data := [...]byte {\n").arg(g_nSize);
         }
 
         qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
@@ -129,7 +132,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
             }
 
             if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
-                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA)) {
+                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
@@ -163,7 +166,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += "]);";
     } else if (dtype == DTYPE_PASCAL) {
         sResult += ")";
-    } else if (dtype == DTYPE_LUA) {
+    } else if ((dtype == DTYPE_LUA) || (dtype == DTYPE_GO)) {
         sResult += "}";
     }
 

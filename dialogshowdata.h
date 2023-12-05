@@ -44,10 +44,10 @@ class DialogShowData : public QDialog {
         DTYPE_RUST,
         DTYPE_PASCAL,
         DTYPE_LUA,
+        DTYPE_GO,
         DTYPE_BASE64,
         // TODO more
         // TODO ASM
-        // TODO PASCAL
     };
 
 public:
