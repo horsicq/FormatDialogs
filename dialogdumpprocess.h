@@ -21,14 +21,8 @@
 #ifndef DIALOGDUMPPROCESS_H
 #define DIALOGDUMPPROCESS_H
 
-#include <QDialog>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QThread>
-
 #include "dumpprocess.h"
 #include "xdialogprocess.h"
-#include "xoptions.h"
 
 class DialogDumpProcess : public XDialogProcess {
     Q_OBJECT
@@ -41,9 +35,6 @@ public:
     void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
-
-signals:
-    void errorMessage(const QString &sText);  // TODO mb remove
 
 private:
     DumpProcess *g_pDump;
