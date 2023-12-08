@@ -46,6 +46,7 @@ class DialogShowData : public QDialog {
         DTYPE_LUA,
         DTYPE_GO,
         DTYPE_CRYSTAL,
+        DTYPE_SWIFT,
         DTYPE_BASE64,
         // TODO more
         // TODO ASM

@@ -43,7 +43,7 @@ void DialogResize::on_pushButtonCancel_clicked()
 
 void DialogResize::on_pushButtonOK_clicked()
 {
-    g_pData->nNewSize = ui->lineEditValue->_getValue().toULongLong();
+    g_pData->nNewSize = ui->lineEditValue->getValue_uint64();
 
     accept();
 }

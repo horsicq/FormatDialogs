@@ -42,6 +42,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("Lua"), DTYPE_LUA);
     _addItem(QString("Go"), DTYPE_GO);
     _addItem(QString("Crystal"), DTYPE_CRYSTAL);
+    _addItem(QString("Swift"), DTYPE_SWIFT);
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->spinBoxElementsProLine->blockSignals(true);
@@ -97,7 +98,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
     QString sResult;
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
-        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL)) {
+        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) ||
+        (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT)) {
 
         if (dtype == DTYPE_C) {
             sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
@@ -123,6 +125,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
             sResult += QString("data := [...]byte {\n");
         } else if (dtype == DTYPE_CRYSTAL) {
             sResult += QString("data = [\n");
+        } else if (dtype == DTYPE_SWIFT) {
+            sResult += QString("let data: [Uint8] = [\n");
         }
 
         qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
@@ -135,7 +139,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
             }
 
             if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
-                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL)) {
+                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
@@ -173,6 +177,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += "}";
     } else if (dtype == DTYPE_CRYSTAL) {
         sResult += "] of UInt8";
+    } else if (dtype == DTYPE_SWIFT) {
+        sResult += "]";
     }
 
     // sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
