@@ -36,6 +36,7 @@ class DialogShowData : public QDialog {
     enum DTYPE {
         DTYPE_C = 0,
         DTYPE_CPP,
+        DTYPE_MASM,
         DTYPE_JAVA,
         DTYPE_JAVASCRIPT,
         DTYPE_PYTHON,
