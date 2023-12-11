@@ -33,6 +33,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("C"), DTYPE_C);
     _addItem(QString("C++"), DTYPE_CPP);
     _addItem(QString("MASM"), DTYPE_MASM);
+    _addItem(QString("FASM"), DTYPE_FASM);
     _addItem(QString("Java"), DTYPE_JAVA);
     _addItem(QString("JavaScript"), DTYPE_JAVASCRIPT);
     _addItem(QString("Python"), DTYPE_PYTHON);
@@ -100,7 +101,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
         (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) ||
-        (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM)) {
+        (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
         if (dtype == DTYPE_C) {
             sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
         } else if (dtype == DTYPE_CPP) {
@@ -129,6 +130,8 @@ QString DialogShowData::getDataString(DTYPE dtype)
             sResult += QString("let data: [Uint8] = [\n");
         } else if (dtype == DTYPE_MASM) {
             sResult += QString("data: \n");
+        } else if (dtype == DTYPE_FASM) {
+            sResult += QString("data: \n");
         }
 
         qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
@@ -141,11 +144,13 @@ QString DialogShowData::getDataString(DTYPE dtype)
 
                 if (dtype == DTYPE_MASM) {
                     sResult += "DB ";
+                } else if (dtype == DTYPE_FASM) {
+                    sResult += "db ";
                 }
             }
 
             if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
-                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT)) {
+                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) || (dtype == DTYPE_FASM)) {
                 sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
                 sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
