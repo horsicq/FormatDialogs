@@ -119,10 +119,10 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
 
     XBinary binary(g_pDevice);
 
-    if (!g_lineEdit[DATAINS_BYTE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_BYTE]->setValue_uint8(binary.read_uint8(nOffset));
-    if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset));
-    if (!g_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_DWORD]->setValue_uint32(binary.read_uint32(nOffset));
-    if (!g_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_QWORD]->setValue_uint64(binary.read_uint64(nOffset));
+    if (!g_lineEdit[DATAINS_BYTE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_BYTE]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_HEX);
+    if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset), XLineEditHEX::_MODE_HEX);
+    if (!g_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_DWORD]->setValue_uint32(binary.read_uint32(nOffset), XLineEditHEX::_MODE_HEX);
+    if (!g_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_QWORD]->setValue_uint64(binary.read_uint64(nOffset), XLineEditHEX::_MODE_HEX);
     if (!g_lineEdit[DATAINS_UINT8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT8]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_DEC);
     if (!g_lineEdit[DATAINS_INT8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT8]->setValue_int8(binary.read_int8(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
     if (!g_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT16]->setValue_uint16(binary.read_uint16(nOffset), XLineEditHEX::_MODE_DEC);
