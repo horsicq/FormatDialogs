@@ -46,7 +46,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 }
 
 XDialogProcess::~XDialogProcess()
-{
+{    
     delete g_pScanTimer;
 
     stop();
@@ -178,6 +178,10 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
         if (isSuccess()) {
             break;
         }
+    }
+
+    if (g_pdStruct.sInfoString != "") {
+        QMessageBox::information(XOptions::getMainWidget(this), tr("Info"), g_pdStruct.sInfoString);
     }
 
     if (!isSuccess()) {
