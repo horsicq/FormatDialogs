@@ -46,7 +46,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 }
 
 XDialogProcess::~XDialogProcess()
-{    
+{
     delete g_pScanTimer;
 
     stop();
