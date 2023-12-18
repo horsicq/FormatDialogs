@@ -149,7 +149,7 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
             quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
 
             double dCurrent = (double)nCurrent / g_nSpeed[nIndex];
-            pLabel->setText(QString::number(dCurrent));
+            pLabel->setText(QString::number(dCurrent, 'f', 2));
         }
 
         QString _sStatus = getPdStruct()->_pdRecord[nIndex].sStatus;
