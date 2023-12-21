@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>155</height>
+    <width>339</width>
+    <height>203</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,34 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBoxValue">
+    <widget class="QGroupBox" name="groupBoxOffset">
+     <property name="title">
+      <string>Offset</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
+      <item>
+       <widget class="XLineEditHEX" name="lineEditOffset"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxSize">
      <property name="title">
       <string>Size</string>
      </property>
@@ -42,7 +69,7 @@
        <number>1</number>
       </property>
       <item>
-       <widget class="XLineEditHEX" name="lineEditValue"/>
+       <widget class="XLineEditHEX" name="lineEditSize"/>
       </item>
      </layout>
     </widget>

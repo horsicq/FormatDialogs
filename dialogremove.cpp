@@ -28,7 +28,9 @@ DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
 
     g_pData = pData;
 
-    ui->lineEditValue->setValue_uint64(pData->nNewSize);
+    ui->checkBoxHex->setChecked(true);
+    ui->lineEditOffset->setValue_uint64(pData->nOffset);
+    ui->lineEditSize->setValue_int64(pData->nSize);
 }
 
 DialogRemove::~DialogRemove()
@@ -43,7 +45,9 @@ void DialogRemove::on_pushButtonCancel_clicked()
 
 void DialogRemove::on_pushButtonOK_clicked()
 {
-    g_pData->nNewSize = ui->lineEditValue->getValue_uint64();
+    // TODO Check offset and size
+    g_pData->nOffset = ui->lineEditOffset->getValue_uint64();
+    g_pData->nSize = ui->lineEditSize->getValue_int64();
 
     accept();
 }
@@ -51,8 +55,10 @@ void DialogRemove::on_pushButtonOK_clicked()
 void DialogRemove::on_checkBoxHex_toggled(bool bChecked)
 {
     if (bChecked) {
-        ui->lineEditValue->setMode(XLineEditHEX::_MODE_HEX);
+        ui->lineEditOffset->setMode(XLineEditHEX::_MODE_HEX);
+        ui->lineEditSize->setMode(XLineEditHEX::_MODE_HEX);
     } else {
-        ui->lineEditValue->setMode(XLineEditHEX::_MODE_DEC);
+        ui->lineEditOffset->setMode(XLineEditHEX::_MODE_DEC);
+        ui->lineEditSize->setMode(XLineEditHEX::_MODE_DEC);
     }
 }

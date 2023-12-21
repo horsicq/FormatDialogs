@@ -33,10 +33,9 @@ class DialogRemove : public XShortcutsDialog {
 
 public:
     struct DATA {
-        quint64 nDeviceOffset;
-        quint64 nDeviceSize;
-        qint64 nOldSize;
-        qint64 nNewSize;
+        quint64 nOffset;
+        qint64 nSize;
+        qint64 nMaxSize;
     };
 
     DialogRemove(QWidget *pParent, DATA *pData);
