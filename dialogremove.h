@@ -33,7 +33,7 @@ class DialogRemove : public XShortcutsDialog {
 
 public:
     struct DATA {
-        quint64 nOffset;
+        qint64 nOffset;
         qint64 nSize;
         qint64 nMaxSize;
     };
