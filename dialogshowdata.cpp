@@ -100,9 +100,9 @@ QString DialogShowData::getDataString(DTYPE dtype)
     // TODO
     QString sResult;
 
-    if ((dtype == DTYPE_HEX) || (dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) || (dtype == DTYPE_RUST) ||
-        (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) ||
-        (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
+    if ((dtype == DTYPE_HEX) || (dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) ||
+        (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) ||
+        (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
         if (dtype == DTYPE_C) {
             sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
         } else if (dtype == DTYPE_CPP) {
