@@ -49,6 +49,7 @@ public:
     void setDevice(QIODevice *pDevice);
 #ifdef USE_ARCHIVE
     void setArchive(const QString &sFileName, const QString &sRecordFileName);
+    void setArchive(QIODevice *pDevice, const QString &sRecordFileName);
 #endif
 private slots:
     void on_pushButtonClose_clicked();

@@ -104,6 +104,14 @@ void DialogTextInfo::setArchive(const QString &sFileName, const QString &sRecord
     setByteArray(baData);
 }
 #endif
+#ifdef USE_ARCHIVE
+void DialogTextInfo::setArchive(QIODevice *pDevice, const QString &sRecordFileName)
+{
+    QByteArray baData = XArchives::decompress(pDevice, sRecordFileName);
+
+    setByteArray(baData);
+}
+#endif
 void DialogTextInfo::on_pushButtonClose_clicked()
 {
     this->close();
