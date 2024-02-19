@@ -25,11 +25,20 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
     g_pPdStruct = nullptr;
 }
 
-void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_pDevice = pDevice;
     this->g_listRecords = listRecords;
     this->g_dumpType = dumpType;
+    this->g_sJsonFileName = sJsonFileName;
+    this->g_pPdStruct = pPdStruct;
+}
+
+void DumpProcess::setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
+{
+    this->g_pDevice = pDevice;
+    this->g_dumpType = dumpType;
+    this->g_sJsonFileName = sJsonFileName;
     this->g_pPdStruct = pPdStruct;
 }
 
@@ -38,24 +47,79 @@ void DumpProcess::process()
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    XBinary binary(g_pDevice);
+    if (g_dumpType == DT_DUMP_OFFSET) {
+        XBinary binary(g_pDevice);
 
-    connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
+        connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
 
-    qint32 nNumberOfRecords = g_listRecords.count();
+        qint32 nNumberOfRecords = g_listRecords.count();
 
-    qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
-    XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
+        qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
+        XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
 
-    for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
-        if (g_dumpType == DT_OFFSET) {
-            binary.dumpToFile(g_listRecords.at(i).sFileName, g_listRecords.at(i).nOffset, g_listRecords.at(i).nSize, g_pPdStruct);
+        QJsonArray jsArray;
+
+        for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
+            QString _sFileName = g_listRecords.at(i).sFileName;
+            qint64 _nOffset = g_listRecords.at(i).nOffset;
+            qint64 _nSize = g_listRecords.at(i).nSize;
+
+            binary.dumpToFile(_sFileName, _nOffset, _nSize, g_pPdStruct);
+
+            QJsonObject jsObject;
+            jsObject.insert("offset", _nOffset);
+            jsObject.insert("size", _nSize);
+            jsObject.insert("filename", _sFileName);
+
+            jsArray.append(jsObject);
+
+            XBinary::setPdStructCurrentIncrement(g_pPdStruct, _nFreeIndex);
         }
 
-        XBinary::setPdStructCurrentIncrement(g_pPdStruct, _nFreeIndex);
-    }
+        QJsonDocument saveFormat(jsArray);
 
-    XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+        XBinary::writeToFile(g_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented));
+
+        XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+    } else if (g_dumpType == DT_PATCH_OFFSET) {
+        XBinary binary(g_pDevice);
+
+        connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
+
+        QByteArray baJson = XBinary::readFile(g_sJsonFileName);
+
+        QJsonDocument jsDoc = QJsonDocument::fromJson(baJson);
+
+        if (jsDoc.isArray()) {
+            qint32 nNumberOfRecords = jsDoc.array().count();
+
+            qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
+            XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
+
+            for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
+                QJsonObject jsObject = jsDoc.array().at(i).toObject();
+
+                QString _sFileName = jsObject.value("filename").toString();
+                qint64 _nOffset = jsObject.value("offset").toVariant().toLongLong();
+                qint64 _nSize = jsObject.value("size").toVariant().toLongLong();
+
+                // TODO Check params
+
+                QString sFileMD5 = XBinary::getHash(XBinary::HASH_MD5, _sFileName, g_pPdStruct);
+                QString sOriginMD5 = binary.getHash(XBinary::HASH_MD5, _nOffset, _nSize, g_pPdStruct);
+
+                if (sFileMD5 != sOriginMD5) {
+                    if (!binary.patchFromFile(_sFileName, _nOffset, _nSize, g_pPdStruct)) {
+                        emit errorMessage(QString("%1 :").arg(tr("Cannot read file"), _sFileName));
+                    }
+                }
+
+                XBinary::setPdStructCurrentIncrement(g_pPdStruct, _nFreeIndex);
+            }
+
+            XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+        }
+    }
 
     emit completed(scanTimer.elapsed());
 }

@@ -21,6 +21,9 @@
 #ifndef DUMPPROCESS_H
 #define DUMPPROCESS_H
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "xbinary.h"
 
 class DumpProcess : public QObject {
@@ -28,8 +31,8 @@ class DumpProcess : public QObject {
 
 public:
     enum DT {
-        DT_OFFSET = 0,
-        DT_ADDRESS  // TODO Check
+        DT_DUMP_OFFSET = 0,
+        DT_PATCH_OFFSET
     };
 
     struct RECORD {
@@ -40,7 +43,8 @@ public:
 
     explicit DumpProcess(QObject *pParent = nullptr);
 
-    void setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 
 signals:
     void completed(qint64 nElapsed);
@@ -53,6 +57,7 @@ private:
     QIODevice *g_pDevice;
     QList<RECORD> g_listRecords;
     DT g_dumpType;
+    QString g_sJsonFileName;
     XBinary::PDSTRUCT *g_pPdStruct;
 };
 

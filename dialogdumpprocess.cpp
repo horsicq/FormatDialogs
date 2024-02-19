@@ -64,13 +64,15 @@ void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize
 
     listRecords.append(record);
 
-    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
+    QString sJsonFile = sFileName + ".patch.json";
+
+    g_pDump->setData(pDevice, listRecords, dumpType, sJsonFile, getPdStruct());
     g_pThread->start();
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType)
+void DialogDumpProcess::setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType, QString sJsonFileName)
 {
-    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
+    g_pDump->setData(pDevice, listRecords, dumpType, sJsonFileName, getPdStruct());
     g_pThread->start();
 }
 
@@ -80,6 +82,12 @@ void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::RECORD record, 
 
     listRecords.append(record);
 
-    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
+    g_pDump->setData(pDevice, listRecords, dumpType, record.sFileName + ".patch.json", getPdStruct());
+    g_pThread->start();
+}
+
+void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::DT dumpType, QString sJsonFileName)
+{
+    g_pDump->setData(pDevice, dumpType, sJsonFileName, getPdStruct());
     g_pThread->start();
 }
