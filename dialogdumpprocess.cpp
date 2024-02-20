@@ -34,12 +34,6 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent) : XDialogProcess(pParent)
     setWindowTitle(tr("Dump"));
 }
 
-DialogDumpProcess::DialogDumpProcess(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DumpProcess::DT dumpType)
-    : DialogDumpProcess(pParent)
-{
-    setData(pDevice, nOffset, nSize, sFileName, dumpType);
-}
-
 DialogDumpProcess::~DialogDumpProcess()
 {
     stop();

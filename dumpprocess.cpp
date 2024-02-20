@@ -102,6 +102,17 @@ void DumpProcess::process()
                 QString _sFileName = jsObject.value("filename").toString();
                 qint64 _nOffset = jsObject.value("offset").toVariant().toLongLong();
                 qint64 _nSize = jsObject.value("size").toVariant().toLongLong();
+                qint64 _nFileSize = QFileInfo(_sFileName).size();
+
+                if (( _nOffset > _nFileSize) || (_nOffset <= 0)) {
+                    emit errorMessage(tr("Invalid offset"));
+                    break;
+                }
+
+                if ((_nOffset + _nSize > _nFileSize) || (_nSize <= 0) || (_nFileSize < _nSize)) {
+                    emit errorMessage(tr("Invalid size"));
+                    break;
+                }
 
                 // TODO Check params
 
@@ -111,6 +122,7 @@ void DumpProcess::process()
                 if (sFileMD5 != sOriginMD5) {
                     if (!binary.patchFromFile(_sFileName, _nOffset, _nSize, g_pPdStruct)) {
                         emit errorMessage(QString("%1 :").arg(tr("Cannot read file"), _sFileName));
+                        break;
                     }
                 }
 
