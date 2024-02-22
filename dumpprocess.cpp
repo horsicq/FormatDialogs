@@ -23,6 +23,9 @@
 DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 {
     g_pPdStruct = nullptr;
+#ifdef USE_XPROCESS
+    g_nProcessID = 0;
+#endif
 }
 
 void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
@@ -41,13 +44,22 @@ void DumpProcess::setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName
     this->g_sJsonFileName = sJsonFileName;
     this->g_pPdStruct = pPdStruct;
 }
-
+#ifdef USE_XPROCESS
+void DumpProcess::setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
+{
+    this->g_nProcessID = nProcessID;
+    this->g_dumpType = dumpType;
+    this->g_sFileName = sFileName;
+    this->g_sJsonFileName = sJsonFileName;
+    this->g_pPdStruct = pPdStruct;
+}
+#endif
 void DumpProcess::process()
 {
     QElapsedTimer scanTimer;
     scanTimer.start();
 
-    if (g_dumpType == DT_DUMP_OFFSET) {
+    if (g_dumpType == DT_DUMP_DEVICE_OFFSET) {
         XBinary binary(g_pDevice);
 
         connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
@@ -81,7 +93,7 @@ void DumpProcess::process()
         XBinary::writeToFile(g_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented));
 
         XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
-    } else if (g_dumpType == DT_PATCH_OFFSET) {
+    } else if (g_dumpType == DT_PATCH_DEVICE_OFFSET) {
         XBinary binary(g_pDevice);
 
         connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
@@ -132,6 +144,11 @@ void DumpProcess::process()
             XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
         }
     }
+#ifdef USE_XPROCESS
+    else if (g_dumpType == DT_DUMP_PROCESS_USER_ID_RAW) {
+        // TODO
+    }
+#endif
 
     emit completed(scanTimer.elapsed());
 }
