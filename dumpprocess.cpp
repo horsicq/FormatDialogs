@@ -116,7 +116,7 @@ void DumpProcess::process()
                 qint64 _nSize = jsObject.value("size").toVariant().toLongLong();
                 qint64 _nFileSize = QFileInfo(_sFileName).size();
 
-                if (( _nOffset > _nFileSize) || (_nOffset <= 0)) {
+                if ((_nOffset > _nFileSize) || (_nOffset <= 0)) {
                     emit errorMessage(tr("Invalid offset"));
                     break;
                 }

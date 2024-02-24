@@ -36,9 +36,9 @@ public:
     enum DT {
         DT_DUMP_DEVICE_OFFSET = 0,
         DT_PATCH_DEVICE_OFFSET,
-    #ifdef USE_XPROCESS
+#ifdef USE_XPROCESS
         DT_DUMP_PROCESS_USER_ID_RAW
-    #endif
+#endif
     };
 
     struct RECORD {
