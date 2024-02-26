@@ -145,7 +145,7 @@ void DumpProcess::process()
         }
     }
 #ifdef USE_XPROCESS
-    else if (g_dumpType == DT_DUMP_PROCESS_USER_ID_RAW) {
+    else if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) {
         // TODO
     }
 #endif

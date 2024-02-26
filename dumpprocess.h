@@ -37,7 +37,9 @@ public:
         DT_DUMP_DEVICE_OFFSET = 0,
         DT_PATCH_DEVICE_OFFSET,
 #ifdef USE_XPROCESS
-        DT_DUMP_PROCESS_USER_ID_RAW
+#ifdef Q_OS_WIN
+        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP
+#endif
 #endif
     };
 
