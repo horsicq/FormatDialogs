@@ -85,3 +85,21 @@ void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::DT dumpType, QS
     g_pDump->setData(pDevice, dumpType, sJsonFileName, getPdStruct());
     g_pThread->start();
 }
+#ifdef USE_XPROCESS
+void DialogDumpProcess::setData(X_ID nProcessID, DumpProcess::DT dumpType, QString sFileName)
+{
+    g_pDump->setData(nProcessID, dumpType, sFileName, sFileName + ".dmp.json", getPdStruct());
+    g_pThread->start();
+}
+#endif
+#ifdef USE_XPROCESS
+#ifdef Q_OS_WIN
+void DialogDumpProcess::setData(X_ID nProcessID, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions)
+{
+    g_pDump->setData(nProcessID, dumpType, sFileName, sFileName + ".dmp.json", fixDumpOptions, getPdStruct());
+    g_pThread->start();
+}
+#endif
+#endif
+
+

@@ -38,7 +38,8 @@ public:
         DT_PATCH_DEVICE_OFFSET,
 #ifdef USE_XPROCESS
 #ifdef Q_OS_WIN
-        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP
+        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP,
+        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD
 #endif
 #endif
     };
@@ -55,6 +56,9 @@ public:
     void setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 #ifdef USE_XPROCESS
     void setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
+#ifdef Q_OS_WIN
+    void setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, XBinary::PDSTRUCT *pPdStruct);
+#endif
 #endif
 signals:
     void completed(qint64 nElapsed);
@@ -72,6 +76,9 @@ private:
     XBinary::PDSTRUCT *g_pPdStruct;
 #ifdef USE_XPROCESS
     X_ID g_nProcessID;
+#ifdef Q_OS_WIN
+    XPE::FIXDUMP_OPTIONS g_fixDumpOptions;
+#endif
 #endif
 };
 

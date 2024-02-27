@@ -25,6 +25,9 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
     g_pPdStruct = nullptr;
 #ifdef USE_XPROCESS
     g_nProcessID = 0;
+#ifdef Q_OS_WIN
+    g_fixDumpOptions = {};
+#endif
 #endif
 }
 
@@ -53,6 +56,19 @@ void DumpProcess::setData(X_ID nProcessID, DT dumpType, QString sFileName, QStri
     this->g_sJsonFileName = sJsonFileName;
     this->g_pPdStruct = pPdStruct;
 }
+#endif
+#ifdef USE_XPROCESS
+#ifdef Q_OS_WIN
+void DumpProcess::setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, XBinary::PDSTRUCT *pPdStruct)
+{
+    this->g_nProcessID = nProcessID;
+    this->g_dumpType = dumpType;
+    this->g_sFileName = sFileName;
+    this->g_sJsonFileName = sJsonFileName;
+    this->g_fixDumpOptions = fixDumpOptions;
+    this->g_pPdStruct = pPdStruct;
+}
+#endif
 #endif
 void DumpProcess::process()
 {

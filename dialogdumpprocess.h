@@ -35,6 +35,12 @@ public:
     void setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType, QString sJsonFileName);
     void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, DumpProcess::DT dumpType, QString sJsonFileName);
+#ifdef USE_XPROCESS
+    void setData(X_ID nProcessID, DumpProcess::DT dumpType, QString sFileName);
+#ifdef Q_OS_WIN
+    void setData(X_ID nProcessID, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions);
+#endif
+#endif
 
 private:
     DumpProcess *g_pDump;

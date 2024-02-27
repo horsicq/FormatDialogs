@@ -9,9 +9,6 @@ SOURCES += \
     $$PWD/dialogdumpprocess.cpp \
     $$PWD/dumpprocess.cpp
 
-FORMS += \
-    $$PWD/dialogdumpprocess.ui
-
 !contains(XCONFIG, xdialogprocess) {
     XCONFIG += xdialogprocess
     include($$PWD/xdialogprocess.pri)
