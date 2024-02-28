@@ -161,9 +161,77 @@ void DumpProcess::process()
         }
     }
 #ifdef USE_XPROCESS
-    else if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) {
-        // TODO
+#ifdef Q_OS_WIN
+    else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD)) {
+        QString sRawDmpFile;
+
+        if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) {
+            sRawDmpFile = g_sFileName;
+        } else if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
+            sRawDmpFile = g_sFileName + ".raw.dmp"; // TODO save in tmp folder
+        }
+
+
+        XProcess::PROCESS_INFO pocessInfo =  XProcess::getInfoByProcessID(g_nProcessID);
+
+        if (pocessInfo.nImageSize) {
+            // TODO Open process
+            X_HANDLE hProcess = OpenProcess(PROCESS_VM_READ, 0, (DWORD)g_nProcessID);
+
+            if (hProcess != 0) {
+                QFile file;
+                file.setFileName(sRawDmpFile);
+
+                if (file.open(QIODevice::ReadWrite)) {
+                    file.resize(0);
+                    file.resize(pocessInfo.nImageSize);
+
+                    char buffer[0x1000];
+
+                    for (qint64 i = 0; i < pocessInfo.nImageSize; i += 0x1000) {
+                        qint64 nBufferSize = qMin(pocessInfo.nImageSize - i, (qint64)0x1000);
+
+                        SIZE_T nNumberOfBytes = 0;
+                        if(ReadProcessMemory(hProcess, (LPCVOID)(pocessInfo.nImageAddress + i), buffer, nBufferSize, &nNumberOfBytes)) {
+                            if (nNumberOfBytes == nBufferSize) {
+                                file.seek(i);
+                                file.write(buffer);
+                            }
+
+                            // TODO errors
+                        }
+                    }
+
+                    file.close();
+                }
+                // TODO write to dump
+                CloseHandle(hProcess);
+            }
+        }
+
+        if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
+            if (pocessInfo.nImageSize) {
+                QFile file;
+                file.setFileName(sRawDmpFile);
+
+                if (file.open(QIODevice::ReadOnly)) {
+                    XPE pe(&file, true, pocessInfo.nImageAddress);
+                    connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+
+                    if (pe.isValid(g_pPdStruct)) {
+                        if (!pe.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
+                            emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
+                        }
+                    }
+
+                    file.close();
+                } else {
+                    emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
+                }
+            }
+        }
     }
+#endif
 #endif
 
     emit completed(scanTimer.elapsed());
