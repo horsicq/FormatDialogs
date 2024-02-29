@@ -101,5 +101,3 @@ void DialogDumpProcess::setData(X_ID nProcessID, DumpProcess::DT dumpType, QStri
 }
 #endif
 #endif
-
-
