@@ -86,17 +86,17 @@ void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::DT dumpType, QS
     g_pThread->start();
 }
 #ifdef USE_XPROCESS
-void DialogDumpProcess::setData(X_ID nProcessID, DumpProcess::DT dumpType, QString sFileName)
+void DialogDumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName)
 {
-    g_pDump->setData(nProcessID, dumpType, sFileName, sFileName + ".dmp.json", getPdStruct());
+    g_pDump->setData(nProcessID, nAddress, nSize, dumpType, sFileName, sFileName + ".dmp.json", getPdStruct());
     g_pThread->start();
 }
 #endif
 #ifdef USE_XPROCESS
 #ifdef Q_OS_WIN
-void DialogDumpProcess::setData(X_ID nProcessID, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions)
+void DialogDumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders)
 {
-    g_pDump->setData(nProcessID, dumpType, sFileName, sFileName + ".dmp.json", fixDumpOptions, getPdStruct());
+    g_pDump->setData(nProcessID, nAddress, nSize, dumpType, sFileName, sFileName + ".dmp.json", fixDumpOptions, baHeaders, getPdStruct());
     g_pThread->start();
 }
 #endif

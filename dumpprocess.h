@@ -55,9 +55,9 @@ public:
     void setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
     void setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 #ifdef USE_XPROCESS
-    void setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 #ifdef Q_OS_WIN
-    void setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, XBinary::PDSTRUCT *pPdStruct);
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
 #endif
 #endif
 signals:
@@ -76,6 +76,9 @@ private:
     XBinary::PDSTRUCT *g_pPdStruct;
 #ifdef USE_XPROCESS
     X_ID g_nProcessID;
+    XADDR g_nAddress;
+    qint64 g_nSize;
+    QByteArray g_baHeaders;
 #ifdef Q_OS_WIN
     XPE::FIXDUMP_OPTIONS g_fixDumpOptions;
 #endif

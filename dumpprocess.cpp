@@ -23,8 +23,10 @@
 DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 {
     g_pPdStruct = nullptr;
+    g_nSize = 0;
 #ifdef USE_XPROCESS
     g_nProcessID = 0;
+    g_nAddress = 0;
 #ifdef Q_OS_WIN
     g_fixDumpOptions = {};
 #endif
@@ -48,9 +50,11 @@ void DumpProcess::setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName
     this->g_pPdStruct = pPdStruct;
 }
 #ifdef USE_XPROCESS
-void DumpProcess::setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_nProcessID = nProcessID;
+    this->g_nAddress = nAddress;
+    this->g_nSize = nSize;
     this->g_dumpType = dumpType;
     this->g_sFileName = sFileName;
     this->g_sJsonFileName = sJsonFileName;
@@ -59,14 +63,17 @@ void DumpProcess::setData(X_ID nProcessID, DT dumpType, QString sFileName, QStri
 #endif
 #ifdef USE_XPROCESS
 #ifdef Q_OS_WIN
-void DumpProcess::setData(X_ID nProcessID, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions,
+void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders,
                           XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_nProcessID = nProcessID;
+    this->g_nAddress = nAddress;
+    this->g_nSize = nSize;
     this->g_dumpType = dumpType;
     this->g_sFileName = sFileName;
     this->g_sJsonFileName = sJsonFileName;
     this->g_fixDumpOptions = fixDumpOptions;
+    this->g_baHeaders = baHeaders;
     this->g_pPdStruct = pPdStruct;
 }
 #endif
@@ -172,9 +179,7 @@ void DumpProcess::process()
             sRawDmpFile = g_sFileName + ".raw.dmp";  // TODO save in tmp folder
         }
 
-        XProcess::PROCESS_INFO pocessInfo = XProcess::getInfoByProcessID(g_nProcessID);
-
-        if (pocessInfo.nImageSize) {
+        if (g_nSize) {
             // TODO Open process
             X_HANDLE hProcess = OpenProcess(PROCESS_VM_READ, 0, (DWORD)g_nProcessID);
 
@@ -184,15 +189,15 @@ void DumpProcess::process()
 
                 if (file.open(QIODevice::ReadWrite)) {
                     file.resize(0);
-                    file.resize(pocessInfo.nImageSize);
+                    file.resize(g_nSize);
 
                     char buffer[0x1000];
 
-                    for (qint64 i = 0; i < pocessInfo.nImageSize; i += 0x1000) {
-                        qint64 nBufferSize = qMin(pocessInfo.nImageSize - i, (qint64)0x1000);
+                    for (qint64 i = 0; i < g_nSize; i += 0x1000) {
+                        qint64 nBufferSize = qMin(g_nSize - i, (qint64)0x1000);
 
                         SIZE_T nNumberOfBytes = 0;
-                        if (ReadProcessMemory(hProcess, (LPCVOID)(pocessInfo.nImageAddress + i), buffer, nBufferSize, &nNumberOfBytes)) {
+                        if (ReadProcessMemory(hProcess, (LPCVOID)(g_nAddress + i), buffer, nBufferSize, &nNumberOfBytes)) {
                             if (nNumberOfBytes == nBufferSize) {
                                 file.seek(i);
                                 file.write(buffer);
@@ -210,12 +215,12 @@ void DumpProcess::process()
         }
 
         if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
-            if (pocessInfo.nImageSize) {
+            if (g_nSize) {
                 QFile file;
                 file.setFileName(sRawDmpFile);
 
                 if (file.open(QIODevice::ReadOnly)) {
-                    XPE pe(&file, true, pocessInfo.nImageAddress);
+                    XPE pe(&file, true, g_nAddress);
                     connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
                     if (pe.isValid(g_pPdStruct)) {
