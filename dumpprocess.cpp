@@ -171,6 +171,9 @@ void DumpProcess::process()
 #ifdef USE_XPROCESS
 #ifdef Q_OS_WIN
     else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD)) {
+        qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
+        XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, 0);
+
         QString sRawDmpFile;
 
         if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) {
@@ -235,6 +238,8 @@ void DumpProcess::process()
                 }
             }
         }
+
+        XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
     }
 #endif
 #endif
