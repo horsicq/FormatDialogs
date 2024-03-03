@@ -23,9 +23,9 @@
 DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 {
     g_pPdStruct = nullptr;
-    g_nSize = 0;
 #ifdef USE_XPROCESS
     g_nProcessID = 0;
+    g_nSize = 0;
     g_nAddress = 0;
 #ifdef Q_OS_WIN
     g_fixDumpOptions = {};
