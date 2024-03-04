@@ -57,7 +57,8 @@ public:
 #ifdef USE_XPROCESS
     void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 #ifdef Q_OS_WIN
-    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions,
+                 const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
 #endif
 #endif
 signals:

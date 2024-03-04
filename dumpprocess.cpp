@@ -63,8 +63,8 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
 #endif
 #ifdef USE_XPROCESS
 #ifdef Q_OS_WIN
-void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders,
-                          XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName,
+                          const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_nProcessID = nProcessID;
     this->g_nAddress = nAddress;

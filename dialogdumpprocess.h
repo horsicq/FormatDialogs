@@ -38,7 +38,8 @@ public:
 #ifdef USE_XPROCESS
     void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName);
 #ifdef Q_OS_WIN
-    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders);
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions,
+                 const QByteArray &baHeaders);
 #endif
 #endif
 
