@@ -41,6 +41,10 @@ public:
     void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions,
                  const QByteArray &baHeaders);
 #endif
+#ifdef Q_OS_LINUX
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
+                 const QByteArray &baHeaders);
+#endif
 #endif
 
 private:

@@ -102,3 +102,13 @@ void DialogDumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, D
 }
 #endif
 #endif
+#ifdef USE_XPROCESS
+#ifdef Q_OS_LINUX
+void DialogDumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
+                                const QByteArray &baHeaders)
+{
+    g_pDump->setData(nProcessID, nAddress, nSize, dumpType, sFileName, sFileName + ".dmp.json", fixDumpOptions, baHeaders, getPdStruct());
+    g_pThread->start();
+}
+#endif
+#endif

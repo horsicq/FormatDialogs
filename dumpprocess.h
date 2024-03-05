@@ -37,10 +37,12 @@ public:
         DT_DUMP_DEVICE_OFFSET = 0,
         DT_PATCH_DEVICE_OFFSET,
 #ifdef USE_XPROCESS
-#ifdef Q_OS_WIN
-        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP,
-        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD
-#endif
+        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP,     // Windows
+        DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD,     // Windows
+        DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP,            // Linux
+        DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP,                // Linux
+        DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD,            // Linux
+        DT_DUMP_PROCESS_USER_PTRACE_REBUILD,                // Linux
 #endif
     };
 
@@ -58,6 +60,10 @@ public:
     void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 #ifdef Q_OS_WIN
     void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XPE::FIXDUMP_OPTIONS &fixDumpOptions,
+                 const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
+#endif
+#ifdef Q_OS_LINUX
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
                  const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
 #endif
 #endif
@@ -82,6 +88,9 @@ private:
     QByteArray g_baHeaders;
 #ifdef Q_OS_WIN
     XPE::FIXDUMP_OPTIONS g_fixDumpOptions;
+#endif
+#ifdef Q_OS_LINUX
+    XELF::FIXDUMP_OPTIONS g_fixDumpOptions;
 #endif
 #endif
 };

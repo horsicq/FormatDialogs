@@ -30,6 +30,9 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 #ifdef Q_OS_WIN
     g_fixDumpOptions = {};
 #endif
+#ifdef Q_OS_LINUX
+    g_fixDumpOptions = {};
+#endif
 #endif
 }
 
@@ -65,6 +68,23 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
 #ifdef Q_OS_WIN
 void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName,
                           const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct)
+{
+    this->g_nProcessID = nProcessID;
+    this->g_nAddress = nAddress;
+    this->g_nSize = nSize;
+    this->g_dumpType = dumpType;
+    this->g_sFileName = sFileName;
+    this->g_sJsonFileName = sJsonFileName;
+    this->g_fixDumpOptions = fixDumpOptions;
+    this->g_baHeaders = baHeaders;
+    this->g_pPdStruct = pPdStruct;
+}
+#endif
+#endif
+#ifdef USE_XPROCESS
+#ifdef Q_OS_LINUX
+void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName,
+                          const XELF::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_nProcessID = nProcessID;
     this->g_nAddress = nAddress;
@@ -169,60 +189,65 @@ void DumpProcess::process()
         }
     }
 #ifdef USE_XPROCESS
-#ifdef Q_OS_WIN
-    else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD)) {
+    else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) ||
+             (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP) ||
+             (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
         qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
         XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, 0);
 
         QString sRawDmpFile;
 
-        if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) {
+        if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP)) {
             sRawDmpFile = g_sFileName;
-        } else if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
+        } else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
             sRawDmpFile = g_sFileName + ".raw.dmp";  // TODO save in tmp folder
         }
 
         if (g_nSize) {
-            // TODO Open process
-            X_HANDLE hProcess = OpenProcess(PROCESS_VM_READ, 0, (DWORD)g_nProcessID);
+            if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD)) {
+#ifdef Q_OS_WIN
+                X_HANDLE hProcess = OpenProcess(PROCESS_VM_READ, 0, (DWORD)g_nProcessID);
 
-            if (hProcess != 0) {
-                QFile file;
-                file.setFileName(sRawDmpFile);
+                if (hProcess != 0) {
+                    QFile file;
+                    file.setFileName(sRawDmpFile);
 
-                if (file.open(QIODevice::ReadWrite)) {
-                    file.resize(0);
-                    file.resize(g_nSize);
+                    if (file.open(QIODevice::ReadWrite)) {
+                        file.resize(0);
+                        file.resize(g_nSize);
 
-                    char buffer[0x1000];
+                        char buffer[0x1000];
 
-                    for (qint64 i = 0; i < g_nSize; i += 0x1000) {
-                        qint64 nBufferSize = qMin(g_nSize - i, (qint64)0x1000);
+                        for (qint64 i = 0; i < g_nSize; i += 0x1000) {
+                            qint64 nBufferSize = qMin(g_nSize - i, (qint64)0x1000);
 
-                        SIZE_T nNumberOfBytes = 0;
-                        if (ReadProcessMemory(hProcess, (LPCVOID)(g_nAddress + i), buffer, nBufferSize, &nNumberOfBytes)) {
-                            if (nNumberOfBytes == nBufferSize) {
-                                file.seek(i);
-                                file.write(buffer);
+                            SIZE_T nNumberOfBytes = 0;
+                            if (ReadProcessMemory(hProcess, (LPCVOID)(g_nAddress + i), buffer, nBufferSize, &nNumberOfBytes)) {
+                                if (nNumberOfBytes == nBufferSize) {
+                                    file.seek(i);
+                                    file.write(buffer);
+                                }
+
+                                // TODO errors
                             }
-
-                            // TODO errors
                         }
-                    }
 
-                    file.close();
+                        file.close();
+                    }
+                    // TODO write to dump
+                    CloseHandle(hProcess);
                 }
-                // TODO write to dump
-                CloseHandle(hProcess);
+#endif
             }
         }
 
-        if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
-            if (g_nSize) {
-                QFile file;
-                file.setFileName(sRawDmpFile);
+        if (g_nSize) {
+            QFile file;
+            file.setFileName(sRawDmpFile);
 
-                if (file.open(QIODevice::ReadOnly)) {
+            if (file.open(QIODevice::ReadOnly)) {
+                if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
+#ifdef Q_OS_WIN
                     XPE pe(&file, true, g_nAddress);
                     connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
@@ -231,17 +256,17 @@ void DumpProcess::process()
                             emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
                         }
                     }
-
-                    file.close();
-                } else {
-                    emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
+#endif
                 }
+
+                file.close();
+            } else {
+                emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
             }
         }
 
         XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
     }
-#endif
 #endif
 
     emit completed(scanTimer.elapsed());
