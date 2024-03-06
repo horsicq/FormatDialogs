@@ -225,7 +225,7 @@ void DumpProcess::process()
                             if (ReadProcessMemory(hProcess, (LPCVOID)(g_nAddress + i), buffer, nBufferSize, &nNumberOfBytes)) {
                                 if (nNumberOfBytes == nBufferSize) {
                                     file.seek(i);
-                                    file.write(buffer);
+                                    file.write(buffer, nBufferSize);
                                 }
 
                                 // TODO errors
@@ -238,32 +238,120 @@ void DumpProcess::process()
                     CloseHandle(hProcess);
                 }
 #endif
+            } else if ((g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD)) {
+#ifdef Q_OS_LINUX
+                QString sMapMemory = QString("/proc/%1/mem").arg(g_nProcessID);
+                qint64 nFD = open64(sMapMemory.toUtf8().data(), O_RDONLY);
+
+                if (nFD != -1) {
+                    QFile file;
+                    file.setFileName(sRawDmpFile);
+
+                    if (file.open(QIODevice::ReadWrite)) {
+                        file.resize(0);
+                        file.resize(g_nSize);
+
+                        char buffer[0x1000];
+
+                        for (qint64 i = 0; i < g_nSize; i += 0x1000) {
+                            qint64 nBufferSize = qMin(g_nSize - i, (qint64)0x1000);
+
+                            if (lseek64(nFD, g_nAddress + i, SEEK_SET) != -1) {
+                                ssize_t nNumberOfBytes = pread64(nFD, buffer, nBufferSize, g_nAddress + i);
+
+                                if (nNumberOfBytes == nBufferSize) {
+                                    file.seek(i);
+                                    file.write(buffer, nBufferSize);
+                                }
+                            }
+                        }
+
+                        file.close();
+                    }
+
+                    close(nFD);
+                }
+#endif
+            } else if ((g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
+#ifdef Q_OS_LINUX
+               qint32 nResponce = ptrace(PTRACE_ATTACH, g_nProcessID, 0, 0);
+
+               if (nResponce != -1) {
+
+                   QFile file;
+                   file.setFileName(sRawDmpFile);
+
+                   if (file.open(QIODevice::ReadWrite)) {
+                       file.resize(0);
+                       file.resize(g_nSize);
+
+                       char buffer[0x1000] = {};
+                       qint32 nStep = 4;
+
+                       for (qint64 i = 0; i < g_nSize; i += nStep) {
+                           qint64 nBufferSize = qMin(g_nSize - i, (qint64)nStep);
+
+                           (*(quint32 *)buffer) = ptrace(PTRACE_PEEKDATA, g_nProcessID, g_nAddress + i);
+
+                           file.seek(i);
+                           file.write(buffer, nBufferSize);
+                       }
+
+                       file.close();
+                   }
+
+                   ptrace(PTRACE_DETACH, g_nProcessID, 0, 0);
+               }
+#endif
             }
         }
+
+        QJsonObject jsObject;
+        jsObject.insert("address", XBinary::valueToHex(g_nAddress));
+        jsObject.insert("size", XBinary::valueToHex(g_nSize));
+        jsObject.insert("pid", QString::number((quint32)g_nProcessID));
 
         if (g_nSize) {
-            QFile file;
-            file.setFileName(sRawDmpFile);
+            if (XBinary::writeToFile(sRawDmpFile, g_baHeaders) ) {
+                QFile file;
+                file.setFileName(sRawDmpFile);
 
-            if (file.open(QIODevice::ReadOnly)) {
-                if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
-#ifdef Q_OS_WIN
-                    XPE pe(&file, true, g_nAddress);
-                    connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+                if (file.open(QIODevice::ReadOnly)) {
+                    if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
+    #ifdef Q_OS_WIN
+                        XPE pe(&file, true, g_nAddress);
+                        connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-                    if (pe.isValid(g_pPdStruct)) {
-                        if (!pe.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
-                            emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
+                        if (pe.isValid(g_pPdStruct)) {
+                            if (!pe.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
+                                emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
+                            }
                         }
-                    }
-#endif
-                }
+    #endif
+    #ifdef Q_OS_LINUX
+                        XELF elf(&file, true, g_nAddress);
+                        connect(&elf, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-                file.close();
+                        if (elf.isValid(g_pPdStruct)) {
+                            if (!elf.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
+                                emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
+                            }
+                        }
+    #endif
+                    }
+
+                    file.close();
+                } else {
+                    emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
+                }
             } else {
-                emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
+                emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file"), sRawDmpFile));
             }
         }
+
+        QJsonDocument saveFormat(jsObject);
+
+        XBinary::writeToFile(g_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented));
 
         XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
     }
