@@ -197,9 +197,11 @@ void DumpProcess::process()
 
         QString sRawDmpFile;
 
-        if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP)) {
+        if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) ||
+            (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP)) {
             sRawDmpFile = g_sFileName;
-        } else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
+        } else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD) ||
+                   (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
             sRawDmpFile = g_sFileName + ".raw.dmp";  // TODO save in tmp folder
         }
 
@@ -239,7 +241,7 @@ void DumpProcess::process()
                     // TODO write to dump
                     CloseHandle(hProcess);
                 } else {
-                    bSuccess =false;
+                    bSuccess = false;
                 }
 #endif
             } else if ((g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD)) {
@@ -280,35 +282,35 @@ void DumpProcess::process()
 #endif
             } else if ((g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
 #ifdef Q_OS_LINUX
-               qint32 nResponce = ptrace(PTRACE_ATTACH, g_nProcessID, 0, 0);
+                qint32 nResponce = ptrace(PTRACE_ATTACH, g_nProcessID, 0, 0);
 
-               if (nResponce != -1) {
-                   QFile file;
-                   file.setFileName(sRawDmpFile);
+                if (nResponce != -1) {
+                    QFile file;
+                    file.setFileName(sRawDmpFile);
 
-                   if (file.open(QIODevice::ReadWrite)) {
-                       file.resize(0);
-                       file.resize(g_nSize);
+                    if (file.open(QIODevice::ReadWrite)) {
+                        file.resize(0);
+                        file.resize(g_nSize);
 
-                       char buffer[0x1000] = {};
-                       qint32 nStep = 4;
+                        char buffer[0x1000] = {};
+                        qint32 nStep = 4;
 
-                       for (qint64 i = 0; i < g_nSize; i += nStep) {
-                           qint64 nBufferSize = qMin(g_nSize - i, (qint64)nStep);
+                        for (qint64 i = 0; i < g_nSize; i += nStep) {
+                            qint64 nBufferSize = qMin(g_nSize - i, (qint64)nStep);
 
-                           (*(quint32 *)buffer) = ptrace(PTRACE_PEEKDATA, g_nProcessID, g_nAddress + i);
+                            (*(quint32 *)buffer) = ptrace(PTRACE_PEEKDATA, g_nProcessID, g_nAddress + i);
 
-                           file.seek(i);
-                           file.write(buffer, nBufferSize);
-                       }
+                            file.seek(i);
+                            file.write(buffer, nBufferSize);
+                        }
 
-                       file.close();
-                   }
+                        file.close();
+                    }
 
-                   ptrace(PTRACE_DETACH, g_nProcessID, 0, 0);
-               } else {
-                   bSuccess = false;
-               }
+                    ptrace(PTRACE_DETACH, g_nProcessID, 0, 0);
+                } else {
+                    bSuccess = false;
+                }
 #endif
             }
         }
@@ -320,41 +322,41 @@ void DumpProcess::process()
             jsObject.insert("pid", QString::number((quint32)g_nProcessID));
 
             if (g_nSize) {
-               if (XBinary::writeToFile(sRawDmpFile, g_baHeaders) ) {
-                   QFile file;
-                   file.setFileName(sRawDmpFile);
+                if (XBinary::writeToFile(sRawDmpFile, g_baHeaders)) {
+                    QFile file;
+                    file.setFileName(sRawDmpFile);
 
-                   if (file.open(QIODevice::ReadOnly)) {
-                       if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
+                    if (file.open(QIODevice::ReadOnly)) {
+                        if (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) {
 #ifdef Q_OS_WIN
-                           XPE pe(&file, true, g_nAddress);
-                           connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+                            XPE pe(&file, true, g_nAddress);
+                            connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-                           if (pe.isValid(g_pPdStruct)) {
+                            if (pe.isValid(g_pPdStruct)) {
                                 if (!pe.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
                                     emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
                                 }
-                           }
+                            }
 #endif
 #ifdef Q_OS_LINUX
-                           XELF elf(&file, true, g_nAddress);
-                           connect(&elf, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
+                            XELF elf(&file, true, g_nAddress);
+                            connect(&elf, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-                           if (elf.isValid(g_pPdStruct)) {
+                            if (elf.isValid(g_pPdStruct)) {
                                 if (!elf.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
                                     emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
                                 }
-                           }
+                            }
 #endif
-                       }
+                        }
 
-                       file.close();
-                   } else {
-                       emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
-                   }
-               } else {
-                   emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file"), sRawDmpFile));
-               }
+                        file.close();
+                    } else {
+                        emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
+                    }
+                } else {
+                    emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file"), sRawDmpFile));
+                }
             }
 
             QJsonDocument saveFormat(jsObject);
