@@ -21,9 +21,7 @@
 #ifndef DIALOGTEXTINFO_H
 #define DIALOGTEXTINFO_H
 
-#include <QDialog>
-#include <QFile>
-#include <QFileDialog>
+#include "xshortcutsdialog.h"
 #ifdef USE_ARCHIVE
 #include "xarchives.h"
 #endif
@@ -32,8 +30,7 @@ namespace Ui {
 class DialogTextInfo;
 }
 
-// TODO XShortcutsWidget
-class DialogTextInfo : public QDialog {
+class DialogTextInfo : public XShortcutsDialog {
     Q_OBJECT
 
 public:
