@@ -57,6 +57,7 @@ private slots:
     void on_pushButtonCancel_clicked();
 
 private:
+    static const qint32 N_TIMER_MS = 1000; // 1s = 1000ms
     Ui::XDialogProcess *ui;
     XBinary::PDSTRUCT g_pdStruct;
     QTimer *g_pTimer;

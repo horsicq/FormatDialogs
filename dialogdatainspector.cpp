@@ -134,7 +134,9 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
     if (!g_lineEdit[DATAINS_INT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT32]->setValue_int32(binary.read_int32(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
     if (!g_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT64]->setValue_uint64(binary.read_uint64(nOffset), XLineEditHEX::_MODE_DEC);
     if (!g_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT64]->setValue_int64(binary.read_int64(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
-    if (!g_lineEdit[DATAINS_ANSI]->isFocused() || !g_bSync) g_lineEdit[DATAINS_ANSI]->setValue_String(binary.read_ansiString(nOffset, nSize), nSize);
+    if (!g_lineEdit[DATAINS_ANSI]->isFocused() || !g_bSync) {
+        g_lineEdit[DATAINS_ANSI]->setValue_String(binary.read_ansiString(nOffset, nSize), nSize);
+    }
     // if (!g_lineEdit[DATAINS_UNICODE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UNICODE]->setValue_String(binary.read_unicodeString(nOffset, nSize/2), nSize/2);
     // if (!g_lineEdit[DATAINS_UTF8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UTF8]->setValue_String(binary.read_utf8String(nOffset, nSize), nSize);
 
