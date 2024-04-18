@@ -23,7 +23,7 @@
 
 #include "xshortcutsdialog.h"
 #include "xlineedithex.h"
-#include "xbinary.h"
+#include "xformats.h"
 
 namespace Ui {
 class DialogDataInspector;
@@ -73,6 +73,7 @@ private slots:
     void valueChangedSlot(QVariant varValue);
     void on_pushButtonClose_clicked();
     void on_checkBoxReadonly_stateChanged(int nArg);
+    void on_comboBoxEndianness_currentIndexChanged(int nIndex);
 
 private:
     Ui::DialogDataInspector *ui;

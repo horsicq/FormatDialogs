@@ -67,6 +67,8 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     ui->checkBoxReadonly->setChecked(true);
 
     setReadonly(true);
+
+    XFormats::setEndiannessComboBox(ui->comboBoxEndianness, XBinary::ENDIAN_LITTLE);
 }
 
 DialogDataInspector::~DialogDataInspector()
@@ -119,6 +121,8 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
 
     blockSignals(true);
 
+    bool bIsBigEndian = ((XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
+
     XBinary binary(g_pDevice);
 
     // TODO BE/LE
@@ -131,9 +135,9 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         ui->tableWidgetDataInspector->showRow(DATAINS_WORD);
         ui->tableWidgetDataInspector->showRow(DATAINS_UINT16);
         ui->tableWidgetDataInspector->showRow(DATAINS_INT16);
-        if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset), XLineEditHEX::_MODE_HEX);
-        if (!g_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT16]->setValue_uint16(binary.read_uint16(nOffset), XLineEditHEX::_MODE_DEC);
-        if (!g_lineEdit[DATAINS_INT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT16]->setValue_int16(binary.read_int16(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
+        if (!g_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT16]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
+        if (!g_lineEdit[DATAINS_INT16]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT16]->setValue_int16(binary.read_int16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
     } else {
         ui->tableWidgetDataInspector->hideRow(DATAINS_WORD);
         ui->tableWidgetDataInspector->hideRow(DATAINS_UINT16);
@@ -144,9 +148,9 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         ui->tableWidgetDataInspector->showRow(DATAINS_DWORD);
         ui->tableWidgetDataInspector->showRow(DATAINS_UINT32);
         ui->tableWidgetDataInspector->showRow(DATAINS_INT32);
-        if (!g_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_DWORD]->setValue_uint32(binary.read_uint32(nOffset), XLineEditHEX::_MODE_HEX);
-        if (!g_lineEdit[DATAINS_UINT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT32]->setValue_uint32(binary.read_uint32(nOffset), XLineEditHEX::_MODE_DEC);
-        if (!g_lineEdit[DATAINS_INT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT32]->setValue_int32(binary.read_int32(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!g_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_DWORD]->setValue_uint32(binary.read_uint32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
+        if (!g_lineEdit[DATAINS_UINT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT32]->setValue_uint32(binary.read_uint32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
+        if (!g_lineEdit[DATAINS_INT32]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT32]->setValue_int32(binary.read_int32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
     } else {
         ui->tableWidgetDataInspector->hideRow(DATAINS_DWORD);
         ui->tableWidgetDataInspector->hideRow(DATAINS_UINT32);
@@ -157,9 +161,9 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         ui->tableWidgetDataInspector->showRow(DATAINS_QWORD);
         ui->tableWidgetDataInspector->showRow(DATAINS_UINT64);
         ui->tableWidgetDataInspector->showRow(DATAINS_INT64);
-        if (!g_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_QWORD]->setValue_uint64(binary.read_uint64(nOffset), XLineEditHEX::_MODE_HEX);
-        if (!g_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT64]->setValue_uint64(binary.read_uint64(nOffset), XLineEditHEX::_MODE_DEC);
-        if (!g_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT64]->setValue_int64(binary.read_int64(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!g_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync) g_lineEdit[DATAINS_QWORD]->setValue_uint64(binary.read_uint64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
+        if (!g_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT64]->setValue_uint64(binary.read_uint64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
+        if (!g_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT64]->setValue_int64(binary.read_int64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
     } else {
         ui->tableWidgetDataInspector->hideRow(DATAINS_QWORD);
         ui->tableWidgetDataInspector->hideRow(DATAINS_UINT64);
@@ -178,6 +182,8 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
 
     DATAINS nType = (DATAINS)(pLineEdit->property("STYPE").toInt());
 
+    bool bIsBigEndian = ((XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
+
     g_bSync = true;
 
     bool bSuccess = true;
@@ -192,17 +198,17 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
             XBinary binary(g_pDevice);
 
             if (nType == DATAINS_BYTE) binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
-            else if (nType == DATAINS_WORD) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
-            else if (nType == DATAINS_DWORD) binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
-            else if (nType == DATAINS_QWORD) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
+            else if (nType == DATAINS_WORD) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_DWORD) binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_QWORD) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong(), bIsBigEndian);
             else if (nType == DATAINS_UINT8) binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
             else if (nType == DATAINS_INT8) binary.write_int8(g_nOffset, (qint8)varValue.toULongLong());
-            else if (nType == DATAINS_UINT16) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong());
-            else if (nType == DATAINS_INT16) binary.write_int16(g_nOffset, (qint16)varValue.toULongLong());
-            else if (nType == DATAINS_UINT32) binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong());
-            else if (nType == DATAINS_INT32) binary.write_int32(g_nOffset, (qint32)varValue.toULongLong());
-            else if (nType == DATAINS_UINT64) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong());
-            else if (nType == DATAINS_INT64) binary.write_int64(g_nOffset, (qint64)varValue.toULongLong());
+            else if (nType == DATAINS_UINT16) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_INT16) binary.write_int16(g_nOffset, (qint16)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_UINT32) binary.write_uint32(g_nOffset, (quint32)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_INT32) binary.write_int32(g_nOffset, (qint32)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_UINT64) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong(), bIsBigEndian);
+            else if (nType == DATAINS_INT64) binary.write_int64(g_nOffset, (qint64)varValue.toULongLong(), bIsBigEndian);
             else if (nType == DATAINS_ANSI) binary.write_ansiString(g_nOffset, varValue.toString(), g_nSize);
             // else if (nType == DATAINS_UNICODE) binary.write_UnicodeString(g_nOffset, g_nSize, varValue.toString());
             // else if (nType == DATAINS_UTF8) binary.write_utf8String(g_nOffset, g_nSize, varValue.toString());
@@ -227,4 +233,11 @@ void DialogDataInspector::on_checkBoxReadonly_stateChanged(int nArg)
     Q_UNUSED(nArg)
 
     setReadonly(ui->checkBoxReadonly->isChecked());
+}
+
+void DialogDataInspector::on_comboBoxEndianness_currentIndexChanged(int nIndex)
+{
+    Q_UNUSED(nIndex)
+
+    showData(g_nOffset, g_nSize);
 }

@@ -27,7 +27,6 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 {
     ui->setupUi(this);
 
-    const bool bBlocked1 = ui->comboBoxEndianness->blockSignals(true);
     const bool bBlocked2 = ui->lineEditValue->blockSignals(true);
     const bool bBlocked3 = ui->tabWidgetSearch->blockSignals(true);
     const bool bBlocked4 = ui->radioButtonChar->blockSignals(true);
@@ -51,8 +50,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
     ui->comboBoxType->addItem(QString("Unicode"));
     ui->comboBoxType->addItem(QString("UTF8"));
 
-    ui->comboBoxEndianness->addItem(QString("LE"));
-    ui->comboBoxEndianness->addItem(QString("BE"));
+    XFormats::setEndiannessComboBox(ui->comboBoxEndianness, XBinary::ENDIAN_LITTLE);
 
     ui->plainTextEditString->setFocus();
 
@@ -76,7 +74,6 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 
     ui->tabWidgetSearch->setCurrentIndex(nCurrentTab);
 
-    ui->comboBoxEndianness->blockSignals(bBlocked1);
     ui->lineEditValue->blockSignals(bBlocked2);
     ui->tabWidgetSearch->blockSignals(bBlocked3);
     ui->radioButtonChar->blockSignals(bBlocked4);
@@ -163,7 +160,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         g_pSearchData->varValue = sText;                                 // TODO Check
     } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
     {
-        g_pSearchData->bIsBigEndian = (ui->comboBoxEndianness->currentIndex() == 1);
+        g_pSearchData->endian = (XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt());
 
         g_pSearchData->varValue = ui->lineEditValue->text();
 
@@ -333,7 +330,7 @@ void DialogSearch::ajustValue()
     QString sValue = ui->lineEditValue->text();
     QString sHex;
 
-    bool bIsBigEndian = (ui->comboBoxEndianness->currentIndex() == 1);
+    bool bIsBigEndian = ((XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
 
     if (ui->radioButtonByte->isChecked()) {
         if (XBinary::checkString_byte(sValue)) {

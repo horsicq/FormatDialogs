@@ -21,8 +21,6 @@
 #ifndef DIALOGSEARCH_H
 #define DIALOGSEARCH_H
 
-#include <QDialog>
-
 #include "dialogsearchprocess.h"
 
 namespace Ui {

@@ -21,7 +21,7 @@
 #ifndef SEARCHPROCESS_H
 #define SEARCHPROCESS_H
 
-#include "xbinary.h"
+#include "xformats.h"
 
 class SearchProcess : public QObject {
     Q_OBJECT
