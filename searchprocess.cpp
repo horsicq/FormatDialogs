@@ -56,8 +56,8 @@ void SearchProcess::process()
 
     bool bIsBigEndian = (g_pSearchData->endian == XBinary::ENDIAN_BIG);
 
-    g_pSearchData->nResultOffset = binary.find_value(&memoryMap, nStartOffset, -1, g_pSearchData->varValue, g_pSearchData->valueType, bIsBigEndian,
-                                                     &(g_pSearchData->nResultSize), g_pPdStruct);
+    g_pSearchData->nResultOffset =
+        binary.find_value(&memoryMap, nStartOffset, -1, g_pSearchData->varValue, g_pSearchData->valueType, bIsBigEndian, &(g_pSearchData->nResultSize), g_pPdStruct);
 
     if (g_pSearchData->nResultOffset != -1) {
         g_pSearchData->bInit = true;
