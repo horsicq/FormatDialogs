@@ -69,6 +69,9 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     setReadonly(true);
 
     XFormats::setEndiannessComboBox(ui->comboBoxEndianness, XBinary::ENDIAN_LITTLE);
+
+    ui->lineEditOffset->setReadOnly(true);
+    ui->lineEditSize->setReadOnly(true);
 }
 
 DialogDataInspector::~DialogDataInspector()
@@ -118,6 +121,9 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
 {
     g_nOffset = nOffset;
     g_nSize = nSize;
+
+    ui->lineEditOffset->setValue32_64(g_nOffset);
+    ui->lineEditSize->setValue32_64(g_nSize);
 
     blockSignals(true);
 
