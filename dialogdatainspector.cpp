@@ -58,7 +58,7 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     addRecord("uint64", DATAINS_UINT64);
     addRecord("int64", DATAINS_INT64);
     addRecord("ANSI", DATAINS_ANSI);
-    // addRecord("Unicode", DATAINS_UNICODE);
+    addRecord("Unicode", DATAINS_UNICODE);
     // addRecord("utf8", DATAINS_UTF8);
 
     showData(nOffset, nSize);
@@ -140,16 +140,19 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         ui->tableWidgetDataInspector->showRow(DATAINS_WORD);
         ui->tableWidgetDataInspector->showRow(DATAINS_UINT16);
         ui->tableWidgetDataInspector->showRow(DATAINS_INT16);
+        ui->tableWidgetDataInspector->showRow(DATAINS_UNICODE);
         if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync)
             g_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
         if (!g_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync)
             g_lineEdit[DATAINS_UINT16]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
         if (!g_lineEdit[DATAINS_INT16]->isFocused() || !g_bSync)
             g_lineEdit[DATAINS_INT16]->setValue_int16(binary.read_int16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!g_lineEdit[DATAINS_UNICODE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UNICODE]->setValue_String(binary.read_unicodeString(nOffset, nSize/2, bIsBigEndian), nSize/2);
     } else {
         ui->tableWidgetDataInspector->hideRow(DATAINS_WORD);
         ui->tableWidgetDataInspector->hideRow(DATAINS_UINT16);
         ui->tableWidgetDataInspector->hideRow(DATAINS_INT16);
+        ui->tableWidgetDataInspector->hideRow(DATAINS_UNICODE);
     }
 
     if (nSize >= 4) {
@@ -184,7 +187,6 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         ui->tableWidgetDataInspector->hideRow(DATAINS_INT64);
     }
 
-    // if (!g_lineEdit[DATAINS_UNICODE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UNICODE]->setValue_String(binary.read_unicodeString(nOffset, nSize/2), nSize/2);
     // if (!g_lineEdit[DATAINS_UTF8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UTF8]->setValue_String(binary.read_utf8String(nOffset, nSize), nSize);
 
     blockSignals(false);
@@ -224,7 +226,7 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
             else if (nType == DATAINS_UINT64) binary.write_uint64(g_nOffset, (quint64)varValue.toULongLong(), bIsBigEndian);
             else if (nType == DATAINS_INT64) binary.write_int64(g_nOffset, (qint64)varValue.toULongLong(), bIsBigEndian);
             else if (nType == DATAINS_ANSI) binary.write_ansiString(g_nOffset, varValue.toString(), g_nSize);
-            // else if (nType == DATAINS_UNICODE) binary.write_UnicodeString(g_nOffset, g_nSize, varValue.toString());
+            else if (nType == DATAINS_UNICODE) binary.write_unicodeString(g_nOffset, varValue.toString(), g_nSize/2, bIsBigEndian);
             // else if (nType == DATAINS_UTF8) binary.write_utf8String(g_nOffset, g_nSize, varValue.toString());
 
             // selectionChangedSlot(g_nOffset, g_nSize);

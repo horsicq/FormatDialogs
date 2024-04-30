@@ -47,8 +47,8 @@ class DialogDataInspector : public XShortcutsDialog {
         DATAINS_UINT64,
         DATAINS_INT64,
         DATAINS_ANSI,
-        // DATAINS_UNICODE, // TODO
-        // DATAINS_UTF8,
+        DATAINS_UNICODE,
+        // DATAINS_UTF8, // TODO
         __DATAINS_SIZE
     };
 
