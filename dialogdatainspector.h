@@ -51,6 +51,9 @@ class DialogDataInspector : public XShortcutsDialog {
         // DATAINS_UTF8, // TODO
         DATAINS_BINARY,
         __DATAINS_SIZE
+        // TODO FLOAT16
+        // TODO FLOAT32
+        // TODO FLOAT64
     };
 
 public:
