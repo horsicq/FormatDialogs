@@ -26,6 +26,8 @@ DialogFindText::DialogFindText(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     g_pData = nullptr;
 }
 

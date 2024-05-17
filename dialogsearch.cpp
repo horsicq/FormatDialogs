@@ -27,6 +27,8 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     const bool bBlocked2 = ui->lineEditValue->blockSignals(true);
     const bool bBlocked3 = ui->tabWidgetSearch->blockSignals(true);
     const bool bBlocked4 = ui->radioButtonChar->blockSignals(true);

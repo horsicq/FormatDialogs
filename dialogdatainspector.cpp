@@ -26,6 +26,8 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     g_pDevice = pDevice;
     g_nOffset = nOffset;
     g_nSize = nSize;

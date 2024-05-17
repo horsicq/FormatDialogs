@@ -26,6 +26,8 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     g_pDevice = pDevice;
     g_nOffset = nOffset;
     g_nSize = qMin(nSize, (qint64)0x10000);

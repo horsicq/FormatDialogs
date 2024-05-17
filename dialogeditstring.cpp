@@ -26,6 +26,8 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     this->g_pDevice = pDevice;
     this->g_pData_struct = pData_struct;
 

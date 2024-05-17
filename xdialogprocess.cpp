@@ -26,6 +26,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     memset(g_nSpeed, 0, sizeof g_nSpeed);
 
     g_pdStruct = XBinary::createPdStruct();
