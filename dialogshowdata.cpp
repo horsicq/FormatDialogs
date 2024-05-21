@@ -33,6 +33,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     g_nSize = qMin(nSize, (qint64)0x10000);
 
     _addItem(tr("Hex"), DTYPE_HEX);
+    _addItem(tr("Plain Text"), DTYPE_PLAINTEXT);
     _addItem(QString("C"), DTYPE_C);
     _addItem(QString("C++"), DTYPE_CPP);
     _addItem(QString("MASM"), DTYPE_MASM);
@@ -184,6 +185,10 @@ QString DialogShowData::getDataString(DTYPE dtype)
         XBinary binary(g_pDevice);
         QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
         sResult = baArray.toBase64();
+    } else if (dtype == DTYPE_PLAINTEXT) {
+        XBinary binary(g_pDevice);
+        QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
+        sResult = XBinary::dataToString(baArray);
     }
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
