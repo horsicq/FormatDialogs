@@ -73,7 +73,7 @@ void DialogShowData::reload()
     if (ui->listWidgetType->currentRow() != -1) {
         DTYPE dtype = (DTYPE)(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
 
-        if (dtype == DTYPE_BASE64) {
+        if ((dtype == DTYPE_BASE64) || (dtype == DTYPE_PLAINTEXT)) {
             ui->spinBoxElementsProLine->setEnabled(false);
         } else {
             ui->spinBoxElementsProLine->setEnabled(true);
@@ -119,7 +119,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         } else if (dtype == DTYPE_CSHARP) {
             sResult += QString("const byte[] data = {\n");
         } else if (dtype == DTYPE_VBNET) {
-            sResult += QString("Dim data As Byte(%1) {\n").arg(g_nSize);
+            sResult += QString("Dim data As Byte(%1) = {\n").arg(g_nSize);
         } else if (dtype == DTYPE_RUST) {
             sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 0, 16);
         } else if (dtype == DTYPE_PASCAL) {
