@@ -68,6 +68,7 @@ private slots:
     QString getDataString(DTYPE dtype);
     void _addItem(const QString &sName, DTYPE dtype);
     void on_spinBoxElementsProLine_valueChanged(int nArg);
+    void on_checkBoxGroup_toggled(bool bChecked);
 
 private:
     Ui::DialogShowData *ui;

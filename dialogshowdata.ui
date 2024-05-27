@@ -71,6 +71,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QCheckBox" name="checkBoxGroup">
+       <property name="text">
+        <string>Group</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QSpinBox" name="spinBoxElementsProLine">
        <property name="minimumSize">
         <size>

@@ -52,8 +52,11 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     _addItem(QString("Base64"), DTYPE_BASE64);
 
     ui->spinBoxElementsProLine->blockSignals(true);
+    ui->checkBoxGroup->blockSignals(true);
     ui->spinBoxElementsProLine->setValue(16);
+    ui->checkBoxGroup->setChecked(true);
     ui->spinBoxElementsProLine->blockSignals(false);
+    ui->checkBoxGroup->blockSignals(false);
 
     ui->listWidgetType->setCurrentRow(0);
 }
@@ -74,9 +77,11 @@ void DialogShowData::reload()
         DTYPE dtype = (DTYPE)(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
 
         if ((dtype == DTYPE_BASE64) || (dtype == DTYPE_PLAINTEXT)) {
+            ui->checkBoxGroup->setEnabled(false);
             ui->spinBoxElementsProLine->setEnabled(false);
         } else {
-            ui->spinBoxElementsProLine->setEnabled(true);
+            ui->checkBoxGroup->setEnabled(true);
+            ui->spinBoxElementsProLine->setEnabled(ui->checkBoxGroup->isChecked());
         }
 
         QString sData = getDataString(dtype);
@@ -103,47 +108,52 @@ QString DialogShowData::getDataString(DTYPE dtype)
     // TODO
     QString sResult;
 
+    qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
+    bool bIsGroup = ui->checkBoxGroup->isChecked();
+
     if ((dtype == DTYPE_HEX) || (dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) ||
         (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) ||
         (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
         if (dtype == DTYPE_C) {
-            sResult += QString("const uint8_t data[%1] = {\n").arg(g_nSize);
+            sResult += QString("const uint8_t data[%1] = {").arg(g_nSize);
         } else if (dtype == DTYPE_CPP) {
-            sResult += QString("constexpr std::array<uint8_t, %1> data = {\n").arg(g_nSize);
+            sResult += QString("constexpr std::array<uint8_t, %1> data = {").arg(g_nSize);
         } else if (dtype == DTYPE_JAVA) {
-            sResult += QString("final byte[] data = {\n");
+            sResult += QString("final byte[] data = {");
         } else if (dtype == DTYPE_JAVASCRIPT) {
-            sResult += QString("const data = new Uint8Array([\n");
+            sResult += QString("const data = new Uint8Array([");
         } else if (dtype == DTYPE_PYTHON) {
-            sResult += QString("data = bytes([\n");
+            sResult += QString("data = bytes([");
         } else if (dtype == DTYPE_CSHARP) {
-            sResult += QString("const byte[] data = {\n");
+            sResult += QString("const byte[] data = {");
         } else if (dtype == DTYPE_VBNET) {
-            sResult += QString("Dim data As Byte(%1) = {\n").arg(g_nSize);
+            sResult += QString("Dim data As Byte(%1) = {").arg(g_nSize);
         } else if (dtype == DTYPE_RUST) {
-            sResult += QString("let data: [u8; 0x%1] = [\n").arg(g_nSize, 0, 16);
+            sResult += QString("let data: [u8; 0x%1] = [").arg(g_nSize, 0, 16);
         } else if (dtype == DTYPE_PASCAL) {
-            sResult += QString("data: array[0..%1] of Byte = (\n").arg(g_nSize);
+            sResult += QString("data: array[0..%1] of Byte = (").arg(g_nSize);
         } else if (dtype == DTYPE_LUA) {
-            sResult += QString("data = {\n");
+            sResult += QString("data = {");
         } else if (dtype == DTYPE_GO) {
-            sResult += QString("data := [...]byte {\n");
+            sResult += QString("data := [...]byte {");
         } else if (dtype == DTYPE_CRYSTAL) {
-            sResult += QString("data = [\n");
+            sResult += QString("data = [");
         } else if (dtype == DTYPE_SWIFT) {
-            sResult += QString("let data: [Uint8] = [\n");
+            sResult += QString("let data: [Uint8] = [");
         } else if (dtype == DTYPE_MASM) {
-            sResult += QString("data: \n");
+            sResult += QString("data: ");
         } else if (dtype == DTYPE_FASM) {
-            sResult += QString("data: \n");
+            sResult += QString("data: ");
         }
 
-        qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
+        if (bIsGroup) {
+            sResult += "\n";
+        }
 
         XBinary binary(g_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
-            if ((i % nElementsProLine) == 0) {
+            if (bIsGroup && ((i % nElementsProLine) == 0)) {
                 sResult += "    ";
 
                 if (dtype == DTYPE_MASM) {
@@ -175,7 +185,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 }
             }
 
-            if (((i + 1) % nElementsProLine == 0) || (i == (g_nSize - 1))) {
+            if (bIsGroup && (((i + 1) % nElementsProLine == 0) || (i == (g_nSize - 1)))) {
                 sResult += "\n";
             } else {
                 sResult += " ";
@@ -227,5 +237,10 @@ void DialogShowData::on_spinBoxElementsProLine_valueChanged(int nArg)
 {
     Q_UNUSED(nArg)
 
+    reload();
+}
+
+void DialogShowData::on_checkBoxGroup_toggled(bool bChecked)
+{
     reload();
 }
