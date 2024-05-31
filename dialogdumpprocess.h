@@ -32,7 +32,7 @@ public:
     ~DialogDumpProcess();
 
     void setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DumpProcess::DT dumpType);
-    void setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType, QString sJsonFileName);
+    void setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType, const QString &sJsonFileName);
     void setData(QIODevice *pDevice, DumpProcess::RECORD record, DumpProcess::DT dumpType);
     void setData(QIODevice *pDevice, DumpProcess::DT dumpType, QString sJsonFileName);
 #ifdef USE_XPROCESS

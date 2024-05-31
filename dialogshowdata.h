@@ -53,7 +53,6 @@ class DialogShowData : public QDialog {
         DTYPE_SWIFT,
         DTYPE_BASE64,
         // TODO more
-        // TODO ASM
     };
 
 public:

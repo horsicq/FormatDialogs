@@ -64,7 +64,7 @@ void DialogDumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize
     g_pThread->start();
 }
 
-void DialogDumpProcess::setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType, QString sJsonFileName)
+void DialogDumpProcess::setData(QIODevice *pDevice, const QList<DumpProcess::RECORD> &listRecords, DumpProcess::DT dumpType, const QString &sJsonFileName)
 {
     g_pDump->setData(pDevice, listRecords, dumpType, sJsonFileName, getPdStruct());
     g_pThread->start();
