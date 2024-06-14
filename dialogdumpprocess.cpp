@@ -86,7 +86,7 @@ void DialogDumpProcess::setData(QIODevice *pDevice, DumpProcess::DT dumpType, co
     g_pThread->start();
 }
 #ifdef USE_XPROCESS
-void DialogDumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName)
+void DialogDumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, const QString &sFileName)
 {
     g_pDump->setData(nProcessID, nAddress, nSize, dumpType, sFileName, sFileName + ".dmp.json", getPdStruct());
     g_pThread->start();
