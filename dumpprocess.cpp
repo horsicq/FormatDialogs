@@ -36,7 +36,7 @@ DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
 #endif
 }
 
-void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_pDevice = pDevice;
     this->g_listRecords = listRecords;

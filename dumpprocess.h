@@ -54,7 +54,7 @@ public:
 
     explicit DumpProcess(QObject *pParent = nullptr);
 
-    void setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
+    void setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
     void setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
 #ifdef USE_XPROCESS
     void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct);
