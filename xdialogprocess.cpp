@@ -127,6 +127,7 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
 {
     if (getPdStruct()->_pdRecord[nIndex].bIsValid) {
         pProgressBar->show();
+        pLabel->show();
 
         QString sStatus;
 
