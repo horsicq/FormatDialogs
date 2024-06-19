@@ -38,7 +38,7 @@ public:
         qint64 nSize;
         XBinary::MS_RECORD_TYPE recordType;
         QString sString;
-        bool bIsCStrings;
+        bool bIsNullTerminated;
     };
 
     explicit DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct);
@@ -50,7 +50,7 @@ private slots:
     void on_comboBoxType_currentIndexChanged(int nIndex);
     void on_lineEditString_textChanged(const QString &sStrings);
     void on_checkBoxKeepSize_toggled(bool bChecked);
-    void on_checkBoxCStrings_toggled(bool bChecked);
+    void on_checkBoxNullTerminated_toggled(bool bChecked);
     void adjust();
 
 private:

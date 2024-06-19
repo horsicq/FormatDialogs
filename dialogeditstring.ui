@@ -47,9 +47,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBoxCStrings">
+      <widget class="QCheckBox" name="checkBoxNullTerminated">
        <property name="text">
-        <string>C Strings</string>
+        <string>Null-terminated</string>
        </property>
       </widget>
      </item>

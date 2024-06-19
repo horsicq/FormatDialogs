@@ -36,7 +36,7 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     const bool bBlocked1 = ui->comboBoxType->blockSignals(true);
     const bool bBlocked2 = ui->lineEditString->blockSignals(true);
     const bool bBlocked3 = ui->checkBoxKeepSize->blockSignals(true);
-    const bool bBlocked4 = ui->checkBoxCStrings->blockSignals(true);
+    const bool bBlocked4 = ui->checkBoxNullTerminated->blockSignals(true);
 
     ui->comboBoxType->addItem(QString("ANSI"), XBinary::MS_RECORD_TYPE_STRING_ANSI);
     ui->comboBoxType->addItem(QString("Unicode"), XBinary::MS_RECORD_TYPE_STRING_UNICODE);
@@ -54,12 +54,12 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
 
     ui->lineEditString->setText(pData_struct->sString);
     ui->checkBoxKeepSize->setChecked(true);
-    ui->checkBoxCStrings->setChecked(pData_struct->bIsCStrings);
+    ui->checkBoxNullTerminated->setChecked(pData_struct->bIsNullTerminated);
 
     ui->comboBoxType->blockSignals(bBlocked1);
     ui->lineEditString->blockSignals(bBlocked2);
     ui->checkBoxKeepSize->blockSignals(bBlocked3);
-    ui->checkBoxCStrings->blockSignals(bBlocked4);
+    ui->checkBoxNullTerminated->blockSignals(bBlocked4);
 
     adjust();
 }
@@ -100,7 +100,7 @@ void DialogEditString::on_lineEditString_textChanged(const QString &sStrings)
     adjust();
 }
 
-void DialogEditString::on_checkBoxCStrings_toggled(bool bChecked)
+void DialogEditString::on_checkBoxNullTerminated_toggled(bool bChecked)
 {
     Q_UNUSED(bChecked)
 
@@ -111,7 +111,7 @@ void DialogEditString::adjust()
 {
     qint32 nMax = g_nSize;
 
-    if (ui->checkBoxCStrings->isChecked()) {
+    if (ui->checkBoxNullTerminated->isChecked()) {
         if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_STRING_UNICODE) {
             nMax -= 2;
         } else {
@@ -130,7 +130,7 @@ void DialogEditString::adjust()
     }
 
     QByteArray baString =
-        XBinary::getStringData((XBinary::MS_RECORD_TYPE)(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxCStrings->isChecked());
+        XBinary::getStringData((XBinary::MS_RECORD_TYPE)(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxNullTerminated->isChecked());
 
     QString sStatus = QString("%1: %2").arg(tr("Bytes available"), QString::number(nMax - baString.size()));
 
@@ -140,7 +140,7 @@ void DialogEditString::adjust()
     g_pData_struct->sString = ui->lineEditString->text();
     g_pData_struct->nSize = baString.size();
 
-    if (ui->checkBoxCStrings->isChecked()) {
+    if (ui->checkBoxNullTerminated->isChecked()) {
         if (ui->comboBoxType->currentData().toUInt() == XBinary::MS_RECORD_TYPE_STRING_UNICODE) {
             g_pData_struct->nSize -= 2;
         } else {
@@ -148,5 +148,5 @@ void DialogEditString::adjust()
         }
     }
 
-    g_pData_struct->bIsCStrings = ui->checkBoxCStrings->isChecked();
+    g_pData_struct->bIsNullTerminated = ui->checkBoxNullTerminated->isChecked();
 }
