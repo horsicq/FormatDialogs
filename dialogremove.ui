@@ -27,19 +27,19 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
-       <number>1</number>
+       <number>6</number>
       </property>
       <property name="leftMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="topMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="rightMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="bottomMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <item>
        <widget class="XLineEditHEX" name="lineEditOffset"/>
@@ -54,19 +54,19 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
-       <number>1</number>
+       <number>6</number>
       </property>
       <property name="leftMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="topMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="rightMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="bottomMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <item>
        <widget class="XLineEditHEX" name="lineEditSize"/>
