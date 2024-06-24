@@ -44,6 +44,7 @@ public:
     void setFileName(const QString &sFileName);
     void setStringList(const QList<QString> listString);
     void setDevice(QIODevice *pDevice);
+    virtual void adjustView();
 #ifdef USE_ARCHIVE
     void setArchive(const QString &sFileName, const QString &sRecordFileName);
     void setArchive(QIODevice *pDevice, const QString &sRecordFileName);

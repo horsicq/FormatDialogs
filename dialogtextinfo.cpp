@@ -98,6 +98,11 @@ void DialogTextInfo::setDevice(QIODevice *pDevice)
     Q_UNUSED(pDevice)
     // TODO
 }
+
+void DialogTextInfo::adjustView()
+{
+    // TODO
+}
 #ifdef USE_ARCHIVE
 void DialogTextInfo::setArchive(const QString &sFileName, const QString &sRecordFileName)
 {
