@@ -41,10 +41,15 @@ public:
     DialogRemove(QWidget *pParent, DATA *pData);
     ~DialogRemove();
 
+    virtual void adjustView() {}
+
 private slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonOK_clicked();
     void on_checkBoxHex_toggled(bool bChecked);
+
+protected:
+    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
 
 private:
     Ui::DialogRemove *ui;
