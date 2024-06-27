@@ -22,11 +22,9 @@
 
 #include "ui_dialogeditstring.h"
 
-DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct) : QDialog(pParent), ui(new Ui::DialogEditString)
+DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct) : XShortcutsDialog(pParent), ui(new Ui::DialogEditString)
 {
     ui->setupUi(this);
-
-    setWindowFlags(Qt::Window);
 
     this->g_pDevice = pDevice;
     this->g_pData_struct = pData_struct;

@@ -26,8 +26,6 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qin
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::Window);
-
     g_pDevice = pDevice;
 
     ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);

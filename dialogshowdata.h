@@ -21,7 +21,7 @@
 #ifndef DIALOGSHOWDATA_H
 #define DIALOGSHOWDATA_H
 
-#include <QDialog>
+#include "xshortcutsdialog.h"
 #include "xbinary.h"
 #include "xoptions.h"
 #include "xshortcuts.h"
@@ -30,7 +30,7 @@ namespace Ui {
 class DialogShowData;
 }
 
-class DialogShowData : public QDialog {
+class DialogShowData : public XShortcutsDialog {
     Q_OBJECT
 
     enum DTYPE {
@@ -59,6 +59,8 @@ public:
     explicit DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogShowData();
 
+    virtual void adjustView() {}
+
 private slots:
     void on_pushButtonOK_clicked();
     void reload();
@@ -68,6 +70,9 @@ private slots:
     void _addItem(const QString &sName, DTYPE dtype);
     void on_spinBoxElementsProLine_valueChanged(int nArg);
     void on_checkBoxGroup_toggled(bool bChecked);
+
+protected:
+    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
 
 private:
     Ui::DialogShowData *ui;

@@ -26,8 +26,6 @@ DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::Window);
-
     g_pData = pData;
 
     ui->checkBoxHex->setChecked(true);

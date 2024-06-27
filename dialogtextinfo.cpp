@@ -25,8 +25,6 @@
 DialogTextInfo::DialogTextInfo(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::DialogTextInfo)
 {
     ui->setupUi(this);
-
-    setWindowFlags(Qt::Window);
 }
 
 DialogTextInfo::~DialogTextInfo()

@@ -21,13 +21,13 @@
 #ifndef DIALOGFINDTEXT_H
 #define DIALOGFINDTEXT_H
 
-#include <QDialog>
+#include "xshortcutsdialog.h"
 
 namespace Ui {
 class DialogFindText;
 }
 
-class DialogFindText : public QDialog {
+class DialogFindText : public XShortcutsDialog {
     Q_OBJECT
 
 public:
@@ -39,11 +39,16 @@ public:
     explicit DialogFindText(QWidget *pParent = nullptr);
     ~DialogFindText();
 
+    virtual void adjustView() {}
+
     void setData(DATA *pData);
 
 private slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonOK_clicked();
+
+protected:
+    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
 
 private:
     Ui::DialogFindText *ui;

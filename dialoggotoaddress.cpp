@@ -27,8 +27,6 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::Window);
-
     g_nMinValue = 0;
     g_nMaxValue = 0;
     g_nValue = 0;
@@ -44,8 +42,6 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nM
     : XShortcutsDialog(pParent), ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-
-    setWindowFlags(Qt::Window);
 
     g_pMemoryMap = nullptr;
     g_nMinValue = nMinValue;

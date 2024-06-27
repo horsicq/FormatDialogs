@@ -23,11 +23,9 @@
 #include "ui_dialogsearch.h"
 
 DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options)
-    : QDialog(pParent), ui(new Ui::DialogSearch)
+    : XShortcutsDialog(pParent), ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
-
-    setWindowFlags(Qt::Window);
 
     const bool bBlocked2 = ui->lineEditValue->blockSignals(true);
     const bool bBlocked3 = ui->tabWidgetSearch->blockSignals(true);

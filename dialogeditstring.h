@@ -21,7 +21,7 @@
 #ifndef DIALOGEDITSTRING_H
 #define DIALOGEDITSTRING_H
 
-#include <QDialog>
+#include "xshortcutsdialog.h"
 
 #include "xbinary.h"
 
@@ -29,7 +29,7 @@ namespace Ui {
 class DialogEditString;
 }
 
-class DialogEditString : public QDialog {
+class DialogEditString : public XShortcutsDialog {
     Q_OBJECT
 
 public:
@@ -44,6 +44,8 @@ public:
     explicit DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct);
     ~DialogEditString();
 
+    virtual void adjustView() {}
+
 private slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonOK_clicked();
@@ -52,6 +54,9 @@ private slots:
     void on_checkBoxKeepSize_toggled(bool bChecked);
     void on_checkBoxNullTerminated_toggled(bool bChecked);
     void adjust();
+
+protected:
+    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
 
 private:
     Ui::DialogEditString *ui;
