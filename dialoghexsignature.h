@@ -44,7 +44,9 @@ public:
     explicit DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogHexSignature();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
 private slots:
     void on_pushButtonOK_clicked();
@@ -57,7 +59,10 @@ private slots:
     void on_checkBoxANSI_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogHexSignature *ui;

@@ -40,7 +40,9 @@ public:
     DialogResize(QWidget *pParent, DATA *pData);
     ~DialogResize();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -48,7 +50,10 @@ private slots:
     void on_checkBoxHex_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogResize *ui;

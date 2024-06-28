@@ -43,7 +43,9 @@ public:
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type);
     ~DialogGoToAddress();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
     qint64 getValue();  // mb TODO XADDR
 
@@ -56,7 +58,10 @@ private slots:
     void on_checkBoxHex_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogGoToAddress *ui;

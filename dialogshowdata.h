@@ -59,7 +59,9 @@ public:
     explicit DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogShowData();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
 private slots:
     void on_pushButtonOK_clicked();
@@ -72,7 +74,10 @@ private slots:
     void on_checkBoxGroup_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogShowData *ui;

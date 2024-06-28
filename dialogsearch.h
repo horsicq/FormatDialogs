@@ -45,7 +45,9 @@ public:
     explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options);
     ~DialogSearch();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -73,7 +75,10 @@ private slots:
     void on_plainTextEditSignature_textChanged();
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogSearch *ui;

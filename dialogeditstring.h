@@ -44,7 +44,9 @@ public:
     explicit DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct);
     ~DialogEditString();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -56,7 +58,10 @@ private slots:
     void adjust();
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogEditString *ui;

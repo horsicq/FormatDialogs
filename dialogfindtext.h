@@ -39,7 +39,9 @@ public:
     explicit DialogFindText(QWidget *pParent = nullptr);
     ~DialogFindText();
 
-    virtual void adjustView() {}
+    virtual void adjustView()
+    {
+    }
 
     void setData(DATA *pData);
 
@@ -48,7 +50,10 @@ private slots:
     void on_pushButtonOK_clicked();
 
 protected:
-    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
+    virtual void registerShortcuts(bool bState)
+    {
+        Q_UNUSED(bState)
+    }
 
 private:
     Ui::DialogFindText *ui;
