@@ -22,7 +22,7 @@
 
 #include "ui_xdialogprocess.h"
 
-XDialogProcess::XDialogProcess(QWidget *pParent) : QDialog(pParent), ui(new Ui::XDialogProcess)
+XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::XDialogProcess)
 {
     ui->setupUi(this);
 
@@ -192,6 +192,11 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
     }
 
     return nResult;
+}
+
+void XDialogProcess::adjustView()
+{
+
 }
 
 void XDialogProcess::on_pushButtonCancel_clicked()

@@ -21,12 +21,12 @@
 #ifndef XDIALOGPROCESS_H
 #define XDIALOGPROCESS_H
 
-#include <QDialog>
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QThread>
 #include <QTimer>
 
+#include "xshortcutsdialog.h"
 #include "xbinary.h"
 #include "xoptions.h"
 
@@ -34,7 +34,7 @@ namespace Ui {
 class XDialogProcess;
 }
 
-class XDialogProcess : public QDialog {
+class XDialogProcess : public XShortcutsDialog {
     Q_OBJECT
 
 public:
@@ -47,6 +47,8 @@ public:
     void waitForFinished();
     qint32 showDialogDelay(quint64 nMsec = 1000);
 
+    virtual void adjustView();
+
 public slots:
     void errorMessageSlot(const QString &sText);
     void onCompleted(qint64 nElapsed);
@@ -55,6 +57,9 @@ public slots:
 
 private slots:
     void on_pushButtonCancel_clicked();
+
+protected:
+    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
 
 private:
     static const qint32 N_TIMER_MS = 1000;  // 1s = 1000ms
