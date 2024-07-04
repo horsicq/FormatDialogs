@@ -26,8 +26,6 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent), ui
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::Window);
-
     memset(g_nSpeed, 0, sizeof g_nSpeed);
 
     g_pdStruct = XBinary::createPdStruct();
