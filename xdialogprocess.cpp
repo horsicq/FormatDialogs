@@ -196,7 +196,6 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
 
 void XDialogProcess::adjustView()
 {
-
 }
 
 void XDialogProcess::on_pushButtonCancel_clicked()
