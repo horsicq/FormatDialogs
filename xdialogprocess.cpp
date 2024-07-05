@@ -22,7 +22,7 @@
 
 #include "ui_xdialogprocess.h"
 
-XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::XDialogProcess)
+XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, false), ui(new Ui::XDialogProcess)
 {
     ui->setupUi(this);
 

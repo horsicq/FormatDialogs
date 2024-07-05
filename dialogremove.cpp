@@ -22,7 +22,7 @@
 
 #include "ui_dialogremove.h"
 
-DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent), ui(new Ui::DialogRemove)
+DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent, false), ui(new Ui::DialogRemove)
 {
     ui->setupUi(this);
 

@@ -22,7 +22,7 @@
 
 #include "ui_dialogfindtext.h"
 
-DialogFindText::DialogFindText(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::DialogFindText)
+DialogFindText::DialogFindText(QWidget *pParent) : XShortcutsDialog(pParent, false), ui(new Ui::DialogFindText)
 {
     ui->setupUi(this);
 

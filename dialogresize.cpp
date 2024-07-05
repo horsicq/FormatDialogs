@@ -22,7 +22,7 @@
 
 #include "ui_dialogresize.h"
 
-DialogResize::DialogResize(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent), ui(new Ui::DialogResize)
+DialogResize::DialogResize(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent, false), ui(new Ui::DialogResize)
 {
     ui->setupUi(this);
 

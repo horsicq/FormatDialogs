@@ -23,7 +23,7 @@
 #include "ui_dialogsearch.h"
 
 DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options)
-    : XShortcutsDialog(pParent), ui(new Ui::DialogSearch)
+    : XShortcutsDialog(pParent, false), ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
 

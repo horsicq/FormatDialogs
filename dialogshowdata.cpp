@@ -22,7 +22,7 @@
 
 #include "ui_dialogshowdata.h"
 
-DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent), ui(new Ui::DialogShowData)
+DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent, true), ui(new Ui::DialogShowData)
 {
     ui->setupUi(this);
 

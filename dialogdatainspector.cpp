@@ -22,7 +22,7 @@
 
 #include "ui_dialogdatainspector.h"
 
-DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent), ui(new Ui::DialogDataInspector)
+DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent, false), ui(new Ui::DialogDataInspector)
 {
     ui->setupUi(this);
 
