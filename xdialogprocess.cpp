@@ -200,3 +200,8 @@ void XDialogProcess::on_pushButtonCancel_clicked()
 {
     stop();
 }
+
+void XDialogProcess::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}

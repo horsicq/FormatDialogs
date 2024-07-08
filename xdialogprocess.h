@@ -59,10 +59,7 @@ private slots:
     void on_pushButtonCancel_clicked();
 
 protected:
-    virtual void registerShortcuts(bool bState)
-    {
-        Q_UNUSED(bState)
-    }
+    virtual void registerShortcuts(bool bState);
 
 private:
     static const qint32 N_TIMER_MS = 1000;  // 1s = 1000ms
