@@ -44,9 +44,7 @@ public:
     explicit DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct);
     ~DialogEditString();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
 private slots:
     void on_pushButtonCancel_clicked();

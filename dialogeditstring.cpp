@@ -67,6 +67,11 @@ DialogEditString::~DialogEditString()
     delete ui;
 }
 
+void DialogEditString::adjustView()
+{
+
+}
+
 void DialogEditString::on_pushButtonCancel_clicked()
 {
     this->close();
