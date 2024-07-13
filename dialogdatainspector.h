@@ -60,9 +60,7 @@ public:
     explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogDataInspector();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
 public slots:
     void selectionChangedSlot(qint64 nOffset, qint64 nSize);
