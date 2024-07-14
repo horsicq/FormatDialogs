@@ -39,9 +39,7 @@ public:
     explicit DialogFindText(QWidget *pParent = nullptr);
     ~DialogFindText();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
     void setData(DATA *pData);
 

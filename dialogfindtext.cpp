@@ -34,6 +34,11 @@ DialogFindText::~DialogFindText()
     delete ui;
 }
 
+void DialogFindText::adjustView()
+{
+
+}
+
 void DialogFindText::setData(DATA *pData)
 {
     g_pData = pData;
