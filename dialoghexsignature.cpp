@@ -79,6 +79,11 @@ DialogHexSignature::~DialogHexSignature()
     delete ui;
 }
 
+void DialogHexSignature::adjustView()
+{
+
+}
+
 void DialogHexSignature::on_pushButtonOK_clicked()
 {
     this->close();

@@ -44,9 +44,7 @@ public:
     explicit DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogHexSignature();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
 private slots:
     void on_pushButtonOK_clicked();
