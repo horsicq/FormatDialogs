@@ -267,3 +267,8 @@ void DialogDataInspector::on_comboBoxEndianness_currentIndexChanged(int nIndex)
 
     showData(g_nOffset, g_nSize);
 }
+
+void DialogDataInspector::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
