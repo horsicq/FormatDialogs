@@ -153,3 +153,8 @@ void DialogEditString::adjust()
 
     g_pData_struct->bIsNullTerminated = ui->checkBoxNullTerminated->isChecked();
 }
+
+void DialogEditString::registerShortcuts(bool bState)
+{
+     Q_UNUSED(bState)
+}
