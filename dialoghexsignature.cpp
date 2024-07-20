@@ -81,7 +81,6 @@ DialogHexSignature::~DialogHexSignature()
 
 void DialogHexSignature::adjustView()
 {
-
 }
 
 void DialogHexSignature::on_pushButtonOK_clicked()

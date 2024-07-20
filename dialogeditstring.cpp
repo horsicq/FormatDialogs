@@ -69,7 +69,6 @@ DialogEditString::~DialogEditString()
 
 void DialogEditString::adjustView()
 {
-
 }
 
 void DialogEditString::on_pushButtonCancel_clicked()
@@ -156,5 +155,5 @@ void DialogEditString::adjust()
 
 void DialogEditString::registerShortcuts(bool bState)
 {
-     Q_UNUSED(bState)
+    Q_UNUSED(bState)
 }

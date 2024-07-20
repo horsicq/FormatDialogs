@@ -36,7 +36,6 @@ DialogFindText::~DialogFindText()
 
 void DialogFindText::adjustView()
 {
-
 }
 
 void DialogFindText::setData(DATA *pData)

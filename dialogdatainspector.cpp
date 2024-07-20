@@ -83,7 +83,6 @@ DialogDataInspector::~DialogDataInspector()
 
 void DialogDataInspector::adjustView()
 {
-
 }
 
 void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
