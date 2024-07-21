@@ -58,3 +58,8 @@ void DialogFindText::on_pushButtonOK_clicked()
 
     accept();
 }
+
+void DialogFindText::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
