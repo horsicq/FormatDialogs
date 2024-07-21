@@ -136,3 +136,8 @@ void DialogGoToAddress::on_checkBoxHex_toggled(bool bChecked)
     //        ui->lineEditValue->clear();
     //    }
 }
+
+void DialogGoToAddress::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}

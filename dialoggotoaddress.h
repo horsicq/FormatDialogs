@@ -56,10 +56,7 @@ private slots:
     void on_checkBoxHex_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState)
-    {
-        Q_UNUSED(bState)
-    }
+    virtual void registerShortcuts(bool bState);
 
 private:
     Ui::DialogGoToAddress *ui;
