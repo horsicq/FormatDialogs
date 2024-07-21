@@ -43,9 +43,7 @@ public:
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type);
     ~DialogGoToAddress();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
     qint64 getValue();  // mb TODO XADDR
 

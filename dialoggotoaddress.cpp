@@ -59,6 +59,11 @@ DialogGoToAddress::~DialogGoToAddress()
     delete ui;
 }
 
+void DialogGoToAddress::adjustView()
+{
+
+}
+
 qint64 DialogGoToAddress::getValue()
 {
     return g_nValue;
