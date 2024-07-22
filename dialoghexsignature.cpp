@@ -200,3 +200,8 @@ void DialogHexSignature::on_checkBoxANSI_toggled(bool bChecked)
 
     reload();
 }
+
+void DialogHexSignature::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
