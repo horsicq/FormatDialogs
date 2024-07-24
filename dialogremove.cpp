@@ -38,6 +38,11 @@ DialogRemove::~DialogRemove()
     delete ui;
 }
 
+void DialogRemove::adjustView()
+{
+
+}
+
 void DialogRemove::on_pushButtonCancel_clicked()
 {
     reject();

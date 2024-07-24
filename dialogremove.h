@@ -41,9 +41,7 @@ public:
     DialogRemove(QWidget *pParent, DATA *pData);
     ~DialogRemove();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
 private slots:
     void on_pushButtonCancel_clicked();
