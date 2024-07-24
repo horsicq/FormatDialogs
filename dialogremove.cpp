@@ -76,3 +76,8 @@ void DialogRemove::on_checkBoxHex_toggled(bool bChecked)
         ui->lineEditSize->setMode(XLineEditHEX::_MODE_DEC);
     }
 }
+
+void DialogRemove::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
