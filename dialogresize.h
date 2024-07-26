@@ -40,9 +40,7 @@ public:
     DialogResize(QWidget *pParent, DATA *pData);
     ~DialogResize();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
 
 private slots:
     void on_pushButtonCancel_clicked();

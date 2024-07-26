@@ -36,6 +36,11 @@ DialogResize::~DialogResize()
     delete ui;
 }
 
+void DialogResize::adjustView()
+{
+
+}
+
 void DialogResize::on_pushButtonCancel_clicked()
 {
     reject();
