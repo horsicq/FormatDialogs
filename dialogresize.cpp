@@ -38,7 +38,6 @@ DialogResize::~DialogResize()
 
 void DialogResize::adjustView()
 {
-
 }
 
 void DialogResize::on_pushButtonCancel_clicked()

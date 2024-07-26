@@ -61,7 +61,6 @@ DialogGoToAddress::~DialogGoToAddress()
 
 void DialogGoToAddress::adjustView()
 {
-
 }
 
 qint64 DialogGoToAddress::getValue()

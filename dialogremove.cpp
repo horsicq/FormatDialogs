@@ -40,7 +40,6 @@ DialogRemove::~DialogRemove()
 
 void DialogRemove::adjustView()
 {
-
 }
 
 void DialogRemove::on_pushButtonCancel_clicked()
