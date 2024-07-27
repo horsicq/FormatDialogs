@@ -60,3 +60,8 @@ void DialogResize::on_checkBoxHex_toggled(bool bChecked)
         ui->lineEditValue->setMode(XLineEditHEX::_MODE_DEC);
     }
 }
+
+void DialogResize::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
