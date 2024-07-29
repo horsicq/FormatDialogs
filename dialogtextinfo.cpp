@@ -138,3 +138,8 @@ void DialogTextInfo::on_pushButtonSave_clicked()
         }
     }
 }
+
+void DialogTextInfo::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
