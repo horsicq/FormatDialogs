@@ -99,6 +99,11 @@ DialogSearch::~DialogSearch()
     delete ui;
 }
 
+void DialogSearch::adjustView()
+{
+
+}
+
 void DialogSearch::on_pushButtonCancel_clicked()
 {
     this->close();
