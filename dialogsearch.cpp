@@ -101,7 +101,6 @@ DialogSearch::~DialogSearch()
 
 void DialogSearch::adjustView()
 {
-
 }
 
 void DialogSearch::on_pushButtonCancel_clicked()

@@ -64,6 +64,10 @@ DialogShowData::~DialogShowData()
     delete ui;
 }
 
+void DialogShowData::adjustView()
+{
+}
+
 void DialogShowData::on_pushButtonOK_clicked()
 {
     this->close();
