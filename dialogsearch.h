@@ -73,10 +73,7 @@ private slots:
     void on_plainTextEditSignature_textChanged();
 
 protected:
-    virtual void registerShortcuts(bool bState)
-    {
-        Q_UNUSED(bState)
-    }
+    virtual void registerShortcuts(bool bState);
 
 private:
     Ui::DialogSearch *ui;

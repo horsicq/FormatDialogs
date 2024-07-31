@@ -427,3 +427,8 @@ void DialogSearch::on_plainTextEditSignature_textChanged()
 {
     checkValid();
 }
+
+void DialogSearch::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}
