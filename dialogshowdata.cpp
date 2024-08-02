@@ -246,3 +246,8 @@ void DialogShowData::on_checkBoxGroup_toggled(bool bChecked)
 {
     reload();
 }
+
+void DialogShowData::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
+}

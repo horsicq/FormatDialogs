@@ -72,10 +72,7 @@ private slots:
     void on_checkBoxGroup_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState)
-    {
-        Q_UNUSED(bState)
-    }
+    virtual void registerShortcuts(bool bState);
 
 private:
     Ui::DialogShowData *ui;
