@@ -244,6 +244,8 @@ void DialogShowData::on_spinBoxElementsProLine_valueChanged(int nArg)
 
 void DialogShowData::on_checkBoxGroup_toggled(bool bChecked)
 {
+    Q_UNUSED(bChecked)
+
     reload();
 }
 
