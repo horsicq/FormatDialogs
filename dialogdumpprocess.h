@@ -42,7 +42,7 @@ public:
                  const QByteArray &baHeaders);
 #endif
 #ifdef Q_OS_LINUX
-    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, QString sFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DumpProcess::DT dumpType, const QString &sFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
                  const QByteArray &baHeaders);
 #endif
 #endif
