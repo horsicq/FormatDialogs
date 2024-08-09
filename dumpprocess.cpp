@@ -45,7 +45,7 @@ void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dump
     this->g_pPdStruct = pPdStruct;
 }
 
-void DumpProcess::setData(QIODevice *pDevice, DT dumpType, QString sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(QIODevice *pDevice, DT dumpType, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_pDevice = pDevice;
     this->g_dumpType = dumpType;
