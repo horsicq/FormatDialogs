@@ -53,7 +53,8 @@ void DumpProcess::setData(QIODevice *pDevice, DT dumpType, const QString &sJsonF
     this->g_pPdStruct = pPdStruct;
 }
 #ifdef USE_XPROCESS
-void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, const QString &sFileName, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
+void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, const QString &sFileName, const QString &sJsonFileName,
+                          XBinary::PDSTRUCT *pPdStruct)
 {
     this->g_nProcessID = nProcessID;
     this->g_nAddress = nAddress;
