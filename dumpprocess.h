@@ -63,7 +63,7 @@ public:
                  const XPE::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
 #endif
 #ifdef Q_OS_LINUX
-    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, QString sFileName, QString sJsonFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
+    void setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, const QString &sFileName, const QString &sJsonFileName, const XELF::FIXDUMP_OPTIONS &fixDumpOptions,
                  const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
 #endif
 #endif
