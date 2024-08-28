@@ -53,7 +53,7 @@ public slots:
     void errorMessageSlot(const QString &sText);
     void onCompleted(qint64 nElapsed);
     void timerSlot();
-    void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel);
+    void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel, bool bIsEnabled);
 
 private slots:
     void on_pushButtonCancel_clicked();

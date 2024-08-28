@@ -36,6 +36,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     ui->progressBar3->hide();
     ui->progressBar4->hide();
 
+    ui->checkBoxAdvanced->setChecked(true);
+
     g_pTimer = new QTimer(this);
     connect(g_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
@@ -108,11 +110,13 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 
 void XDialogProcess::timerSlot()
 {
-    setupProgressBar(0, ui->progressBar0, ui->labelSpeed0);
-    setupProgressBar(1, ui->progressBar1, ui->labelSpeed1);
-    setupProgressBar(2, ui->progressBar2, ui->labelSpeed2);
-    setupProgressBar(3, ui->progressBar3, ui->labelSpeed3);
-    setupProgressBar(4, ui->progressBar4, ui->labelSpeed4);
+    bool bIsEnabled = ui->checkBoxAdvanced->isChecked();
+
+    setupProgressBar(0, ui->progressBar0, ui->labelSpeed0, true);
+    setupProgressBar(1, ui->progressBar1, ui->labelSpeed1, bIsEnabled);
+    setupProgressBar(2, ui->progressBar2, ui->labelSpeed2, bIsEnabled);
+    setupProgressBar(3, ui->progressBar3, ui->labelSpeed3, bIsEnabled);
+    setupProgressBar(4, ui->progressBar4, ui->labelSpeed4, bIsEnabled);
 
     QTime _time = QTime(0, 0);
     _time = _time.addMSecs(g_pScanTimer->elapsed());
@@ -121,9 +125,9 @@ void XDialogProcess::timerSlot()
     ui->labelTime->setText(sTime);
 }
 
-void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel)
+void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel, bool bIsEnabled)
 {
-    if (getPdStruct()->_pdRecord[nIndex].bIsValid) {
+    if ((getPdStruct()->_pdRecord[nIndex].bIsValid) && (bIsEnabled)) {
         pProgressBar->show();
         pLabel->show();
 
@@ -205,3 +209,4 @@ void XDialogProcess::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
 }
+
