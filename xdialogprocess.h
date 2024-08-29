@@ -54,6 +54,7 @@ public slots:
     void onCompleted(qint64 nElapsed);
     void timerSlot();
     void setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel, bool bIsEnabled);
+    void setAdvanced(bool bState);
 
 private slots:
     void on_pushButtonCancel_clicked();

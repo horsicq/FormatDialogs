@@ -36,8 +36,6 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     ui->progressBar3->hide();
     ui->progressBar4->hide();
 
-    ui->checkBoxAdvanced->setChecked(true);
-
     g_pTimer = new QTimer(this);
     connect(g_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
@@ -45,6 +43,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 
     g_pScanTimer = new QElapsedTimer;
     g_pScanTimer->start();
+
+    setAdvanced(true);
 }
 
 XDialogProcess::~XDialogProcess()
@@ -166,6 +166,11 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
         pProgressBar->hide();
         pLabel->hide();
     }
+}
+
+void XDialogProcess::setAdvanced(bool bState)
+{
+    ui->checkBoxAdvanced->setChecked(bState);
 }
 
 qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
