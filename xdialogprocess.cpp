@@ -214,4 +214,3 @@ void XDialogProcess::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
 }
-
