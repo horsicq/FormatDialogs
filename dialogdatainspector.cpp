@@ -212,7 +212,6 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
 
     bool bSuccess = true;
 
-    // TODO Backup device
     if ((getGlobalOptions()->isSaveBackup()) && (!XBinary::isBackupPresent(g_pDevice))) {
         bSuccess = XBinary::saveBackup(g_pDevice);
     }
