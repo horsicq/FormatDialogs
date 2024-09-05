@@ -175,7 +175,6 @@ void XDialogProcess::setAdvanced(bool bState)
 
 qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
 {
-    // mb TODO options
     qint32 nResult = Accepted;
 
     for (quint64 i = 0; i < nMsec; i += 50) {
