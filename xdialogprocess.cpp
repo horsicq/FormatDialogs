@@ -36,6 +36,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     ui->progressBar3->hide();
     ui->progressBar4->hide();
 
+    ui->labelRemain->hide();
+
     g_pTimer = new QTimer(this);
     connect(g_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
@@ -118,11 +120,37 @@ void XDialogProcess::timerSlot()
     setupProgressBar(3, ui->progressBar3, ui->labelSpeed3, bIsEnabled);
     setupProgressBar(4, ui->progressBar4, ui->labelSpeed4, bIsEnabled);
 
-    QTime _time = QTime(0, 0);
-    _time = _time.addMSecs(g_pScanTimer->elapsed());
-    QString sTime = _time.toString();
+    qint64 nElapsed = g_pScanTimer->elapsed();
 
-    ui->labelTime->setText(sTime);
+    if (nElapsed) {
+        QTime _time = QTime(0, 0);
+        _time = _time.addMSecs(nElapsed);
+        QString sTime = _time.toString();
+
+        ui->labelTime->setText(sTime);
+    }
+
+    if (getPdStruct()->_pdRecord[0].nTotal) {
+        double dPercentage = (double)(getPdStruct()->_pdRecord[0].nCurrent) / (double)(getPdStruct()->_pdRecord[0].nTotal);
+
+        if (dPercentage > 0) {
+            qint64 nRemain = (qint64)(nElapsed / dPercentage) - nElapsed;
+
+            if (nRemain > 0) {
+                ui->labelRemain->show();
+
+                QTime _time = QTime(0, 0);
+                _time = _time.addMSecs(nRemain);
+                QString sTime = _time.toString();
+
+                ui->labelRemain->setText(sTime);
+            } else {
+                ui->labelRemain->hide();
+            }
+        } else {
+            ui->labelRemain->hide();
+        }
+    }
 }
 
 void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel, bool bIsEnabled)
