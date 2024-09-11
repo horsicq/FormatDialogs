@@ -80,7 +80,7 @@ bool XDialogProcess::isSuccess()
 void XDialogProcess::waitForFinished()
 {
     while (true) {
-        QThread::msleep(50);  // TODO Consts
+        QThread::msleep(50);
 
         bool bResult = false;
 
