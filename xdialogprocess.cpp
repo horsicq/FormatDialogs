@@ -123,11 +123,7 @@ void XDialogProcess::timerSlot()
     qint64 nElapsed = g_pScanTimer->elapsed();
 
     if (nElapsed) {
-        QTime _time = QTime(0, 0);
-        _time = _time.addMSecs(nElapsed);
-        QString sTime = _time.toString();
-
-        ui->labelTime->setText(sTime);
+        ui->labelTime->setText(XBinary::msecToDate(nElapsed));
     }
 
     if (getPdStruct()->_pdRecord[0].nTotal) {
@@ -139,11 +135,7 @@ void XDialogProcess::timerSlot()
             if (nRemain > 0) {
                 ui->labelRemain->show();
 
-                QTime _time = QTime(0, 0);
-                _time = _time.addMSecs(nRemain);
-                QString sTime = _time.toString();
-
-                ui->labelRemain->setText(sTime);
+                ui->labelRemain->setText(XBinary::msecToDate(nRemain));
             } else {
                 ui->labelRemain->hide();
             }
