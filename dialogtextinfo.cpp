@@ -74,7 +74,7 @@ void DialogTextInfo::setFileName(const QString &sFileName)
     }
 }
 
-void DialogTextInfo::setStringList(const QList<QString> listString)
+void DialogTextInfo::setStringList(const QList<QString> &listString)
 {
     qint32 nNumberOfStrings = listString.count();
 

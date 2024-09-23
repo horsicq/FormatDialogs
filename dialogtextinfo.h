@@ -42,7 +42,7 @@ public:
     void setText(const QString &sText);
     void setByteArray(const QByteArray &baData);
     void setFileName(const QString &sFileName);
-    void setStringList(const QList<QString> listString);
+    void setStringList(const QList<QString> &listString);
     void setDevice(QIODevice *pDevice);
     virtual void adjustView();
 #ifdef USE_ARCHIVE
