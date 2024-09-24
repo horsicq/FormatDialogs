@@ -60,7 +60,7 @@ void SearchProcess::process()
         binary.find_value(&memoryMap, nStartOffset, -1, g_pSearchData->varValue, g_pSearchData->valueType, bIsBigEndian, &(g_pSearchData->nResultSize), g_pPdStruct);
 
     if (g_pSearchData->nResultOffset != -1) {
-        g_pSearchData->bInit = true;
+        g_pSearchData->bIsInit = true;
     }
 
     XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
