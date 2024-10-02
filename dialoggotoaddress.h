@@ -39,8 +39,8 @@ public:
         TYPE_ADDRESS
     };
 
-    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type);
-    DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type);
+    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue);
+    DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type, XADDR nCurrentValue);
     ~DialogGoToAddress();
 
     virtual void adjustView();

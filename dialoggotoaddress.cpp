@@ -23,22 +23,23 @@
 #include "ui_dialoggotoaddress.h"
 
 // mb TODO gesamt constructor
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type) : XShortcutsDialog(pParent, false), ui(new Ui::DialogGoToAddress)
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue) : XShortcutsDialog(pParent, false), ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
 
     g_nMinValue = 0;
     g_nMaxValue = 0;
-    g_nValue = 0;
+    g_nValue = nCurrentValue;
     g_pMemoryMap = pMemoryMap;
     g_type = type;
 
     ui->checkBoxHex->setChecked(true);
+    ui->lineEditValue->setValue32_64(nCurrentValue);
 
     adjustTitle(type);
 }
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type)
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, DialogGoToAddress::TYPE type, XADDR nCurrentValue)
     : XShortcutsDialog(pParent, false), ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
@@ -47,9 +48,10 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nM
     g_nMinValue = nMinValue;
     g_nMaxValue = nMaxValue;
     g_type = type;
-    g_nValue = 0;
+    g_nValue = nCurrentValue;
 
     ui->checkBoxHex->setChecked(true);
+    ui->lineEditValue->setValue32_64(nCurrentValue);
 
     adjustTitle(type);
 }
