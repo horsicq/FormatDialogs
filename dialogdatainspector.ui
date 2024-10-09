@@ -23,104 +23,26 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QGroupBox" name="groupBoxEndianness">
-       <property name="maximumSize">
+      <widget class="QComboBox" name="comboBoxEndianness"/>
+     </item>
+     <item>
+      <widget class="XLineEditHEX" name="lineEditOffset">
+       <property name="minimumSize">
         <size>
-         <width>80</width>
-         <height>16777215</height>
+         <width>120</width>
+         <height>0</height>
         </size>
        </property>
-       <property name="title">
-        <string>Endianness</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_10">
-        <property name="leftMargin">
-         <number>2</number>
-        </property>
-        <property name="topMargin">
-         <number>2</number>
-        </property>
-        <property name="rightMargin">
-         <number>2</number>
-        </property>
-        <property name="bottomMargin">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QComboBox" name="comboBoxEndianness"/>
-        </item>
-       </layout>
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBoxOffset">
-       <property name="title">
-        <string>Offset</string>
+      <widget class="XLineEditHEX" name="lineEditSize">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_11">
-        <property name="leftMargin">
-         <number>2</number>
-        </property>
-        <property name="topMargin">
-         <number>2</number>
-        </property>
-        <property name="rightMargin">
-         <number>2</number>
-        </property>
-        <property name="bottomMargin">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="XLineEditHEX" name="lineEditOffset">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBoxESize">
-       <property name="title">
-        <string>Size</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_12">
-        <property name="leftMargin">
-         <number>2</number>
-        </property>
-        <property name="topMargin">
-         <number>2</number>
-        </property>
-        <property name="rightMargin">
-         <number>2</number>
-        </property>
-        <property name="bottomMargin">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="XLineEditHEX" name="lineEditSize">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
      </item>
      <item>

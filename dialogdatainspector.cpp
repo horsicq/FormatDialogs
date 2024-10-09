@@ -27,6 +27,11 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
 {
     ui->setupUi(this);
 
+    ui->checkBoxReadonly->setToolTip(tr("Readonly"));
+    ui->comboBoxEndianness->setToolTip(tr("Endianness"));
+    ui->lineEditOffset->setToolTip(tr("Offset"));
+    ui->lineEditSize->setToolTip(tr("Size"));
+
     g_pDevice = pDevice;
     g_nOffset = nOffset;
     g_nSize = nSize;
