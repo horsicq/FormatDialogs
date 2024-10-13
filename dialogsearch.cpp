@@ -27,6 +27,17 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 {
     ui->setupUi(this);
 
+    ui->comboBoxSearchFrom->setToolTip(tr("Search from"));
+    ui->comboBoxType->setToolTip(tr("Type"));
+    ui->comboBoxEndianness->setToolTip(tr("Endianness"));
+    ui->lineEditValue->setToolTip(tr("Value"));
+    ui->lineEditHex->setToolTip(tr("Hex"));
+    ui->plainTextEditString->setToolTip(tr("String"));
+    ui->plainTextEditSignature->setToolTip(tr("Signature"));
+    ui->checkBoxMatchCase->setToolTip(tr("Match case"));
+    ui->pushButtonOK->setToolTip(tr("OK"));
+    ui->pushButtonCancel->setToolTip(tr("Cancel"));
+
     const bool bBlocked2 = ui->lineEditValue->blockSignals(true);
     const bool bBlocked3 = ui->tabWidgetSearch->blockSignals(true);
     const bool bBlocked4 = ui->radioButtonChar->blockSignals(true);
@@ -88,9 +99,9 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
     ui->radioButtonUshort->blockSignals(bBlocked13);
 
     if (options.bShowBegin) {
-        ui->groupBoxSearchFrom->show();
+        ui->comboBoxSearchFrom->show();
     } else {
-        ui->groupBoxSearchFrom->hide();
+        ui->comboBoxSearchFrom->hide();
     }
 }
 
