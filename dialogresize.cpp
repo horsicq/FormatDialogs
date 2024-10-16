@@ -28,6 +28,7 @@ DialogResize::DialogResize(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
 
     g_pData = pData;
 
+    ui->checkBoxHex->setChecked(true);
     ui->lineEditValue->setValue_uint64(pData->nNewSize);
 }
 
