@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Data inspector</string>
+   <string>Inspector</string>
   </property>
   <property name="modal">
    <bool>false</bool>

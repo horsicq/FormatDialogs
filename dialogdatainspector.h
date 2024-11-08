@@ -74,6 +74,7 @@ private:
     void blockSignals(bool bState);
     void setReadonly(bool bState);
     void showData(qint64 nOffset, qint64 nSize);
+    void enableRow(qint32 nRow, bool bState);
 
 private slots:
     void valueChangedSlot(QVariant varValue);
