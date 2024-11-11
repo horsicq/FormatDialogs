@@ -200,7 +200,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
     } else if (dtype == DTYPE_PLAINTEXT) {
         XBinary binary(g_pDevice);
         QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
-        sResult = XBinary::dataToString(baArray);
+        sResult = XBinary::dataToString(baArray, XBinary::DSMODE_NONE);
     }
 
     if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
