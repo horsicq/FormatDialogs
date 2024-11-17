@@ -66,9 +66,6 @@ public slots:
     void selectionChangedSlot(qint64 nOffset, qint64 nSize);
     void dataChangedSlot(qint64 nOffset, qint64 nSize);
 
-signals:
-    void dataChanged(qint64 nOffset, qint64 nSize);
-
 private:
     void addRecord(const QString &sTitle, const DATAINS &datains);
     void blockSignals(bool bState);
