@@ -90,9 +90,11 @@ void DialogDataInspector::adjustView()
 {
 }
 
-void DialogDataInspector::selectionChangedSlot(qint64 nOffset, qint64 nSize)
+void DialogDataInspector::currentLocationChangedSlot(quint64 nLocation, qint32 nLocationType, qint64 nSize)
 {
-    showData(nOffset, nSize);
+    if (nLocationType == XBinary::LT_OFFSET) {
+        showData(nLocation, nSize);
+    }
 }
 
 void DialogDataInspector::dataChangedSlot(qint64 nOffset, qint64 nSize)

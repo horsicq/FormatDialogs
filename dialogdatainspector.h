@@ -63,7 +63,7 @@ public:
     virtual void adjustView();
 
 public slots:
-    void selectionChangedSlot(qint64 nOffset, qint64 nSize);
+    void currentLocationChangedSlot(quint64 nLocation, qint32 nLocationType, qint64 nSize);
     void dataChangedSlot(qint64 nOffset, qint64 nSize);
 
 private:
