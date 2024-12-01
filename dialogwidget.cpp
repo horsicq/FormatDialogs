@@ -39,7 +39,6 @@ void DialogWidget::addWidget(QWidget *pWidget)
 
 void DialogWidget::adjustView()
 {
-
 }
 
 void DialogWidget::registerShortcuts(bool bState)
@@ -51,4 +50,3 @@ void DialogWidget::on_pushButtonClose_clicked()
 {
     this->close();
 }
-
