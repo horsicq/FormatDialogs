@@ -7,7 +7,6 @@ endif()
 
 set(DIALOGDUMP_SOURCES
     ${DIALOGDUMP_SOURCES}
-    ${XDIALOGPROCESS_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/dialogdumpprocess.cpp
     ${CMAKE_CURRENT_LIST_DIR}/dialogdumpprocess.h
     ${CMAKE_CURRENT_LIST_DIR}/dumpprocess.cpp
