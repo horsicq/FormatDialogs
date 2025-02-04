@@ -185,6 +185,7 @@ void DialogHexSignature::on_pushButtonScan_clicked()
 {
     SearchSignaturesWidget::OPTIONS options = {};
     options.bMenu_Hex = false;
+    options.bMenu_Disasm = false;
     options.sUserSignature = ui->textEditSignature->toPlainText();
 
     DialogSearchSignatures dialogSearchSignatures(this);
