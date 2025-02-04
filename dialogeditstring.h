@@ -36,7 +36,7 @@ public:
     struct DATA_STRUCT {
         qint64 nOffset;
         qint64 nSize;
-        XBinary::MS_RECORD_TYPE recordType;
+        XBinary::VT valueType;
         QString sString;
         bool bIsNullTerminated;
     };
