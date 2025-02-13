@@ -143,7 +143,7 @@ void DialogEditString::adjust()
     g_pData_struct->nSize = baString.size();
 
     if (ui->checkBoxNullTerminated->isChecked()) {
-        if (ui->comboBoxType->currentData().toUInt() == XBinary::XBinary::VT_UNICODESTRING) {
+        if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_UNICODESTRING) {
             g_pData_struct->nSize -= 2;
         } else {
             g_pData_struct->nSize--;
