@@ -183,16 +183,18 @@ void DialogHexSignature::on_lineEditWildcard_textChanged(const QString &sText)
 
 void DialogHexSignature::on_pushButtonScan_clicked()
 {
-    SearchSignaturesWidget::OPTIONS options = {};
-    options.bMenu_Hex = false;
-    options.bMenu_Disasm = false;
-    options.sUserSignature = ui->textEditSignature->toPlainText();
+    SearchValuesWidget::OPTIONS options = {};
+    options.fileType = XBinary::FT_UNKNOWN;
+    options.valueType = XBinary::VT_SIGNATURE;
+    options.endian = XBinary::ENDIAN_UNKNOWN;
+    options.varValue = ui->textEditSignature->toPlainText();
+    options.bScan = true;
 
-    DialogSearchSignatures dialogSearchSignatures(this);
-    dialogSearchSignatures.setGlobal(getShortcuts(), getGlobalOptions());
-    dialogSearchSignatures.setData(g_pDevice, XBinary::FT_BINARY, options, true);
+    DialogSearchValues dialogSearchValues(this);
+    dialogSearchValues.setGlobal(getShortcuts(), getGlobalOptions());
+    dialogSearchValues.setData(g_pDevice, options);
 
-    dialogSearchSignatures.exec();
+    dialogSearchValues.exec();
 }
 
 void DialogHexSignature::on_checkBoxANSI_toggled(bool bChecked)
