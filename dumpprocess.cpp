@@ -116,7 +116,7 @@ void DumpProcess::process()
 
         QJsonArray jsArray;
 
-        for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
+        for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(g_pPdStruct); i++) {
             QString _sFileName = g_listRecords.at(i).sFileName;
             qint64 _nOffset = g_listRecords.at(i).nOffset;
             qint64 _nSize = g_listRecords.at(i).nSize;
