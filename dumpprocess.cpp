@@ -153,7 +153,7 @@ void DumpProcess::process()
             qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
             XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
 
-            for (qint32 i = 0; (i < nNumberOfRecords) && (!(g_pPdStruct->bIsStop)); i++) {
+            for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(g_pPdStruct); i++) {
                 QJsonObject jsObject = jsDoc.array().at(i).toObject();
 
                 QString _sFileName = jsObject.value("filename").toString();
