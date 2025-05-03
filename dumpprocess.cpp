@@ -182,8 +182,6 @@ void DumpProcess::process()
                         break;
                     }
                 }
-
-                XBinary::setPdStructCurrentIncrement(g_pPdStruct, _nFreeIndex);
             }
 
             XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
