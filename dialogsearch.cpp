@@ -134,23 +134,23 @@ void DialogSearch::on_pushButtonOK_clicked()
         if (ui->comboBoxType->currentIndex() == 0)  // ANSI
         {
             if (bMatchCase) {
-                g_pSearchData->valueType = XBinary::VT_ANSISTRING;
+                g_pSearchData->valueType = XBinary::VT_A;
             } else {
-                g_pSearchData->valueType = XBinary::VT_ANSISTRING_I;
+                g_pSearchData->valueType = XBinary::VT_A_I;
             }
         } else if (ui->comboBoxType->currentIndex() == 1)  // UNICODE
         {
             if (bMatchCase) {
-                g_pSearchData->valueType = XBinary::VT_UNICODESTRING;
+                g_pSearchData->valueType = XBinary::VT_U;
             } else {
-                g_pSearchData->valueType = XBinary::VT_UNICODESTRING_I;
+                g_pSearchData->valueType = XBinary::VT_U_I;
             }
         } else if (ui->comboBoxType->currentIndex() == 2)  // UTF8
         {
             if (bMatchCase) {
-                g_pSearchData->valueType = XBinary::VT_UTF8STRING;
+                g_pSearchData->valueType = XBinary::VT_UTF8;
             } else {
-                g_pSearchData->valueType = XBinary::VT_UTF8STRING_I;
+                g_pSearchData->valueType = XBinary::VT_UTF8_I;
             }
         }
 

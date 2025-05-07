@@ -36,9 +36,9 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     const bool bBlocked3 = ui->checkBoxKeepSize->blockSignals(true);
     const bool bBlocked4 = ui->checkBoxNullTerminated->blockSignals(true);
 
-    ui->comboBoxType->addItem(QString("ANSI"), XBinary::VT_ANSISTRING);
-    ui->comboBoxType->addItem(QString("Unicode"), XBinary::VT_UNICODESTRING);
-    ui->comboBoxType->addItem(QString("UTF8"), XBinary::VT_UTF8STRING);
+    ui->comboBoxType->addItem(QString("ANSI"), XBinary::VT_A);
+    ui->comboBoxType->addItem(QString("Unicode"), XBinary::VT_U);
+    ui->comboBoxType->addItem(QString("UTF8"), XBinary::VT_UTF8);
 
     qint32 nNumberOfRecords = ui->comboBoxType->count();
 
@@ -114,7 +114,7 @@ void DialogEditString::adjust()
     qint32 nMax = g_nSize;
 
     if (ui->checkBoxNullTerminated->isChecked()) {
-        if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_UNICODESTRING) {
+        if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
             nMax -= 2;
         } else {
             nMax--;
@@ -125,7 +125,7 @@ void DialogEditString::adjust()
         nMax = qMin((qint64)0x100, g_pDevice->size() - (g_pData_struct->nOffset));
     }
 
-    if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_UNICODESTRING) {
+    if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
         ui->lineEditString->setMaxLength(nMax / 2);
     } else {
         ui->lineEditString->setMaxLength(nMax);
@@ -143,7 +143,7 @@ void DialogEditString::adjust()
     g_pData_struct->nSize = baString.size();
 
     if (ui->checkBoxNullTerminated->isChecked()) {
-        if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_UNICODESTRING) {
+        if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
             g_pData_struct->nSize -= 2;
         } else {
             g_pData_struct->nSize--;
