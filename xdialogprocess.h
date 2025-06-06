@@ -29,6 +29,7 @@
 #include "xshortcutsdialog.h"
 #include "xbinary.h"
 #include "xoptions.h"
+#include "xthreadobject.h"
 
 namespace Ui {
 class XDialogProcess;
