@@ -40,6 +40,7 @@ class XDialogProcess : public XShortcutsDialog {
 
 public:
     explicit XDialogProcess(QWidget *pParent);
+    XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject);
     ~XDialogProcess();
 
     XBinary::PDSTRUCT *getPdStruct();
@@ -49,6 +50,8 @@ public:
     qint32 showDialogDelay(quint64 nMsec = 1000);
 
     virtual void adjustView();
+
+    void start();
 
 public slots:
     void errorMessageSlot(const QString &sText);
@@ -70,6 +73,8 @@ private:
     QTimer *g_pTimer;
     QElapsedTimer *g_pScanTimer;
     quint64 g_nSpeed[5];
+    XThreadObject *g_pThreadObject;
+    QThread *g_pThread;
 };
 
 #endif  // XDIALOGPROCESS_H

@@ -26,6 +26,9 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 {
     ui->setupUi(this);
 
+    g_pThreadObject = nullptr;
+    g_pThread = nullptr;
+
     memset(g_nSpeed, 0, sizeof g_nSpeed);
 
     g_pdStruct = XBinary::createPdStruct();
@@ -49,11 +52,33 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     setAdvanced(true);
 }
 
+XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject) : XDialogProcess(pParent)
+{
+    g_pThreadObject = pThreadObject;
+    g_pThread = new QThread;
+
+    g_pThreadObject->moveToThread(g_pThread);
+
+    connect(g_pThread, SIGNAL(started()), g_pThreadObject, SLOT(_process()));
+    connect(g_pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+
+    connect(pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(pThreadObject, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
+    // connect(pThreadObject, SIGNAL(warningMessage(QString)), this, SLOT(warningMessageSlot(QString)));
+    // connect(pThreadObject, SIGNAL(infoMessage(QString)), this, SLOT(infoMessageSlot(QString)));
+}
+
 XDialogProcess::~XDialogProcess()
 {
     delete g_pScanTimer;
 
     stop();
+
+    if (g_pThread) {
+        g_pThread->quit();
+        g_pThread->wait();
+        delete g_pThread;
+    }
 
     delete ui;
 }
@@ -222,6 +247,13 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
 
 void XDialogProcess::adjustView()
 {
+}
+
+void XDialogProcess::start()
+{
+    if (g_pThread) {
+        g_pThread->start();
+    }
 }
 
 void XDialogProcess::on_pushButtonCancel_clicked()
