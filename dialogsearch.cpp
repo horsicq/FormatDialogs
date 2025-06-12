@@ -22,7 +22,7 @@
 
 #include "ui_dialogsearch.h"
 
-DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options)
+DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::SEARCHMODE searchMode, const OPTIONS &options)
     : XShortcutsDialog(pParent, false), ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
@@ -75,11 +75,11 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 
     qint32 nCurrentTab = 0;
 
-    if (searchMode == SEARCHMODE_STRING) {
+    if (searchMode == XBinary::SEARCHMODE_STRING) {
         nCurrentTab = 0;
-    } else if (searchMode == SEARCHMODE_SIGNATURE) {
+    } else if (searchMode == XBinary::SEARCHMODE_SIGNATURE) {
         nCurrentTab = 1;
-    } else if (searchMode == SEARCHMODE_VALUE) {
+    } else if (searchMode == XBinary::SEARCHMODE_VALUE) {
         nCurrentTab = 2;
     }
 
@@ -127,7 +127,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         g_pSearchData->startFrom = XBinary::SF_CURRENTOFFSET;
     }
 
-    if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_STRING)  // Strings
+    if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_STRING)  // Strings
     {
         bool bMatchCase = ui->checkBoxMatchCase->isChecked();
 
@@ -162,7 +162,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
 
         g_pSearchData->varValue = sText;
-    } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_SIGNATURE)  // Signature
+    } else if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_SIGNATURE)  // Signature
     {
         QString sText = ui->plainTextEditSignature->toPlainText();
 
@@ -173,7 +173,7 @@ void DialogSearch::on_pushButtonOK_clicked()
 
         g_pSearchData->valueType = XBinary::VT_SIGNATURE;
         g_pSearchData->varValue = sText;                                 // TODO Check
-    } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
+    } else if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_VALUE)  // Value
     {
         g_pSearchData->endian = (XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt());
 
@@ -217,11 +217,11 @@ void DialogSearch::on_pushButtonOK_clicked()
 
 void DialogSearch::on_tabWidgetSearch_currentChanged(int nIndex)
 {
-    if (nIndex == SEARCHMODE_STRING) {
+    if (nIndex == XBinary::SEARCHMODE_STRING) {
         ui->plainTextEditString->setFocus();
-    } else if (nIndex == SEARCHMODE_SIGNATURE) {
+    } else if (nIndex == XBinary::SEARCHMODE_SIGNATURE) {
         ui->plainTextEditSignature->setFocus();
-    } else if (nIndex == SEARCHMODE_VALUE) {
+    } else if (nIndex == XBinary::SEARCHMODE_VALUE) {
         ui->lineEditValue->setFocus();
     }
 
@@ -414,13 +414,13 @@ void DialogSearch::checkValid()
 {
     bool bIsValid = false;
 
-    if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_STRING)  // Strings
+    if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_STRING)  // Strings
     {
         bIsValid = !(ui->plainTextEditString->toPlainText().isEmpty());
-    } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_SIGNATURE)  // Signature
+    } else if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_SIGNATURE)  // Signature
     {
         bIsValid = XBinary::isSignatureValid(ui->plainTextEditSignature->toPlainText());
-    } else if (ui->tabWidgetSearch->currentIndex() == SEARCHMODE_VALUE)  // Value
+    } else if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_VALUE)  // Value
     {
         bIsValid = !(ui->lineEditHex->text().isEmpty());
     }

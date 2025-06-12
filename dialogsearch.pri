@@ -3,12 +3,10 @@ DEPENDPATH += $$PWD
 
 HEADERS += \
     $$PWD/dialogsearch.h \
-    $$PWD/dialogsearchprocess.h \
     $$PWD/searchprocess.h
 
 SOURCES += \
     $$PWD/dialogsearch.cpp \
-    $$PWD/dialogsearchprocess.cpp \
     $$PWD/searchprocess.cpp
 
 FORMS += \

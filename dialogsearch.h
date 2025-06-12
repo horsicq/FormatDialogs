@@ -21,8 +21,8 @@
 #ifndef DIALOGSEARCH_H
 #define DIALOGSEARCH_H
 
-#include "dialogsearchprocess.h"
 #include "xshortcutsdialog.h"
+#include "searchprocess.h"
 
 namespace Ui {
 class DialogSearch;
@@ -32,17 +32,11 @@ class DialogSearch : public XShortcutsDialog {
     Q_OBJECT
 
 public:
-    enum SEARCHMODE {
-        SEARCHMODE_STRING = 0,
-        SEARCHMODE_SIGNATURE,
-        SEARCHMODE_VALUE
-    };
-
     struct OPTIONS {
         bool bShowBegin;
     };
 
-    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, SEARCHMODE searchMode, const OPTIONS &options);
+    explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::SEARCHMODE searchMode, const OPTIONS &options);
     ~DialogSearch();
 
     virtual void adjustView();

@@ -22,21 +22,16 @@
 #define SEARCHPROCESS_H
 
 #include "xformats.h"
+#include "xthreadobject.h"
 
-class SearchProcess : public QObject {
+class SearchProcess : public XThreadObject {
     Q_OBJECT
 
 public:
     explicit SearchProcess(QObject *pParent = nullptr);
 
     void setData(QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct);
-
-signals:
-    void errorMessage(const QString &sText);
-    void completed(qint64 nElapsed);
-
-public slots:
-    void process();
+    virtual void process();
 
 private:
     QIODevice *g_pDevice;
