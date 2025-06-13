@@ -66,6 +66,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject) :
     connect(pThreadObject, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
     // connect(pThreadObject, SIGNAL(warningMessage(QString)), this, SLOT(warningMessageSlot(QString)));
     // connect(pThreadObject, SIGNAL(infoMessage(QString)), this, SLOT(infoMessageSlot(QString)));
+
+    setWindowTitle(pThreadObject->getTitle());
 }
 
 XDialogProcess::~XDialogProcess()
