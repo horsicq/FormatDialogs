@@ -172,7 +172,7 @@ void DialogSearch::on_pushButtonOK_clicked()
         }
 
         g_pSearchData->valueType = XBinary::VT_SIGNATURE;
-        g_pSearchData->varValue = sText;                                 // TODO Check
+        g_pSearchData->varValue = sText;                                          // TODO Check
     } else if (ui->tabWidgetSearch->currentIndex() == XBinary::SEARCHMODE_VALUE)  // Value
     {
         g_pSearchData->endian = (XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt());
