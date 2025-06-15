@@ -25,11 +25,12 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "xbinary.h"
+#include "xthreadobject.h"
 #ifdef USE_XPROCESS
 #include "xprocess.h"
 #endif
 
-class DumpProcess : public QObject {
+class DumpProcess : public XThreadObject {
     Q_OBJECT
 
 public:
@@ -67,11 +68,6 @@ public:
                  const XELF::FIXDUMP_OPTIONS &fixDumpOptions, const QByteArray &baHeaders, XBinary::PDSTRUCT *pPdStruct);
 #endif
 #endif
-signals:
-    void completed(qint64 nElapsed);
-    void errorMessage(const QString &sText);
-
-public slots:
     void process();
 
 private:

@@ -27,7 +27,7 @@ DialogDumpProcess::DialogDumpProcess(QWidget *pParent) : XDialogProcess(pParent)
 
     g_pDump->moveToThread(g_pThread);
 
-    connect(g_pThread, SIGNAL(started()), g_pDump, SLOT(process()));
+    connect(g_pThread, SIGNAL(started()), g_pDump, SLOT(_process()));
     connect(g_pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
     connect(g_pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
 

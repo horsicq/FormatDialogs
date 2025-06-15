@@ -20,7 +20,7 @@
  */
 #include "dumpprocess.h"
 
-DumpProcess::DumpProcess(QObject *pParent) : QObject(pParent)
+DumpProcess::DumpProcess(QObject *pParent) : XThreadObject(pParent)
 {
     g_pPdStruct = nullptr;
 #ifdef USE_XPROCESS
