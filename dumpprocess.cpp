@@ -52,6 +52,32 @@ void DumpProcess::setData(QIODevice *pDevice, DT dumpType, const QString &sJsonF
     this->g_sJsonFileName = sJsonFileName;
     this->g_pPdStruct = pPdStruct;
 }
+
+void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
+{
+    QList<DumpProcess::RECORD> listRecords;
+
+    DumpProcess::RECORD record = {};
+
+    record.nOffset = nOffset;
+    record.nSize = nSize;
+    record.sFileName = sFileName;
+
+    listRecords.append(record);
+
+    QString sJsonFile = sFileName + ".patch.json";
+
+    setData(pDevice, listRecords, dumpType, sJsonFile, pPdStruct);
+}
+
+void DumpProcess::setData(QIODevice *pDevice, RECORD record, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
+{
+    QList<DumpProcess::RECORD> listRecords;
+
+    listRecords.append(record);
+
+    setData(pDevice, listRecords, dumpType, record.sFileName + ".patch.json", pPdStruct);
+}
 #ifdef USE_XPROCESS
 void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dumpType, const QString &sFileName, const QString &sJsonFileName,
                           XBinary::PDSTRUCT *pPdStruct)
