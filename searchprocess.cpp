@@ -36,9 +36,6 @@ void SearchProcess::setData(QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData
 
 void SearchProcess::process()
 {
-    QElapsedTimer scanTimer;
-    scanTimer.start();
-
     qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
     XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, 0);
 
@@ -64,6 +61,4 @@ void SearchProcess::process()
     }
 
     XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
-
-    emit completed(scanTimer.elapsed());
 }

@@ -127,9 +127,6 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
 #endif
 void DumpProcess::process()
 {
-    QElapsedTimer scanTimer;
-    scanTimer.start();
-
     if (g_dumpType == DT_DUMP_DEVICE_OFFSET) {
         XBinary binary(g_pDevice);
 
@@ -392,6 +389,4 @@ void DumpProcess::process()
         XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
     }
 #endif
-
-    emit completed(scanTimer.elapsed());
 }
