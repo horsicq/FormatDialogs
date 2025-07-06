@@ -133,7 +133,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         } else if (dtype == DTYPE_RUST) {
             sResult += QString("let data: [u8; 0x%1] = [").arg(g_nSize, 0, 16);
         } else if (dtype == DTYPE_PASCAL) {
-            sResult += QString("data: array[0..%1] of Byte = (").arg(g_nSize);
+            sResult += QString("data: array[0..%1] of Byte = (").arg(g_nSize - 1);
         } else if (dtype == DTYPE_LUA) {
             sResult += QString("data = {");
         } else if (dtype == DTYPE_GO) {
@@ -212,7 +212,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
     } else if (dtype == DTYPE_JAVASCRIPT) {
         sResult += "]);";
     } else if (dtype == DTYPE_PASCAL) {
-        sResult += ")";
+        sResult += ");";
     } else if ((dtype == DTYPE_LUA) || (dtype == DTYPE_GO)) {
         sResult += "}";
     } else if (dtype == DTYPE_CRYSTAL) {
