@@ -110,7 +110,7 @@ void DialogHexSignature::reload()
         bool bIsSymbolAnsi = false;
 
         if (bIsANSI) {
-            bIsSymbolAnsi = (cSymbol >= 20) && (cSymbol < 0x7F) && (cSymbol != 0x27) && (cSymbol != 0x22) && (!bIsWildCard);
+            bIsSymbolAnsi = (cSymbol >= 20) && (cSymbol < 0x7F) && (cSymbol != 0x27) && (cSymbol != 0x22) && (cSymbol != 0x5C) && (!bIsWildCard);
         }
 
         if (bIsANSI) {
