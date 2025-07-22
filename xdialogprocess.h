@@ -67,7 +67,7 @@ protected:
     virtual void registerShortcuts(bool bState);
 
 private:
-    static const qint32 N_TIMER_MS = 1000;  // 1s = 1000ms
+    static const qint32 N_TIMER_MS = 100;  // 1s = 1000ms, 0.1 s = 100ms
     Ui::XDialogProcess *ui;
     XBinary::PDSTRUCT g_pdStruct;
     QTimer *g_pTimer;
