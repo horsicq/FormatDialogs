@@ -34,9 +34,9 @@ public:
     virtual void process();
 
 private:
-    QIODevice *g_pDevice;
-    XBinary::SEARCHDATA *g_pSearchData;
-    XBinary::PDSTRUCT *g_pPdStruct;
+    QIODevice *m_pDevice;
+    XBinary::SEARCHDATA *m_pSearchData;
+    XBinary::PDSTRUCT *m_pPdStruct;
 };
 
 #endif  // SEARCHPROCESS_H

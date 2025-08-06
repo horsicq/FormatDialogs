@@ -22,43 +22,43 @@
 
 SearchProcess::SearchProcess(QObject *pParent) : XThreadObject(pParent)
 {
-    g_pDevice = nullptr;
-    g_pSearchData = nullptr;
-    g_pPdStruct = nullptr;
+    m_pDevice = nullptr;
+    m_pSearchData = nullptr;
+    m_pPdStruct = nullptr;
 }
 
 void SearchProcess::setData(QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::PDSTRUCT *pPdStruct)
 {
-    this->g_pDevice = pDevice;
-    this->g_pSearchData = pSearchData;
-    this->g_pPdStruct = pPdStruct;
+    this->m_pDevice = pDevice;
+    this->m_pSearchData = pSearchData;
+    this->m_pPdStruct = pPdStruct;
 }
 
 void SearchProcess::process()
 {
-    qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
-    XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, 0);
+    qint32 _nFreeIndex = XBinary::getFreeIndex(m_pPdStruct);
+    XBinary::setPdStructInit(m_pPdStruct, _nFreeIndex, 0);
 
-    XBinary binary(g_pDevice);
+    XBinary binary(m_pDevice);
 
     connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
 
     qint64 nStartOffset = 0;
 
-    if (g_pSearchData->startFrom == XBinary::SF_CURRENTOFFSET) {
-        nStartOffset = g_pSearchData->nCurrentOffset;
+    if (m_pSearchData->startFrom == XBinary::SF_CURRENTOFFSET) {
+        nStartOffset = m_pSearchData->nCurrentOffset;
     }
 
-    XBinary::_MEMORY_MAP memoryMap = binary.getMemoryMap(XBinary::MAPMODE_UNKNOWN, g_pPdStruct);
+    XBinary::_MEMORY_MAP memoryMap = binary.getMemoryMap(XBinary::MAPMODE_UNKNOWN, m_pPdStruct);
 
-    bool bIsBigEndian = (g_pSearchData->endian == XBinary::ENDIAN_BIG);
+    bool bIsBigEndian = (m_pSearchData->endian == XBinary::ENDIAN_BIG);
 
-    g_pSearchData->nResultOffset =
-        binary.find_value(&memoryMap, nStartOffset, -1, g_pSearchData->varValue, g_pSearchData->valueType, bIsBigEndian, &(g_pSearchData->nResultSize), g_pPdStruct);
+    m_pSearchData->nResultOffset =
+        binary.find_value(&memoryMap, nStartOffset, -1, m_pSearchData->varValue, m_pSearchData->valueType, bIsBigEndian, &(m_pSearchData->nResultSize), m_pPdStruct);
 
-    if (g_pSearchData->nResultOffset != -1) {
-        g_pSearchData->bIsInit = true;
+    if (m_pSearchData->nResultOffset != -1) {
+        m_pSearchData->bIsInit = true;
     }
 
-    XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+    XBinary::setPdStructFinished(m_pPdStruct, _nFreeIndex);
 }
