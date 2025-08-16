@@ -28,6 +28,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 
     g_pThreadObject = nullptr;
     g_pThread = nullptr;
+    m_bSuccess = false;
 
     memset(g_nSpeed, 0, sizeof g_nSpeed);
 
@@ -97,11 +98,7 @@ void XDialogProcess::stop()
 
 bool XDialogProcess::isSuccess()
 {
-    bool bResult = false;
-
-    bResult = XBinary::isPdStructSuccess(getPdStruct());
-
-    return bResult;
+    return m_bSuccess;
 }
 
 void XDialogProcess::waitForFinished()
@@ -130,9 +127,11 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 
     g_pTimer->stop();
 
-    if (isSuccess()) {
+    if (!XBinary::isPdStructStopped(&g_pdStruct)) {
+        m_bSuccess = true;
         accept();
     } else {
+        m_bSuccess = false;
         reject();
     }
 }

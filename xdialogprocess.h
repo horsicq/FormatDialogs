@@ -75,6 +75,7 @@ private:
     quint64 g_nSpeed[5];
     XThreadObject *g_pThreadObject;
     QThread *g_pThread;
+    bool m_bSuccess;
 };
 
 #endif  // XDIALOGPROCESS_H
