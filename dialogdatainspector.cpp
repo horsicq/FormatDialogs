@@ -37,7 +37,7 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     g_nSize = nSize;
     g_bSync = false;
 
-    memset(g_lineEdit, 0, sizeof g_lineEdit);
+    memset(m_lineEdit, 0, sizeof m_lineEdit);
 
     ui->tableWidgetDataInspector->setColumnCount(2);
     ui->tableWidgetDataInspector->setRowCount(__DATAINS_SIZE);
@@ -108,25 +108,25 @@ void DialogDataInspector::addRecord(const QString &sTitle, const DATAINS &datain
     pItemName->setText(sTitle);
     ui->tableWidgetDataInspector->setItem(datains, 0, pItemName);
 
-    g_lineEdit[datains] = new XLineEditHEX(this);
-    g_lineEdit[datains]->setProperty("STYPE", datains);
+    m_lineEdit[datains] = new XLineEditHEX(this);
+    m_lineEdit[datains]->setProperty("STYPE", datains);
 
-    connect(g_lineEdit[datains], SIGNAL(valueChanged(QVariant)), this, SLOT(valueChangedSlot(QVariant)));
+    connect(m_lineEdit[datains], SIGNAL(valueChanged(QVariant)), this, SLOT(valueChangedSlot(QVariant)));
 
-    ui->tableWidgetDataInspector->setCellWidget(datains, 1, g_lineEdit[datains]);
+    ui->tableWidgetDataInspector->setCellWidget(datains, 1, m_lineEdit[datains]);
 }
 
 void DialogDataInspector::blockSignals(bool bState)
 {
     for (qint32 i = 0; i < __DATAINS_SIZE; i++) {
-        g_lineEdit[i]->blockSignals(bState);
+        m_lineEdit[i]->blockSignals(bState);
     }
 }
 
 void DialogDataInspector::setReadonly(bool bState)
 {
     for (qint32 i = 0; i < __DATAINS_SIZE; i++) {
-        g_lineEdit[i]->setReadOnly(bState);
+        m_lineEdit[i]->setReadOnly(bState);
     }
 }
 
@@ -144,11 +144,11 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
 
     XBinary binary(g_pDevice);
 
-    if (!g_lineEdit[DATAINS_BYTE]->isFocused() || !g_bSync) g_lineEdit[DATAINS_BYTE]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_HEX);
-    if (!g_lineEdit[DATAINS_UINT8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_UINT8]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_DEC);
-    if (!g_lineEdit[DATAINS_INT8]->isFocused() || !g_bSync) g_lineEdit[DATAINS_INT8]->setValue_int8(binary.read_int8(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
-    if (!g_lineEdit[DATAINS_ANSI]->isFocused() || !g_bSync) g_lineEdit[DATAINS_ANSI]->setValue_String(binary.read_ansiString(nOffset, nSize), nSize);
-    if (!g_lineEdit[DATAINS_BINARY]->isFocused() || !g_bSync) g_lineEdit[DATAINS_BINARY]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_BIN);
+    if (!m_lineEdit[DATAINS_BYTE]->isFocused() || !g_bSync) m_lineEdit[DATAINS_BYTE]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_HEX);
+    if (!m_lineEdit[DATAINS_UINT8]->isFocused() || !g_bSync) m_lineEdit[DATAINS_UINT8]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_DEC);
+    if (!m_lineEdit[DATAINS_INT8]->isFocused() || !g_bSync) m_lineEdit[DATAINS_INT8]->setValue_int8(binary.read_int8(nOffset), XLineEditHEX::_MODE_SIGN_DEC);
+    if (!m_lineEdit[DATAINS_ANSI]->isFocused() || !g_bSync) m_lineEdit[DATAINS_ANSI]->setValue_String(binary.read_ansiString(nOffset, nSize), nSize);
+    if (!m_lineEdit[DATAINS_BINARY]->isFocused() || !g_bSync) m_lineEdit[DATAINS_BINARY]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_BIN);
 
     if (nSize >= 2) {
         enableRow(DATAINS_WORD, true);
@@ -156,14 +156,14 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         enableRow(DATAINS_INT16, true);
         enableRow(DATAINS_UNICODE, true);
 
-        if (!g_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
-        if (!g_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_UINT16]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
-        if (!g_lineEdit[DATAINS_INT16]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_INT16]->setValue_int16(binary.read_int16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
-        if (!g_lineEdit[DATAINS_UNICODE]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_UNICODE]->setValue_String(binary.read_unicodeString(nOffset, nSize / 2, bIsBigEndian), nSize / 2);
+        if (!m_lineEdit[DATAINS_WORD]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_WORD]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
+        if (!m_lineEdit[DATAINS_UINT16]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_UINT16]->setValue_uint16(binary.read_uint16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
+        if (!m_lineEdit[DATAINS_INT16]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_INT16]->setValue_int16(binary.read_int16(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!m_lineEdit[DATAINS_UNICODE]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_UNICODE]->setValue_String(binary.read_unicodeString(nOffset, nSize / 2, bIsBigEndian), nSize / 2);
     } else {
         enableRow(DATAINS_WORD, false);
         enableRow(DATAINS_UINT16, false);
@@ -176,12 +176,12 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         enableRow(DATAINS_UINT32, true);
         enableRow(DATAINS_INT32, true);
 
-        if (!g_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_DWORD]->setValue_uint32(binary.read_uint32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
-        if (!g_lineEdit[DATAINS_UINT32]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_UINT32]->setValue_uint32(binary.read_uint32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
-        if (!g_lineEdit[DATAINS_INT32]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_INT32]->setValue_int32(binary.read_int32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!m_lineEdit[DATAINS_DWORD]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_DWORD]->setValue_uint32(binary.read_uint32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
+        if (!m_lineEdit[DATAINS_UINT32]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_UINT32]->setValue_uint32(binary.read_uint32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
+        if (!m_lineEdit[DATAINS_INT32]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_INT32]->setValue_int32(binary.read_int32(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
     } else {
         enableRow(DATAINS_DWORD, false);
         enableRow(DATAINS_UINT32, false);
@@ -192,12 +192,12 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
         enableRow(DATAINS_QWORD, true);
         enableRow(DATAINS_UINT64, true);
         enableRow(DATAINS_INT64, true);
-        if (!g_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_QWORD]->setValue_uint64(binary.read_uint64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
-        if (!g_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_UINT64]->setValue_uint64(binary.read_uint64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
-        if (!g_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync)
-            g_lineEdit[DATAINS_INT64]->setValue_int64(binary.read_int64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
+        if (!m_lineEdit[DATAINS_QWORD]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_QWORD]->setValue_uint64(binary.read_uint64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_HEX);
+        if (!m_lineEdit[DATAINS_UINT64]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_UINT64]->setValue_uint64(binary.read_uint64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_DEC);
+        if (!m_lineEdit[DATAINS_INT64]->isFocused() || !g_bSync)
+            m_lineEdit[DATAINS_INT64]->setValue_int64(binary.read_int64(nOffset, bIsBigEndian), XLineEditHEX::_MODE_SIGN_DEC);
     } else {
         enableRow(DATAINS_QWORD, false);
         enableRow(DATAINS_UINT64, false);
@@ -213,10 +213,10 @@ void DialogDataInspector::enableRow(qint32 nRow, bool bState)
 {
     if (bState) {
         ui->tableWidgetDataInspector->showRow(nRow);
-        g_lineEdit[nRow]->setEnabled(true);
+        m_lineEdit[nRow]->setEnabled(true);
     } else {
-        g_lineEdit[nRow]->setEnabled(false);
-        g_lineEdit[nRow]->clear();
+        m_lineEdit[nRow]->setEnabled(false);
+        m_lineEdit[nRow]->clear();
     }
 }
 
