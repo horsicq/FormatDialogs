@@ -22,7 +22,7 @@
 
 DumpProcess::DumpProcess(QObject *pParent) : XThreadObject(pParent)
 {
-    g_pPdStruct = nullptr;
+    m_pPdStruct = nullptr;
 #ifdef USE_XPROCESS
     g_nProcessID = 0;
     g_nSize = 0;
@@ -42,7 +42,7 @@ void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dump
     this->g_listRecords = listRecords;
     this->g_dumpType = dumpType;
     this->g_sJsonFileName = sJsonFileName;
-    this->g_pPdStruct = pPdStruct;
+    this->m_pPdStruct = pPdStruct;
 }
 
 void DumpProcess::setData(QIODevice *pDevice, DT dumpType, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
@@ -50,7 +50,7 @@ void DumpProcess::setData(QIODevice *pDevice, DT dumpType, const QString &sJsonF
     this->g_pDevice = pDevice;
     this->g_dumpType = dumpType;
     this->g_sJsonFileName = sJsonFileName;
-    this->g_pPdStruct = pPdStruct;
+    this->m_pPdStruct = pPdStruct;
 }
 
 void DumpProcess::setData(QIODevice *pDevice, qint64 nOffset, qint64 nSize, const QString &sFileName, DT dumpType, XBinary::PDSTRUCT *pPdStruct)
@@ -88,7 +88,7 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
     this->g_dumpType = dumpType;
     this->g_sFileName = sFileName;
     this->g_sJsonFileName = sJsonFileName;
-    this->g_pPdStruct = pPdStruct;
+    this->m_pPdStruct = pPdStruct;
 }
 #endif
 #ifdef USE_XPROCESS
@@ -104,7 +104,7 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
     this->g_sJsonFileName = sJsonFileName;
     this->g_fixDumpOptions = fixDumpOptions;
     this->g_baHeaders = baHeaders;
-    this->g_pPdStruct = pPdStruct;
+    this->m_pPdStruct = pPdStruct;
 }
 #endif
 #endif
@@ -121,7 +121,7 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
     this->g_sJsonFileName = sJsonFileName;
     this->g_fixDumpOptions = fixDumpOptions;
     this->g_baHeaders = baHeaders;
-    this->g_pPdStruct = pPdStruct;
+    this->m_pPdStruct = pPdStruct;
 }
 #endif
 #endif
@@ -134,17 +134,17 @@ void DumpProcess::process()
 
         qint32 nNumberOfRecords = g_listRecords.count();
 
-        qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
-        XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
+        qint32 _nFreeIndex = XBinary::getFreeIndex(m_pPdStruct);
+        XBinary::setPdStructInit(m_pPdStruct, _nFreeIndex, nNumberOfRecords);
 
         QJsonArray jsArray;
 
-        for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(g_pPdStruct); i++) {
+        for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(m_pPdStruct); i++) {
             QString _sFileName = g_listRecords.at(i).sFileName;
             qint64 _nOffset = g_listRecords.at(i).nOffset;
             qint64 _nSize = g_listRecords.at(i).nSize;
 
-            binary.dumpToFile(_sFileName, _nOffset, _nSize, g_pPdStruct);
+            binary.dumpToFile(_sFileName, _nOffset, _nSize, m_pPdStruct);
 
             QJsonObject jsObject;
             jsObject.insert("offset", _nOffset);
@@ -153,14 +153,14 @@ void DumpProcess::process()
 
             jsArray.append(jsObject);
 
-            XBinary::setPdStructCurrentIncrement(g_pPdStruct, _nFreeIndex);
+            XBinary::setPdStructCurrentIncrement(m_pPdStruct, _nFreeIndex);
         }
 
         QJsonDocument saveFormat(jsArray);
 
         XBinary::writeToFile(g_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented));
 
-        XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+        XBinary::setPdStructFinished(m_pPdStruct, _nFreeIndex);
     } else if (g_dumpType == DT_PATCH_DEVICE_OFFSET) {
         XBinary binary(g_pDevice);
 
@@ -173,10 +173,10 @@ void DumpProcess::process()
         if (jsDoc.isArray()) {
             qint32 nNumberOfRecords = jsDoc.array().count();
 
-            qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
-            XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, nNumberOfRecords);
+            qint32 _nFreeIndex = XBinary::getFreeIndex(m_pPdStruct);
+            XBinary::setPdStructInit(m_pPdStruct, _nFreeIndex, nNumberOfRecords);
 
-            for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(g_pPdStruct); i++) {
+            for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(m_pPdStruct); i++) {
                 QJsonObject jsObject = jsDoc.array().at(i).toObject();
 
                 QString _sFileName = jsObject.value("filename").toString();
@@ -196,26 +196,26 @@ void DumpProcess::process()
 
                 // TODO Check params
 
-                QString sFileMD5 = XBinary::getHash(XBinary::HASH_MD5, _sFileName, g_pPdStruct);
-                QString sOriginMD5 = binary.getHash(XBinary::HASH_MD5, _nOffset, _nSize, g_pPdStruct);
+                QString sFileMD5 = XBinary::getHash(XBinary::HASH_MD5, _sFileName, m_pPdStruct);
+                QString sOriginMD5 = binary.getHash(XBinary::HASH_MD5, _nOffset, _nSize, m_pPdStruct);
 
                 if (sFileMD5 != sOriginMD5) {
-                    if (!binary.patchFromFile(_sFileName, _nOffset, _nSize, g_pPdStruct)) {
+                    if (!binary.patchFromFile(_sFileName, _nOffset, _nSize, m_pPdStruct)) {
                         emit errorMessage(QString("%1 :").arg(tr("Cannot read file"), _sFileName));
                         break;
                     }
                 }
             }
 
-            XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+            XBinary::setPdStructFinished(m_pPdStruct, _nFreeIndex);
         }
     }
 #ifdef USE_XPROCESS
     else if ((g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_READPROCESSMEMORY_REBUILD) ||
              (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_RAWDUMP) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_RAWDUMP) ||
              (g_dumpType == DT_DUMP_PROCESS_USER_PROCPIDMEM_REBUILD) || (g_dumpType == DT_DUMP_PROCESS_USER_PTRACE_REBUILD)) {
-        qint32 _nFreeIndex = XBinary::getFreeIndex(g_pPdStruct);
-        XBinary::setPdStructInit(g_pPdStruct, _nFreeIndex, 0);
+        qint32 _nFreeIndex = XBinary::getFreeIndex(m_pPdStruct);
+        XBinary::setPdStructInit(m_pPdStruct, _nFreeIndex, 0);
 
         QString sRawDmpFile;
 
@@ -354,8 +354,8 @@ void DumpProcess::process()
                             XPE pe(&file, true, g_nAddress);
                             connect(&pe, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-                            if (pe.isValid(g_pPdStruct)) {
-                                if (!pe.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
+                            if (pe.isValid(m_pPdStruct)) {
+                                if (!pe.fixDump(g_sFileName, g_fixDumpOptions, m_pPdStruct)) {
                                     emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
                                 }
                             }
@@ -364,8 +364,8 @@ void DumpProcess::process()
                             XELF elf(&file, true, g_nAddress);
                             connect(&elf, SIGNAL(errorMessage(QString)), this, SLOT(errorMessage(QString)));
 
-                            if (elf.isValid(g_pPdStruct)) {
-                                if (!elf.fixDump(g_sFileName, g_fixDumpOptions, g_pPdStruct)) {
+                            if (elf.isValid(m_pPdStruct)) {
+                                if (!elf.fixDump(g_sFileName, g_fixDumpOptions, m_pPdStruct)) {
                                     emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
                                 }
                             }
@@ -386,7 +386,7 @@ void DumpProcess::process()
             XBinary::writeToFile(g_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented));
         }
 
-        XBinary::setPdStructFinished(g_pPdStruct, _nFreeIndex);
+        XBinary::setPdStructFinished(m_pPdStruct, _nFreeIndex);
     }
 #endif
 }

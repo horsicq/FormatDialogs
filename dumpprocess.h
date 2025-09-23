@@ -78,7 +78,7 @@ private:
     DT g_dumpType;
     QString g_sFileName;
     QString g_sJsonFileName;
-    XBinary::PDSTRUCT *g_pPdStruct;
+    XBinary::PDSTRUCT *m_pPdStruct;
 #ifdef USE_XPROCESS
     X_ID g_nProcessID;
     XADDR g_nAddress;
