@@ -70,11 +70,11 @@ private:
     static const qint32 N_TIMER_MS = 100;  // 1s = 1000ms, 0.1 s = 100ms
     Ui::XDialogProcess *ui;
     XBinary::PDSTRUCT g_pdStruct;
-    QTimer *g_pTimer;
+    QTimer *m_pTimer;
     QElapsedTimer *g_pScanTimer;
     quint64 g_nSpeed[5];
-    XThreadObject *g_pThreadObject;
-    QThread *g_pThread;
+    XThreadObject *m_pThreadObject;
+    QThread *m_pThread;
     bool m_bSuccess;
 };
 

@@ -52,7 +52,7 @@ protected:
 
 private:
     Ui::DialogResize *ui;
-    DATA *g_pData;
+    DATA *m_pData;
 };
 
 #endif  // DIALOGRESIZE_H

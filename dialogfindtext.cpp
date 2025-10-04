@@ -26,7 +26,7 @@ DialogFindText::DialogFindText(QWidget *pParent) : XShortcutsDialog(pParent, fal
 {
     ui->setupUi(this);
 
-    g_pData = nullptr;
+    m_pData = nullptr;
 }
 
 DialogFindText::~DialogFindText()
@@ -40,7 +40,7 @@ void DialogFindText::adjustView()
 
 void DialogFindText::setData(DATA *pData)
 {
-    g_pData = pData;
+    m_pData = pData;
 
     ui->lineEditText->setText(pData->sText);
     ui->checkBoxMatchCase->setChecked(pData->bIsMatchCase);
@@ -53,8 +53,8 @@ void DialogFindText::on_pushButtonCancel_clicked()
 
 void DialogFindText::on_pushButtonOK_clicked()
 {
-    g_pData->sText = ui->lineEditText->text();
-    g_pData->bIsMatchCase = ui->checkBoxMatchCase->isChecked();
+    m_pData->sText = ui->lineEditText->text();
+    m_pData->bIsMatchCase = ui->checkBoxMatchCase->isChecked();
 
     accept();
 }

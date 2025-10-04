@@ -26,8 +26,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 {
     ui->setupUi(this);
 
-    g_pThreadObject = nullptr;
-    g_pThread = nullptr;
+    m_pThreadObject = nullptr;
+    m_pThread = nullptr;
     m_bSuccess = false;
 
     memset(g_nSpeed, 0, sizeof g_nSpeed);
@@ -42,10 +42,10 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 
     ui->labelRemain->hide();
 
-    g_pTimer = new QTimer(this);
-    connect(g_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
-    g_pTimer->start(N_TIMER_MS);
+    m_pTimer->start(N_TIMER_MS);
 
     g_pScanTimer = new QElapsedTimer;
     g_pScanTimer->start();
@@ -55,13 +55,13 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 
 XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject) : XDialogProcess(pParent)
 {
-    g_pThreadObject = pThreadObject;
-    g_pThread = new QThread;
+    m_pThreadObject = pThreadObject;
+    m_pThread = new QThread;
 
-    g_pThreadObject->moveToThread(g_pThread);
+    m_pThreadObject->moveToThread(m_pThread);
 
-    connect(g_pThread, SIGNAL(started()), g_pThreadObject, SLOT(_process()));
-    connect(g_pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(m_pThread, SIGNAL(started()), m_pThreadObject, SLOT(_process()));
+    connect(m_pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
 
     connect(pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
     connect(pThreadObject, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
@@ -77,10 +77,10 @@ XDialogProcess::~XDialogProcess()
 
     stop();
 
-    if (g_pThread) {
-        g_pThread->quit();
-        g_pThread->wait();
-        delete g_pThread;
+    if (m_pThread) {
+        m_pThread->quit();
+        m_pThread->wait();
+        delete m_pThread;
     }
 
     delete ui;
@@ -125,7 +125,7 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 {
     Q_UNUSED(nElapsed)
 
-    g_pTimer->stop();
+    m_pTimer->stop();
 
     if (!XBinary::isPdStructStopped(&g_pdStruct)) {
         m_bSuccess = true;
@@ -252,8 +252,8 @@ void XDialogProcess::adjustView()
 
 void XDialogProcess::start()
 {
-    if (g_pThread) {
-        g_pThread->start();
+    if (m_pThread) {
+        m_pThread->start();
     }
 }
 

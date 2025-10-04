@@ -53,7 +53,7 @@ protected:
 
 private:
     Ui::DialogRemove *ui;
-    DATA *g_pData;
+    DATA *m_pData;
 };
 
 #endif  // DIALOGREMOVE_H

@@ -61,7 +61,7 @@ protected:
 private:
     Ui::DialogEditString *ui;
     QIODevice *g_pDevice;
-    DATA_STRUCT *g_pData_struct;
+    DATA_STRUCT *m_pData_struct;
     qint64 g_nSize;
 };
 

@@ -27,7 +27,7 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     ui->setupUi(this);
 
     this->g_pDevice = pDevice;
-    this->g_pData_struct = pData_struct;
+    this->m_pData_struct = pData_struct;
 
     g_nSize = pData_struct->nSize;
 
@@ -122,7 +122,7 @@ void DialogEditString::adjust()
     }
 
     if (!ui->checkBoxKeepSize->isChecked()) {
-        nMax = qMin((qint64)0x100, g_pDevice->size() - (g_pData_struct->nOffset));
+        nMax = qMin((qint64)0x100, g_pDevice->size() - (m_pData_struct->nOffset));
     }
 
     if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
@@ -138,19 +138,19 @@ void DialogEditString::adjust()
 
     ui->labelAvailable->setText(sStatus);
 
-    g_pData_struct->valueType = (XBinary::VT)(ui->comboBoxType->currentData().toUInt());
-    g_pData_struct->sString = ui->lineEditString->text();
-    g_pData_struct->nSize = baString.size();
+    m_pData_struct->valueType = (XBinary::VT)(ui->comboBoxType->currentData().toUInt());
+    m_pData_struct->sString = ui->lineEditString->text();
+    m_pData_struct->nSize = baString.size();
 
     if (ui->checkBoxNullTerminated->isChecked()) {
         if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
-            g_pData_struct->nSize -= 2;
+            m_pData_struct->nSize -= 2;
         } else {
-            g_pData_struct->nSize--;
+            m_pData_struct->nSize--;
         }
     }
 
-    g_pData_struct->bIsNullTerminated = ui->checkBoxNullTerminated->isChecked();
+    m_pData_struct->bIsNullTerminated = ui->checkBoxNullTerminated->isChecked();
 }
 
 void DialogEditString::registerShortcuts(bool bState)

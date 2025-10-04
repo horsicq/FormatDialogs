@@ -52,7 +52,7 @@ protected:
 
 private:
     Ui::DialogFindText *ui;
-    DATA *g_pData;
+    DATA *m_pData;
 };
 
 #endif  // DIALOGFINDTEXT_H

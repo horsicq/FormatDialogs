@@ -26,7 +26,7 @@ DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
 {
     ui->setupUi(this);
 
-    g_pData = pData;
+    m_pData = pData;
 
     ui->checkBoxHex->setChecked(true);
     ui->lineEditOffset->setValue_int64(pData->nOffset);
@@ -51,10 +51,10 @@ void DialogRemove::on_pushButtonOK_clicked()
 {
     bool bValid = false;
 
-    g_pData->nOffset = ui->lineEditOffset->getValue_int64();
-    g_pData->nSize = ui->lineEditSize->getValue_int64();
+    m_pData->nOffset = ui->lineEditOffset->getValue_int64();
+    m_pData->nSize = ui->lineEditSize->getValue_int64();
 
-    if ((g_pData->nOffset >= 0) && (g_pData->nSize > 0) && ((g_pData->nOffset + g_pData->nSize) <= g_pData->nMaxSize)) {
+    if ((m_pData->nOffset >= 0) && (m_pData->nSize > 0) && ((m_pData->nOffset + m_pData->nSize) <= m_pData->nMaxSize)) {
         bValid = true;
     }
 
