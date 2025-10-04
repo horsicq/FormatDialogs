@@ -38,7 +38,7 @@ DumpProcess::DumpProcess(QObject *pParent) : XThreadObject(pParent)
 
 void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dumpType, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
 {
-    this->g_pDevice = pDevice;
+    this->m_pDevice = pDevice;
     this->g_listRecords = listRecords;
     this->g_dumpType = dumpType;
     this->g_sJsonFileName = sJsonFileName;
@@ -47,7 +47,7 @@ void DumpProcess::setData(QIODevice *pDevice, QList<RECORD> listRecords, DT dump
 
 void DumpProcess::setData(QIODevice *pDevice, DT dumpType, const QString &sJsonFileName, XBinary::PDSTRUCT *pPdStruct)
 {
-    this->g_pDevice = pDevice;
+    this->m_pDevice = pDevice;
     this->g_dumpType = dumpType;
     this->g_sJsonFileName = sJsonFileName;
     this->m_pPdStruct = pPdStruct;
@@ -128,7 +128,7 @@ void DumpProcess::setData(X_ID nProcessID, XADDR nAddress, qint64 nSize, DT dump
 void DumpProcess::process()
 {
     if (g_dumpType == DT_DUMP_DEVICE_OFFSET) {
-        XBinary binary(g_pDevice);
+        XBinary binary(m_pDevice);
 
         connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
 
@@ -162,7 +162,7 @@ void DumpProcess::process()
 
         XBinary::setPdStructFinished(m_pPdStruct, _nFreeIndex);
     } else if (g_dumpType == DT_PATCH_DEVICE_OFFSET) {
-        XBinary binary(g_pDevice);
+        XBinary binary(m_pDevice);
 
         connect(&binary, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString)));
 

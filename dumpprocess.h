@@ -73,7 +73,7 @@ public:
     void process();
 
 private:
-    QIODevice *g_pDevice;
+    QIODevice *m_pDevice;
     QList<RECORD> g_listRecords;
     DT g_dumpType;
     QString g_sFileName;

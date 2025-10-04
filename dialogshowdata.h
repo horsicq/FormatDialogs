@@ -76,7 +76,7 @@ protected:
 
 private:
     Ui::DialogShowData *ui;
-    QIODevice *g_pDevice;
+    QIODevice *m_pDevice;
     qint64 g_nOffset;
     qint64 g_nSize;
 };

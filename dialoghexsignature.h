@@ -63,7 +63,7 @@ private:
     Ui::DialogHexSignature *ui;
     QPushButton *g_pushButton[G_N_MAX_BYTES];
     QByteArray g_baData;
-    QIODevice *g_pDevice;
+    QIODevice *m_pDevice;
 };
 
 #endif  // DIALOGHEXSIGNATURE_H

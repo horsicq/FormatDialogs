@@ -32,7 +32,7 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     ui->lineEditOffset->setToolTip(tr("Offset"));
     ui->lineEditSize->setToolTip(tr("Size"));
 
-    g_pDevice = pDevice;
+    m_pDevice = pDevice;
     g_nOffset = nOffset;
     g_nSize = nSize;
     g_bSync = false;
@@ -142,7 +142,7 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
 
     bool bIsBigEndian = ((XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
 
-    XBinary binary(g_pDevice);
+    XBinary binary(m_pDevice);
 
     if (!m_lineEdit[DATAINS_BYTE]->isFocused() || !g_bSync) m_lineEdit[DATAINS_BYTE]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_HEX);
     if (!m_lineEdit[DATAINS_UINT8]->isFocused() || !g_bSync) m_lineEdit[DATAINS_UINT8]->setValue_uint8(binary.read_uint8(nOffset), XLineEditHEX::_MODE_DEC);
@@ -233,13 +233,13 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
 
         bool bSuccess = true;
 
-        if ((getGlobalOptions()->isSaveBackup()) && (!XBinary::isBackupPresent(g_pDevice))) {
-            bSuccess = XBinary::saveBackup(g_pDevice);
+        if ((getGlobalOptions()->isSaveBackup()) && (!XBinary::isBackupPresent(m_pDevice))) {
+            bSuccess = XBinary::saveBackup(m_pDevice);
         }
 
         if (bSuccess) {
-            if (g_pDevice->isWritable()) {
-                XBinary binary(g_pDevice);
+            if (m_pDevice->isWritable()) {
+                XBinary binary(m_pDevice);
 
                 if (nType == DATAINS_BYTE) binary.write_uint8(g_nOffset, (quint8)varValue.toULongLong());
                 else if (nType == DATAINS_WORD) binary.write_uint16(g_nOffset, (quint16)varValue.toULongLong(), bIsBigEndian);

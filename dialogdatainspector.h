@@ -85,7 +85,7 @@ protected:
 private:
     Ui::DialogDataInspector *ui;
     XLineEditHEX *m_lineEdit[__DATAINS_SIZE];
-    QIODevice *g_pDevice;
+    QIODevice *m_pDevice;
     qint64 g_nOffset;
     qint64 g_nSize;
     bool g_bSync;

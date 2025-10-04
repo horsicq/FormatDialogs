@@ -27,7 +27,7 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qin
 {
     ui->setupUi(this);
 
-    g_pDevice = pDevice;
+    m_pDevice = pDevice;
 
     ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
 
@@ -192,7 +192,7 @@ void DialogHexSignature::on_pushButtonScan_clicked()
 
     DialogSearchValues dialogSearchValues(this);
     dialogSearchValues.setGlobal(getShortcuts(), getGlobalOptions());
-    dialogSearchValues.setData(g_pDevice, options);
+    dialogSearchValues.setData(m_pDevice, options);
 
     dialogSearchValues.exec();
 }

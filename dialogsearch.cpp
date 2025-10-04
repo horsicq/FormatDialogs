@@ -51,7 +51,7 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
     const bool bBlocked12 = ui->radioButtonUint64->blockSignals(true);
     const bool bBlocked13 = ui->radioButtonUshort->blockSignals(true);
 
-    this->g_pDevice = pDevice;
+    this->m_pDevice = pDevice;
     this->g_pSearchData = pSearchData;
 
     ui->comboBoxSearchFrom->addItem(tr("Begin"));

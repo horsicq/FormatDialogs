@@ -26,7 +26,7 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
 {
     ui->setupUi(this);
 
-    g_pDevice = pDevice;
+    m_pDevice = pDevice;
     g_nOffset = nOffset;
     g_nSize = qMin(nSize, (qint64)0x10000);
 
@@ -152,7 +152,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
             sResult += "\n";
         }
 
-        XBinary binary(g_pDevice);
+        XBinary binary(m_pDevice);
 
         for (qint32 i = 0; i < g_nSize; i++) {
             if (bIsGroup && ((i % nElementsProLine) == 0)) {
@@ -194,11 +194,11 @@ QString DialogShowData::getDataString(DTYPE dtype)
             }
         }
     } else if (dtype == DTYPE_BASE64) {
-        XBinary binary(g_pDevice);
+        XBinary binary(m_pDevice);
         QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
         sResult = baArray.toBase64();
     } else if (dtype == DTYPE_PLAINTEXT) {
-        XBinary binary(g_pDevice);
+        XBinary binary(m_pDevice);
         QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
         sResult = XBinary::dataToString(baArray, XBinary::DSMODE_NONE);
     }
@@ -221,7 +221,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += "]";
     }
 
-    // sResult = XBinary::read_array(g_pDevice, g_nOffset, g_nSize).toHex();
+    // sResult = XBinary::read_array(m_pDevice, g_nOffset, g_nSize).toHex();
 
     return sResult;
 }

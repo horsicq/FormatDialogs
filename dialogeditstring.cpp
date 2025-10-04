@@ -26,7 +26,7 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
 {
     ui->setupUi(this);
 
-    this->g_pDevice = pDevice;
+    this->m_pDevice = pDevice;
     this->m_pData_struct = pData_struct;
 
     g_nSize = pData_struct->nSize;
@@ -122,7 +122,7 @@ void DialogEditString::adjust()
     }
 
     if (!ui->checkBoxKeepSize->isChecked()) {
-        nMax = qMin((qint64)0x100, g_pDevice->size() - (m_pData_struct->nOffset));
+        nMax = qMin((qint64)0x100, m_pDevice->size() - (m_pData_struct->nOffset));
     }
 
     if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
