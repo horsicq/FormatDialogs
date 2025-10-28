@@ -62,7 +62,7 @@ private:
     Ui::DialogEditString *ui;
     QIODevice *m_pDevice;
     DATA_STRUCT *m_pData_struct;
-    qint64 g_nSize;
+    qint64 m_nSize;
 };
 
 #endif  // DIALOGEDITSTRING_H

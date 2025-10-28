@@ -29,7 +29,7 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     this->m_pDevice = pDevice;
     this->m_pData_struct = pData_struct;
 
-    g_nSize = pData_struct->nSize;
+    m_nSize = pData_struct->nSize;
 
     const bool bBlocked1 = ui->comboBoxType->blockSignals(true);
     const bool bBlocked2 = ui->lineEditString->blockSignals(true);
@@ -111,7 +111,7 @@ void DialogEditString::on_checkBoxNullTerminated_toggled(bool bChecked)
 
 void DialogEditString::adjust()
 {
-    qint32 nMax = g_nSize;
+    qint32 nMax = m_nSize;
 
     if (ui->checkBoxNullTerminated->isChecked()) {
         if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
