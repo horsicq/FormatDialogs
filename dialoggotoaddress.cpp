@@ -28,11 +28,11 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
 {
     ui->setupUi(this);
 
-    g_nMinValue = 0;
-    g_nMaxValue = 0;
-    g_nValue = nCurrentValue;
-    g_pMemoryMap = pMemoryMap;
-    g_type = type;
+    m_nMinValue = 0;
+    m_nMaxValue = 0;
+    m_nValue = nCurrentValue;
+    m_pMemoryMap = pMemoryMap;
+    m_type = type;
 
     ui->checkBoxHex->setChecked(true);
     ui->lineEditValue->setValue32_64(nCurrentValue);
@@ -45,11 +45,11 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nM
 {
     ui->setupUi(this);
 
-    g_pMemoryMap = nullptr;
-    g_nMinValue = nMinValue;
-    g_nMaxValue = nMaxValue;
-    g_type = type;
-    g_nValue = nCurrentValue;
+    m_pMemoryMap = nullptr;
+    m_nMinValue = nMinValue;
+    m_nMaxValue = nMaxValue;
+    m_type = type;
+    m_nValue = nCurrentValue;
 
     ui->checkBoxHex->setChecked(true);
     ui->lineEditValue->setValue32_64(nCurrentValue);
@@ -68,7 +68,7 @@ void DialogGoToAddress::adjustView()
 
 qint64 DialogGoToAddress::getValue()
 {
-    return g_nValue;
+    return m_nValue;
 }
 
 void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
@@ -105,22 +105,22 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 
     bool bValid = false;
 
-    if (g_pMemoryMap) {
-        if ((g_type == TYPE_VIRTUALADDRESS) || (g_type == TYPE_ADDRESS)) {
-            bValid = XBinary::isAddressValid(g_pMemoryMap, nValue) && XBinary::isAddressPhysical(g_pMemoryMap, nValue);
-        } else if (g_type == TYPE_OFFSET) {
-            bValid = XBinary::isOffsetValid(g_pMemoryMap, nValue);
-        } else if (g_type == TYPE_RELVIRTUALADDRESS) {
-            bValid = XBinary::isRelAddressValid(g_pMemoryMap, nValue) && XBinary::isRelAddressPhysical(g_pMemoryMap, nValue);
+    if (m_pMemoryMap) {
+        if ((m_type == TYPE_VIRTUALADDRESS) || (m_type == TYPE_ADDRESS)) {
+            bValid = XBinary::isAddressValid(m_pMemoryMap, nValue) && XBinary::isAddressPhysical(m_pMemoryMap, nValue);
+        } else if (m_type == TYPE_OFFSET) {
+            bValid = XBinary::isOffsetValid(m_pMemoryMap, nValue);
+        } else if (m_type == TYPE_RELVIRTUALADDRESS) {
+            bValid = XBinary::isRelAddressValid(m_pMemoryMap, nValue) && XBinary::isRelAddressPhysical(m_pMemoryMap, nValue);
         }
     } else {
-        if ((nValue >= g_nMinValue) && (nValue <= g_nMaxValue)) {
+        if ((nValue >= m_nMinValue) && (nValue <= m_nMaxValue)) {
             bValid = true;
         }
     }
 
     if (bValid) {
-        this->g_nValue = nValue;
+        this->m_nValue = nValue;
         accept();
     } else {
         ui->labelStatus->setText(tr("Invalid"));

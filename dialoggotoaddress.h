@@ -60,11 +60,11 @@ protected:
 
 private:
     Ui::DialogGoToAddress *ui;
-    TYPE g_type;
-    XBinary::_MEMORY_MAP *g_pMemoryMap;
-    XADDR g_nMinValue;
-    XADDR g_nMaxValue;
-    XADDR g_nValue;
+    TYPE m_type;
+    XBinary::_MEMORY_MAP *m_pMemoryMap;
+    XADDR m_nMinValue;
+    XADDR m_nMaxValue;
+    XADDR m_nValue;
 };
 
 #endif  // DIALOGGOTOADDRESS_H
