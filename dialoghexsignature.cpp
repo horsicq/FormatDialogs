@@ -32,41 +32,41 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qin
     ui->textEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
 
     for (qint32 i = 0; i < G_N_MAX_BYTES; i++) {
-        g_pushButton[i] = new QPushButton;
-        g_pushButton[i]->setMaximumWidth(30);   // TODO Consts
-        g_pushButton[i]->setMaximumHeight(20);  // TODO Consts
-        g_pushButton[i]->setCheckable(true);
-        g_pushButton[i]->setEnabled(false);
+        m_pPushButton[i] = new QPushButton;
+        m_pPushButton[i]->setMaximumWidth(30);   // TODO Consts
+        m_pPushButton[i]->setMaximumHeight(20);  // TODO Consts
+        m_pPushButton[i]->setCheckable(true);
+        m_pPushButton[i]->setEnabled(false);
 
-        connect(g_pushButton[i], SIGNAL(toggled(bool)), this, SLOT(reload()));
+        connect(m_pPushButton[i], SIGNAL(toggled(bool)), this, SLOT(reload()));
 
         if ((i >= 0) && (i < 16))  // TODO Consts
         {
-            ui->horizontalLayout0->addWidget(g_pushButton[i]);
+            ui->horizontalLayout0->addWidget(m_pPushButton[i]);
         } else if ((i >= 16) && (i < 32)) {
-            ui->horizontalLayout1->addWidget(g_pushButton[i]);
+            ui->horizontalLayout1->addWidget(m_pPushButton[i]);
         } else if ((i >= 32) && (i < 48)) {
-            ui->horizontalLayout2->addWidget(g_pushButton[i]);
+            ui->horizontalLayout2->addWidget(m_pPushButton[i]);
         } else if ((i >= 48) && (i < 64)) {
-            ui->horizontalLayout3->addWidget(g_pushButton[i]);
+            ui->horizontalLayout3->addWidget(m_pPushButton[i]);
         } else if ((i >= 64) && (i < 80)) {
-            ui->horizontalLayout4->addWidget(g_pushButton[i]);
+            ui->horizontalLayout4->addWidget(m_pPushButton[i]);
         } else if ((i >= 80) && (i < 96)) {
-            ui->horizontalLayout5->addWidget(g_pushButton[i]);
+            ui->horizontalLayout5->addWidget(m_pPushButton[i]);
         } else if ((i >= 96) && (i < 112)) {
-            ui->horizontalLayout6->addWidget(g_pushButton[i]);
+            ui->horizontalLayout6->addWidget(m_pPushButton[i]);
         } else if ((i >= 112) && (i < 128)) {
-            ui->horizontalLayout7->addWidget(g_pushButton[i]);
+            ui->horizontalLayout7->addWidget(m_pPushButton[i]);
         }
     }
 
     nSize = qMin(nSize, (qint64)128);
 
-    g_baData = XBinary::read_array(pDevice, nOffset, nSize);
+    m_baData = XBinary::read_array(pDevice, nOffset, nSize);
 
     for (qint32 i = 0; i < nSize; i++) {
-        g_pushButton[i]->setText(QString("%1").arg((quint8)(g_baData.data()[i]), 2, 16, QChar('0')).toUpper());
-        g_pushButton[i]->setEnabled(true);
+        m_pPushButton[i]->setText(QString("%1").arg((quint8)(m_baData.data()[i]), 2, 16, QChar('0')).toUpper());
+        m_pPushButton[i]->setEnabled(true);
     }
 
     reload();
@@ -91,7 +91,7 @@ void DialogHexSignature::on_pushButtonOK_clicked()
 void DialogHexSignature::reload()
 {
     qint32 _nMax = G_N_MAX_BYTES;
-    qint32 nSize = qMin(_nMax, g_baData.size());
+    qint32 nSize = qMin(_nMax, m_baData.size());
     QString sSignature;
     QString sTemp;
 
@@ -103,9 +103,9 @@ void DialogHexSignature::reload()
     bool bIsCurrentANSI = false;
 
     for (qint32 i = 0; i < nSize; i++) {
-        bool bIsWildCard = g_pushButton[i]->isChecked();
+        bool bIsWildCard = m_pPushButton[i]->isChecked();
 
-        quint8 cSymbol = g_baData.data()[i];
+        quint8 cSymbol = m_baData.data()[i];
 
         bool bIsSymbolAnsi = false;
 

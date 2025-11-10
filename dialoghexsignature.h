@@ -61,8 +61,8 @@ protected:
 
 private:
     Ui::DialogHexSignature *ui;
-    QPushButton *g_pushButton[G_N_MAX_BYTES];
-    QByteArray g_baData;
+    QPushButton *m_pPushButton[G_N_MAX_BYTES];
+    QByteArray m_baData;
     QIODevice *m_pDevice;
 };
 
