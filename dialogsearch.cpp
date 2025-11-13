@@ -201,8 +201,6 @@ void DialogSearch::on_pushButtonOK_clicked()
             g_pSearchData->valueType = XBinary::VT_INT64;
         } else if (ui->radioButtonShort->isChecked()) {
             g_pSearchData->valueType = XBinary::VT_SHORT;
-        } else if (ui->radioButtonUchar->isChecked()) {
-            g_pSearchData->valueType = XBinary::VT_UCHAR;
         } else if (ui->radioButtonUint->isChecked()) {
             g_pSearchData->valueType = XBinary::VT_UINT;
         } else if (ui->radioButtonUint64->isChecked()) {
