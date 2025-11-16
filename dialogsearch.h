@@ -72,7 +72,7 @@ protected:
 private:
     Ui::DialogSearch *ui;
     QIODevice *m_pDevice;
-    XBinary::SEARCHDATA *g_pSearchData;
+    XBinary::SEARCHDATA *m_pSearchData;
 };
 
 #endif  // DIALOGSEARCH_H
