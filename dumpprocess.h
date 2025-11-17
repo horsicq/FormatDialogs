@@ -74,21 +74,21 @@ public:
 
 private:
     QIODevice *m_pDevice;
-    QList<RECORD> g_listRecords;
-    DT g_dumpType;
-    QString g_sFileName;
-    QString g_sJsonFileName;
+    QList<RECORD> m_listRecords;
+    DT m_dumpType;
+    QString m_sFileName;
+    QString m_sJsonFileName;
     XBinary::PDSTRUCT *m_pPdStruct;
 #ifdef USE_XPROCESS
-    X_ID g_nProcessID;
-    XADDR g_nAddress;
-    qint64 g_nSize;
-    QByteArray g_baHeaders;
+    X_ID m_nProcessID;
+    XADDR m_nAddress;
+    qint64 m_nSize;
+    QByteArray m_baHeaders;
 #ifdef Q_OS_WIN
-    XPE::FIXDUMP_OPTIONS g_fixDumpOptions;
+    XPE::FIXDUMP_OPTIONS m_fixDumpOptions;
 #endif
 #ifdef Q_OS_LINUX
-    XELF::FIXDUMP_OPTIONS g_fixDumpOptions;
+    XELF::FIXDUMP_OPTIONS m_fixDumpOptions;
 #endif
 #endif
 };
