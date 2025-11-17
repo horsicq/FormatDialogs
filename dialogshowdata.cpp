@@ -27,8 +27,8 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     ui->setupUi(this);
 
     m_pDevice = pDevice;
-    g_nOffset = nOffset;
-    g_nSize = qMin(nSize, (qint64)0x10000);
+    m_nOffset = nOffset;
+    m_nSize = qMin(nSize, (qint64)0x10000);
 
     _addItem(tr("Hex"), DTYPE_HEX);
     _addItem(tr("Plain Text"), DTYPE_PLAINTEXT);
@@ -117,9 +117,9 @@ QString DialogShowData::getDataString(DTYPE dtype)
         (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) ||
         (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
         if (dtype == DTYPE_C) {
-            sResult += QString("const uint8_t data[%1] = {").arg(g_nSize);
+            sResult += QString("const uint8_t data[%1] = {").arg(m_nSize);
         } else if (dtype == DTYPE_CPP) {
-            sResult += QString("constexpr std::array<uint8_t, %1> data = {").arg(g_nSize);
+            sResult += QString("constexpr std::array<uint8_t, %1> data = {").arg(m_nSize);
         } else if (dtype == DTYPE_JAVA) {
             sResult += QString("final byte[] data = {");
         } else if (dtype == DTYPE_JAVASCRIPT) {
@@ -129,11 +129,11 @@ QString DialogShowData::getDataString(DTYPE dtype)
         } else if (dtype == DTYPE_CSHARP) {
             sResult += QString("const byte[] data = {");
         } else if (dtype == DTYPE_VBNET) {
-            sResult += QString("Dim data As Byte(%1) = {").arg(g_nSize);
+            sResult += QString("Dim data As Byte(%1) = {").arg(m_nSize);
         } else if (dtype == DTYPE_RUST) {
-            sResult += QString("let data: [u8; 0x%1] = [").arg(g_nSize, 0, 16);
+            sResult += QString("let data: [u8; 0x%1] = [").arg(m_nSize, 0, 16);
         } else if (dtype == DTYPE_PASCAL) {
-            sResult += QString("data: array[0..%1] of Byte = (").arg(g_nSize - 1);
+            sResult += QString("data: array[0..%1] of Byte = (").arg(m_nSize - 1);
         } else if (dtype == DTYPE_LUA) {
             sResult += QString("data = {");
         } else if (dtype == DTYPE_GO) {
@@ -154,7 +154,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
 
         XBinary binary(m_pDevice);
 
-        for (qint32 i = 0; i < g_nSize; i++) {
+        for (qint32 i = 0; i < m_nSize; i++) {
             if (bIsGroup && ((i % nElementsProLine) == 0)) {
                 sResult += "    ";
 
@@ -168,18 +168,18 @@ QString DialogShowData::getDataString(DTYPE dtype)
             if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
                 (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) ||
                 (dtype == DTYPE_FASM)) {
-                sResult += "0x" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+                sResult += "0x" + XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_VBNET) {
-                sResult += "&H" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+                sResult += "&H" + XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_PASCAL) {
-                sResult += "$" + XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+                sResult += "$" + XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
             } else if (dtype == DTYPE_MASM) {
-                sResult += XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper() + "h";
+                sResult += XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper() + "h";
             } else if (dtype == DTYPE_HEX) {
-                sResult += XBinary::valueToHex(binary.read_uint8(g_nOffset + i)).toUpper();
+                sResult += XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
             }
 
-            if (i != (g_nSize - 1)) {
+            if (i != (m_nSize - 1)) {
                 if (dtype == DTYPE_HEX) {
                     sResult += " ";
                 } else {
@@ -187,7 +187,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 }
             }
 
-            if (bIsGroup && (((i + 1) % nElementsProLine == 0) || (i == (g_nSize - 1)))) {
+            if (bIsGroup && (((i + 1) % nElementsProLine == 0) || (i == (m_nSize - 1)))) {
                 sResult += "\n";
             } else {
                 sResult += " ";
@@ -195,11 +195,11 @@ QString DialogShowData::getDataString(DTYPE dtype)
         }
     } else if (dtype == DTYPE_BASE64) {
         XBinary binary(m_pDevice);
-        QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
+        QByteArray baArray = binary.read_array(m_nOffset, m_nSize);
         sResult = baArray.toBase64();
     } else if (dtype == DTYPE_PLAINTEXT) {
         XBinary binary(m_pDevice);
-        QByteArray baArray = binary.read_array(g_nOffset, g_nSize);
+        QByteArray baArray = binary.read_array(m_nOffset, m_nSize);
         sResult = XBinary::dataToString(baArray, XBinary::DSMODE_NONE);
     }
 
@@ -221,7 +221,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         sResult += "]";
     }
 
-    // sResult = XBinary::read_array(m_pDevice, g_nOffset, g_nSize).toHex();
+    // sResult = XBinary::read_array(m_pDevice, m_nOffset, m_nSize).toHex();
 
     return sResult;
 }
