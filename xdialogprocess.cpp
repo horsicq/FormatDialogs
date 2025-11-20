@@ -30,9 +30,9 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     m_pThread = nullptr;
     m_bSuccess = false;
 
-    memset(g_nSpeed, 0, sizeof g_nSpeed);
+    memset(m_nSpeed, 0, sizeof m_nSpeed);
 
-    g_pdStruct = XBinary::createPdStruct();
+    m_pdStruct = XBinary::createPdStruct();
 
     ui->progressBar0->hide();
     ui->progressBar1->hide();
@@ -47,8 +47,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 
     m_pTimer->start(N_TIMER_MS);
 
-    g_pScanTimer = new QElapsedTimer;
-    g_pScanTimer->start();
+    m_pScanTimer = new QElapsedTimer;
+    m_pScanTimer->start();
 
     setAdvanced(true);
 }
@@ -62,18 +62,16 @@ XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject) :
 
     connect(m_pThread, SIGNAL(started()), m_pThreadObject, SLOT(_process()));
     connect(m_pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(m_pThreadObject, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
+    // connect(m_pThreadObject, SIGNAL(warningMessage(QString)), this, SLOT(warningMessageSlot(QString)));
+    // connect(m_pThreadObject, SIGNAL(infoMessage(QString)), this, SLOT(infoMessageSlot(QString)));
 
-    connect(pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
-    connect(pThreadObject, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
-    // connect(pThreadObject, SIGNAL(warningMessage(QString)), this, SLOT(warningMessageSlot(QString)));
-    // connect(pThreadObject, SIGNAL(infoMessage(QString)), this, SLOT(infoMessageSlot(QString)));
-
-    setWindowTitle(pThreadObject->getTitle());
+    setWindowTitle(m_pThreadObject->getTitle());
 }
 
 XDialogProcess::~XDialogProcess()
 {
-    delete g_pScanTimer;
+    delete m_pScanTimer;
 
     stop();
 
@@ -88,12 +86,12 @@ XDialogProcess::~XDialogProcess()
 
 XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
 {
-    return &g_pdStruct;
+    return &m_pdStruct;
 }
 
 void XDialogProcess::stop()
 {
-    g_pdStruct.bIsStop = true;
+    m_pdStruct.bIsStop = true;
 }
 
 bool XDialogProcess::isSuccess()
@@ -127,7 +125,7 @@ void XDialogProcess::onCompleted(qint64 nElapsed)
 
     m_pTimer->stop();
 
-    if (!XBinary::isPdStructStopped(&g_pdStruct)) {
+    if (!XBinary::isPdStructStopped(&m_pdStruct)) {
         m_bSuccess = true;
         accept();
     } else {
@@ -146,7 +144,7 @@ void XDialogProcess::timerSlot()
     setupProgressBar(3, ui->progressBar3, ui->labelSpeed3, bIsEnabled);
     setupProgressBar(4, ui->progressBar4, ui->labelSpeed4, bIsEnabled);
 
-    qint64 nElapsed = g_pScanTimer->elapsed();
+    qint64 nElapsed = m_pScanTimer->elapsed();
 
     if (nElapsed) {
         ui->labelTime->setText(XBinary::msecToDate(nElapsed));
@@ -191,15 +189,15 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
         }
 
         if (getPdStruct()->_pdRecord[nIndex].nCurrent == 0) {
-            g_nSpeed[nIndex] = 0;
+            m_nSpeed[nIndex] = 0;
         }
 
-        g_nSpeed[nIndex]++;
+        m_nSpeed[nIndex]++;
 
-        if (g_nSpeed[nIndex]) {
+        if (m_nSpeed[nIndex]) {
             quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
 
-            double dCurrent = (double)nCurrent / g_nSpeed[nIndex];
+            double dCurrent = (double)nCurrent / m_nSpeed[nIndex];
             pLabel->setText(QString::number(dCurrent, 'f', 2));
         }
 
@@ -235,8 +233,8 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
         }
     }
 
-    if (g_pdStruct.sInfoString != "") {
-        QMessageBox::information(XOptions::getMainWidget(this), tr("Info"), g_pdStruct.sInfoString);
+    if (m_pdStruct.sInfoString != "") {
+        QMessageBox::information(XOptions::getMainWidget(this), tr("Info"), m_pdStruct.sInfoString);
     }
 
     if (!isSuccess()) {
