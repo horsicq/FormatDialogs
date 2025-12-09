@@ -264,3 +264,8 @@ void XDialogProcess::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
 }
+
+XThreadObject *XDialogProcess::getThreadObject()
+{
+    return m_pThreadObject;
+}

@@ -65,6 +65,7 @@ private slots:
 
 protected:
     virtual void registerShortcuts(bool bState);
+    XThreadObject *getThreadObject();
 
 private:
     static const qint32 N_TIMER_MS = 100;  // 1s = 1000ms, 0.1 s = 100ms
