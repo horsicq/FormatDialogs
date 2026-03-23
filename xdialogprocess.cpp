@@ -248,6 +248,23 @@ void XDialogProcess::adjustView()
 {
 }
 
+void XDialogProcess::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
+{
+    m_pdStruct = createPdStruct(pXOptions);
+
+    XShortcutsObject::setGlobal(pShortcuts, pXOptions);
+}
+
+XBinary::PDSTRUCT XDialogProcess::createPdStruct(XOptions *pXOptions)
+{
+    XBinary::PDSTRUCT pdStruct = XBinary::createPdStruct();
+
+    pdStruct.nBufferSize = pXOptions->getValue(XOptions::ID_FEATURE_READBUFFERSIZE).toInt();
+    pdStruct.nFileBufferSize = pXOptions->getValue(XOptions::ID_FEATURE_FILEBUFFERSIZE).toInt();
+
+    return pdStruct;
+}
+
 void XDialogProcess::start()
 {
     if (m_pThread) {

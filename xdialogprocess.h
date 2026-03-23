@@ -51,6 +51,9 @@ public:
 
     virtual void adjustView();
 
+    virtual void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+    static XBinary::PDSTRUCT createPdStruct(XOptions *pXOptions);
+
     void start();
 
 public slots:
