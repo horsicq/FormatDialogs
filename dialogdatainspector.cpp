@@ -11,7 +11,7 @@
  * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPDATAINS, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -215,6 +215,7 @@ void DialogDataInspector::enableRow(qint32 nRow, bool bState)
         ui->tableWidgetDataInspector->showRow(nRow);
         m_lineEdit[nRow]->setEnabled(true);
     } else {
+        ui->tableWidgetDataInspector->hideRow(nRow);
         m_lineEdit[nRow]->setEnabled(false);
         m_lineEdit[nRow]->clear();
     }

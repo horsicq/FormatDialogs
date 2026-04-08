@@ -66,8 +66,6 @@ private slots:
     void reload();
     void on_pushButtonCopy_clicked();
     void on_listWidgetType_currentRowChanged(int nCurrentRow);
-    QString getDataString(DTYPE dtype);
-    void _addItem(const QString &sName, DTYPE dtype);
     void on_spinBoxElementsProLine_valueChanged(int nArg);
     void on_checkBoxGroup_toggled(bool bChecked);
 
@@ -75,6 +73,9 @@ protected:
     virtual void registerShortcuts(bool bState);
 
 private:
+    QString getDataString(DTYPE dtype);
+    void _addItem(const QString &sName, DTYPE dtype);
+
     Ui::DialogShowData *ui;
     QIODevice *m_pDevice;
     qint64 m_nOffset;

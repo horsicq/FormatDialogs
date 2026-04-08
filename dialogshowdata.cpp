@@ -106,7 +106,6 @@ void DialogShowData::on_listWidgetType_currentRowChanged(int nCurrentRow)
 
 QString DialogShowData::getDataString(DTYPE dtype)
 {
-    Q_UNUSED(dtype)
     // TODO
     QString sResult;
 
@@ -141,7 +140,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         } else if (dtype == DTYPE_CRYSTAL) {
             sResult += QString("data = [");
         } else if (dtype == DTYPE_SWIFT) {
-            sResult += QString("let data: [Uint8] = [");
+            sResult += QString("let data: [UInt8] = [");
         } else if (dtype == DTYPE_MASM) {
             sResult += QString("data: ");
         } else if (dtype == DTYPE_FASM) {
