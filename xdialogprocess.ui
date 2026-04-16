@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>772</width>
-    <height>247</height>
+    <width>540</width>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,12 +19,51 @@
   <property name="modal">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QProgressBar {
+    border: none;
+    border-radius: 3px;
+    background-color: palette(mid);
+    min-height: 18px;
+    max-height: 18px;
+    text-align: center;
+    font-size: 11px;
+}
+QProgressBar::chunk {
+    background-color: palette(highlight);
+    border-radius: 3px;
+}
+QPushButton#pushButtonCancel {
+    min-width: 80px;
+    padding: 4px 12px;
+}
+QLabel#labelTime,
+QLabel#labelRemain {
+    font-size: 11px;
+    color: palette(mid-light);
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>4</number>
+   </property>
+   <property name="leftMargin">
+    <number>12</number>
+   </property>
+   <property name="topMargin">
+    <number>12</number>
+   </property>
+   <property name="rightMargin">
+    <number>12</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QProgressBar" name="progressBar0">
        <property name="maximum">
@@ -45,15 +84,21 @@
       <widget class="QLabel" name="labelSpeed0">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>72</width>
          <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>72</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -61,6 +106,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="spacing">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QProgressBar" name="progressBar1">
        <property name="maximum">
@@ -81,15 +129,21 @@
       <widget class="QLabel" name="labelSpeed1">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>72</width>
          <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>72</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -97,6 +151,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <property name="spacing">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QProgressBar" name="progressBar2">
        <property name="maximum">
@@ -117,15 +174,21 @@
       <widget class="QLabel" name="labelSpeed2">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>72</width>
          <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>72</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -133,6 +196,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="spacing">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QProgressBar" name="progressBar3">
        <property name="maximum">
@@ -153,15 +219,21 @@
       <widget class="QLabel" name="labelSpeed3">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>72</width>
          <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>72</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -169,6 +241,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="spacing">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QProgressBar" name="progressBar4">
        <property name="maximum">
@@ -189,15 +264,21 @@
       <widget class="QLabel" name="labelSpeed4">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>72</width>
          <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>72</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -211,24 +292,37 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>70</height>
+       <height>4</height>
       </size>
      </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="labelElapsedPrefix">
+       <property name="text">
+        <string>Elapsed:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="labelTime">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>72</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>72</width>
          <height>16777215</height>
         </size>
        </property>
@@ -264,16 +358,26 @@
       </spacer>
      </item>
      <item>
+      <widget class="QLabel" name="labelRemainingPrefix">
+       <property name="text">
+        <string>Remaining:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="labelRemain">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>72</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>72</width>
          <height>16777215</height>
         </size>
        </property>

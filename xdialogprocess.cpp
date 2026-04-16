@@ -41,6 +41,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     ui->progressBar4->hide();
 
     ui->labelRemain->hide();
+    ui->labelRemainingPrefix->hide();
 
     m_pTimer = new QTimer(this);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
@@ -158,13 +159,16 @@ void XDialogProcess::timerSlot()
 
             if (nRemain > 0) {
                 ui->labelRemain->show();
+                ui->labelRemainingPrefix->show();
 
                 ui->labelRemain->setText(XBinary::msecToDate(nRemain));
             } else {
                 ui->labelRemain->hide();
+                ui->labelRemainingPrefix->hide();
             }
         } else {
             ui->labelRemain->hide();
+            ui->labelRemainingPrefix->hide();
         }
     }
 }
