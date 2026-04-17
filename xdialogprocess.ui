@@ -19,30 +19,6 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QProgressBar {
-    border: none;
-    border-radius: 3px;
-    background-color: palette(mid);
-    min-height: 18px;
-    max-height: 18px;
-    text-align: center;
-    font-size: 11px;
-}
-QProgressBar::chunk {
-    background-color: palette(highlight);
-    border-radius: 3px;
-}
-QPushButton#pushButtonCancel {
-    min-width: 80px;
-    padding: 4px 12px;
-}
-QLabel#labelTime,
-QLabel#labelRemain {
-    font-size: 11px;
-    color: palette(mid-light);
-}</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>4</number>
@@ -98,7 +74,7 @@ QLabel#labelRemain {
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -143,7 +119,7 @@ QLabel#labelRemain {
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -188,7 +164,7 @@ QLabel#labelRemain {
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -233,7 +209,7 @@ QLabel#labelRemain {
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -278,7 +254,7 @@ QLabel#labelRemain {
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -308,7 +284,7 @@ QLabel#labelRemain {
         <string>Elapsed:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -363,7 +339,7 @@ QLabel#labelRemain {
         <string>Remaining:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
