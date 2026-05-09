@@ -105,11 +105,7 @@ void XDialogProcess::waitForFinished()
     while (true) {
         QThread::msleep(50);
 
-        bool bResult = false;
-
-        bResult = XBinary::isPdStructFinished(getPdStruct());
-
-        if (bResult) {
+        if (XBinary::isPdStructFinished(getPdStruct())) {
             break;
         }
     }
@@ -152,10 +148,10 @@ void XDialogProcess::timerSlot()
     }
 
     if (getPdStruct()->_pdRecord[0].nTotal) {
-        double dPercentage = (double)(getPdStruct()->_pdRecord[0].nCurrent) / (double)(getPdStruct()->_pdRecord[0].nTotal);
+        double dPercentage = static_cast<double>(getPdStruct()->_pdRecord[0].nCurrent) / static_cast<double>(getPdStruct()->_pdRecord[0].nTotal);
 
         if (dPercentage > 0) {
-            qint64 nRemain = (qint64)(nElapsed / dPercentage) - nElapsed;
+            qint64 nRemain = static_cast<qint64>(nElapsed / dPercentage) - nElapsed;
 
             if (nRemain > 0) {
                 ui->labelRemain->show();
@@ -201,7 +197,7 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
         if (m_nSpeed[nIndex]) {
             quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
 
-            double dCurrent = (double)nCurrent / m_nSpeed[nIndex];
+            double dCurrent = static_cast<double>(nCurrent) / m_nSpeed[nIndex];
             pLabel->setText(QString::number(dCurrent, 'f', 2));
         }
 
@@ -237,7 +233,7 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
         }
     }
 
-    if (m_pdStruct.sInfoString != "") {
+    if (!m_pdStruct.sInfoString.isEmpty()) {
         QMessageBox::information(XOptions::getMainWidget(this), tr("Info"), m_pdStruct.sInfoString);
     }
 

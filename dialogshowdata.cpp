@@ -28,26 +28,26 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
 
     m_pDevice = pDevice;
     m_nOffset = nOffset;
-    m_nSize = qMin(nSize, (qint64)0x10000);
+    m_nSize = qMin(nSize, static_cast<qint64>(0x10000));
 
     _addItem(tr("Hex"), DTYPE_HEX);
     _addItem(tr("Plain Text"), DTYPE_PLAINTEXT);
-    _addItem(QString("C"), DTYPE_C);
-    _addItem(QString("C++"), DTYPE_CPP);
-    _addItem(QString("MASM"), DTYPE_MASM);
-    _addItem(QString("FASM"), DTYPE_FASM);
-    _addItem(QString("Java"), DTYPE_JAVA);
-    _addItem(QString("JavaScript"), DTYPE_JAVASCRIPT);
-    _addItem(QString("Python"), DTYPE_PYTHON);
-    _addItem(QString("C#"), DTYPE_CSHARP);
-    _addItem(QString("VB.NET"), DTYPE_VBNET);
-    _addItem(QString("Rust"), DTYPE_RUST);
-    _addItem(QString("Pascal"), DTYPE_PASCAL);
-    _addItem(QString("Lua"), DTYPE_LUA);
-    _addItem(QString("Go"), DTYPE_GO);
-    _addItem(QString("Crystal"), DTYPE_CRYSTAL);
-    _addItem(QString("Swift"), DTYPE_SWIFT);
-    _addItem(QString("Base64"), DTYPE_BASE64);
+    _addItem("C", DTYPE_C);
+    _addItem("C++", DTYPE_CPP);
+    _addItem("MASM", DTYPE_MASM);
+    _addItem("FASM", DTYPE_FASM);
+    _addItem("Java", DTYPE_JAVA);
+    _addItem("JavaScript", DTYPE_JAVASCRIPT);
+    _addItem("Python", DTYPE_PYTHON);
+    _addItem("C#", DTYPE_CSHARP);
+    _addItem("VB.NET", DTYPE_VBNET);
+    _addItem("Rust", DTYPE_RUST);
+    _addItem("Pascal", DTYPE_PASCAL);
+    _addItem("Lua", DTYPE_LUA);
+    _addItem("Go", DTYPE_GO);
+    _addItem("Crystal", DTYPE_CRYSTAL);
+    _addItem("Swift", DTYPE_SWIFT);
+    _addItem("Base64", DTYPE_BASE64);
 
     ui->spinBoxElementsProLine->blockSignals(true);
     ui->checkBoxGroup->blockSignals(true);
@@ -70,13 +70,13 @@ void DialogShowData::adjustView()
 
 void DialogShowData::on_pushButtonOK_clicked()
 {
-    this->close();
+    close();
 }
 
 void DialogShowData::reload()
 {
     if (ui->listWidgetType->currentRow() != -1) {
-        DTYPE dtype = (DTYPE)(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
+        DTYPE dtype = static_cast<DTYPE>(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
 
         if ((dtype == DTYPE_BASE64) || (dtype == DTYPE_PLAINTEXT)) {
             ui->checkBoxGroup->setEnabled(false);

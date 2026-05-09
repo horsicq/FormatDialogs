@@ -140,7 +140,7 @@ void DialogDataInspector::showData(qint64 nOffset, qint64 nSize)
 
     blockSignals(true);
 
-    bool bIsBigEndian = ((XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
+    bool bIsBigEndian = (static_cast<XBinary::ENDIAN>(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
 
     XBinary binary(m_pDevice);
 
@@ -226,9 +226,9 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
     XLineEditHEX *pLineEdit = qobject_cast<XLineEditHEX *>(sender());
 
     if (pLineEdit->isEnabled()) {
-        DATAINS nType = (DATAINS)(pLineEdit->property("STYPE").toInt());
+        DATAINS nType = static_cast<DATAINS>(pLineEdit->property("STYPE").toInt());
 
-        bool bIsBigEndian = ((XBinary::ENDIAN)(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
+        bool bIsBigEndian = (static_cast<XBinary::ENDIAN>(ui->comboBoxEndianness->currentData(Qt::UserRole).toUInt()) == XBinary::ENDIAN_BIG);
 
         m_bSync = true;
 
@@ -242,21 +242,21 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
             if (m_pDevice->isWritable()) {
                 XBinary binary(m_pDevice);
 
-                if (nType == DATAINS_BYTE) binary.write_uint8(m_nOffset, (quint8)varValue.toULongLong());
-                else if (nType == DATAINS_WORD) binary.write_uint16(m_nOffset, (quint16)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_DWORD) binary.write_uint32(m_nOffset, (quint32)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_QWORD) binary.write_uint64(m_nOffset, (quint64)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_UINT8) binary.write_uint8(m_nOffset, (quint8)varValue.toULongLong());
-                else if (nType == DATAINS_INT8) binary.write_int8(m_nOffset, (qint8)varValue.toULongLong());
-                else if (nType == DATAINS_UINT16) binary.write_uint16(m_nOffset, (quint16)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_INT16) binary.write_int16(m_nOffset, (qint16)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_UINT32) binary.write_uint32(m_nOffset, (quint32)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_INT32) binary.write_int32(m_nOffset, (qint32)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_UINT64) binary.write_uint64(m_nOffset, (quint64)varValue.toULongLong(), bIsBigEndian);
-                else if (nType == DATAINS_INT64) binary.write_int64(m_nOffset, (qint64)varValue.toULongLong(), bIsBigEndian);
+                if (nType == DATAINS_BYTE) binary.write_uint8(m_nOffset, static_cast<quint8>(varValue.toULongLong()));
+                else if (nType == DATAINS_WORD) binary.write_uint16(m_nOffset, static_cast<quint16>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_DWORD) binary.write_uint32(m_nOffset, static_cast<quint32>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_QWORD) binary.write_uint64(m_nOffset, static_cast<quint64>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_UINT8) binary.write_uint8(m_nOffset, static_cast<quint8>(varValue.toULongLong()));
+                else if (nType == DATAINS_INT8) binary.write_int8(m_nOffset, static_cast<qint8>(varValue.toULongLong()));
+                else if (nType == DATAINS_UINT16) binary.write_uint16(m_nOffset, static_cast<quint16>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_INT16) binary.write_int16(m_nOffset, static_cast<qint16>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_UINT32) binary.write_uint32(m_nOffset, static_cast<quint32>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_INT32) binary.write_int32(m_nOffset, static_cast<qint32>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_UINT64) binary.write_uint64(m_nOffset, static_cast<quint64>(varValue.toULongLong()), bIsBigEndian);
+                else if (nType == DATAINS_INT64) binary.write_int64(m_nOffset, static_cast<qint64>(varValue.toULongLong()), bIsBigEndian);
                 else if (nType == DATAINS_ANSI) binary.write_ansiString(m_nOffset, varValue.toString(), m_nSize);
                 else if (nType == DATAINS_UNICODE) binary.write_unicodeString(m_nOffset, varValue.toString(), m_nSize / 2, bIsBigEndian);
-                else if (nType == DATAINS_BINARY) binary.write_uint8(m_nOffset, (quint8)varValue.toULongLong());
+                else if (nType == DATAINS_BINARY) binary.write_uint8(m_nOffset, static_cast<quint8>(varValue.toULongLong()));
                 // else if (nType == DATAINS_UTF8) binary.write_utf8String(m_nOffset, m_nSize, varValue.toString());
 
                 // selectionChangedSlot(m_nOffset, m_nSize);
@@ -272,7 +272,7 @@ void DialogDataInspector::valueChangedSlot(QVariant varValue)
 
 void DialogDataInspector::on_pushButtonClose_clicked()
 {
-    this->close();
+    close();
 }
 
 void DialogDataInspector::on_checkBoxReadonly_stateChanged(int nArg)

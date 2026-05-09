@@ -44,7 +44,7 @@ public:
     void setFileName(const QString &sFileName);
     void setStringList(const QList<QString> &listString);
     void setDevice(QIODevice *pDevice);
-    virtual void adjustView();
+    void adjustView() override;
 #ifdef USE_ARCHIVE
     void setArchive(const QString &sFileName, const QString &sRecordFileName);
     void setArchive(QIODevice *pDevice, const QString &sRecordFileName);
@@ -54,7 +54,7 @@ private slots:
     void on_pushButtonSave_clicked();
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
 
 private:
     Ui::DialogTextInfo *ui;

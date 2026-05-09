@@ -49,9 +49,9 @@ public:
     void waitForFinished();
     qint32 showDialogDelay(quint64 nMsec = 1000);
 
-    virtual void adjustView();
+    void adjustView() override;
 
-    virtual void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+    void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions) override;
     static XBinary::PDSTRUCT createPdStruct(XOptions *pXOptions);
 
     void start();
@@ -67,7 +67,7 @@ private slots:
     void on_pushButtonCancel_clicked();
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
     XThreadObject *getThreadObject();
 
 private:

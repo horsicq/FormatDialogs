@@ -60,7 +60,7 @@ public:
     explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
     ~DialogDataInspector();
 
-    virtual void adjustView();
+    void adjustView() override;
 
 public slots:
     void currentLocationChangedSlot(quint64 nLocation, qint32 nLocationType, qint64 nSize);
@@ -80,7 +80,7 @@ private slots:
     void on_comboBoxEndianness_currentIndexChanged(int nIndex);
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
 
 private:
     Ui::DialogDataInspector *ui;

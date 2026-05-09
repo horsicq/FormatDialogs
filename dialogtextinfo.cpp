@@ -76,19 +76,7 @@ void DialogTextInfo::setFileName(const QString &sFileName)
 
 void DialogTextInfo::setStringList(const QList<QString> &listString)
 {
-    qint32 nNumberOfStrings = listString.count();
-
-    QString sText;
-
-    for (qint32 i = 0; i < nNumberOfStrings; i++) {
-        sText += listString.at(i);
-
-        if (i != (nNumberOfStrings - 1)) {
-            sText += "\r\n";
-        }
-    }
-
-    setText(sText);
+    setText(QStringList(listString).join("\r\n"));
 }
 
 void DialogTextInfo::setDevice(QIODevice *pDevice)
@@ -119,7 +107,7 @@ void DialogTextInfo::setArchive(QIODevice *pDevice, const QString &sRecordFileNa
 #endif
 void DialogTextInfo::on_pushButtonClose_clicked()
 {
-    this->close();
+    close();
 }
 
 void DialogTextInfo::on_pushButtonSave_clicked()
@@ -133,7 +121,7 @@ void DialogTextInfo::on_pushButtonSave_clicked()
 
         if (file.open(QIODevice::ReadWrite)) {
             QString sText = ui->textEditInfo->toPlainText();
-            file.write(sText.toUtf8().data());
+            file.write(sText.toUtf8());
             file.close();
         }
     }

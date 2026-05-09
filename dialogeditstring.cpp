@@ -26,8 +26,8 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
 {
     ui->setupUi(this);
 
-    this->m_pDevice = pDevice;
-    this->m_pData_struct = pData_struct;
+    m_pDevice = pDevice;
+    m_pData_struct = pData_struct;
 
     m_nSize = pData_struct->nSize;
 
@@ -36,9 +36,9 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     const bool bBlocked3 = ui->checkBoxKeepSize->blockSignals(true);
     const bool bBlocked4 = ui->checkBoxNullTerminated->blockSignals(true);
 
-    ui->comboBoxType->addItem(QString("ANSI"), XBinary::VT_A);
-    ui->comboBoxType->addItem(QString("Unicode"), XBinary::VT_U);
-    ui->comboBoxType->addItem(QString("UTF8"), XBinary::VT_UTF8);
+    ui->comboBoxType->addItem("ANSI", XBinary::VT_A);
+    ui->comboBoxType->addItem("Unicode", XBinary::VT_U);
+    ui->comboBoxType->addItem("UTF8", XBinary::VT_UTF8);
 
     qint32 nNumberOfRecords = ui->comboBoxType->count();
 
@@ -73,7 +73,7 @@ void DialogEditString::adjustView()
 
 void DialogEditString::on_pushButtonCancel_clicked()
 {
-    this->close();
+    close();
 }
 
 void DialogEditString::on_pushButtonOK_clicked()
@@ -122,7 +122,7 @@ void DialogEditString::adjust()
     }
 
     if (!ui->checkBoxKeepSize->isChecked()) {
-        nMax = qMin((qint64)0x100, m_pDevice->size() - (m_pData_struct->nOffset));
+        nMax = qMin(static_cast<qint64>(0x100), m_pDevice->size() - (m_pData_struct->nOffset));
     }
 
     if (ui->comboBoxType->currentData().toUInt() == XBinary::VT_U) {
@@ -132,13 +132,13 @@ void DialogEditString::adjust()
     }
 
     QByteArray baString =
-        XBinary::getStringData((XBinary::VT)(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxNullTerminated->isChecked());
+        XBinary::getStringData(static_cast<XBinary::VT>(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxNullTerminated->isChecked());
 
     QString sStatus = QString("%1: %2").arg(tr("Bytes available"), QString::number(nMax - baString.size()));
 
     ui->labelAvailable->setText(sStatus);
 
-    m_pData_struct->valueType = (XBinary::VT)(ui->comboBoxType->currentData().toUInt());
+    m_pData_struct->valueType = static_cast<XBinary::VT>(ui->comboBoxType->currentData().toUInt());
     m_pData_struct->sString = ui->lineEditString->text();
     m_pData_struct->nSize = baString.size();
 
