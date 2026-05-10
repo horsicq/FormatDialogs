@@ -138,13 +138,18 @@ void DumpProcess::process()
         XBinary::setPdStructInit(m_pPdStruct, _nFreeIndex, nNumberOfRecords);
 
         QJsonArray jsArray;
+        bool bSuccess = true;
 
         for (qint32 i = 0; (i < nNumberOfRecords) && XBinary::isPdStructNotCanceled(m_pPdStruct); i++) {
             QString _sFileName = m_listRecords.at(i).sFileName;
             qint64 _nOffset = m_listRecords.at(i).nOffset;
             qint64 _nSize = m_listRecords.at(i).nSize;
 
-            binary.dumpToFile(_sFileName, _nOffset, _nSize, m_pPdStruct);
+            if (!binary.dumpToFile(_sFileName, _nOffset, _nSize, m_pPdStruct)) {
+                emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file")).arg(_sFileName));
+                bSuccess = false;
+                break;
+            }
 
             QJsonObject jsObject;
             jsObject.insert("offset", _nOffset);
@@ -158,7 +163,9 @@ void DumpProcess::process()
 
         QJsonDocument saveFormat(jsArray);
 
-        XBinary::writeToFile(m_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented));
+        if (bSuccess && !XBinary::writeToFile(m_sJsonFileName, saveFormat.toJson(QJsonDocument::Indented))) {
+            emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file")).arg(m_sJsonFileName));
+        }
 
         XBinary::setPdStructFinished(m_pPdStruct, _nFreeIndex);
     } else if (m_dumpType == DT_PATCH_DEVICE_OFFSET) {
@@ -182,14 +189,16 @@ void DumpProcess::process()
                 QString _sFileName = jsObject.value("filename").toString();
                 qint64 _nOffset = jsObject.value("offset").toVariant().toLongLong();
                 qint64 _nSize = jsObject.value("size").toVariant().toLongLong();
-                qint64 _nFileSize = QFileInfo(_sFileName).size();
+                QFileInfo fileInfo(_sFileName);
+                qint64 _nFileSize = fileInfo.size();
+                qint64 nTargetSize = binary.getSize();
 
-                if ((_nOffset > _nFileSize) || (_nOffset <= 0)) {
+                if (!fileInfo.isFile() || (_nOffset < 0) || (_nOffset > nTargetSize)) {
                     emit errorMessage(tr("Invalid offset"));
                     break;
                 }
 
-                if ((_nOffset + _nSize > _nFileSize) || (_nSize <= 0) || (_nFileSize < _nSize)) {
+                if ((_nSize <= 0) || (_nSize > nTargetSize - _nOffset) || (_nFileSize < _nSize)) {
                     emit errorMessage(tr("Invalid size"));
                     break;
                 }
@@ -201,7 +210,7 @@ void DumpProcess::process()
 
                 if (sFileMD5 != sOriginMD5) {
                     if (!binary.patchFromFile(_sFileName, _nOffset, _nSize, m_pPdStruct)) {
-                        emit errorMessage(QString("%1 :").arg(tr("Cannot read file"), _sFileName));
+                        emit errorMessage(QString("%1: %2").arg(tr("Cannot read file")).arg(_sFileName));
                         break;
                     }
                 }
@@ -356,7 +365,7 @@ void DumpProcess::process()
 
                             if (pe.isValid(m_pPdStruct)) {
                                 if (!pe.fixDump(m_sFileName, m_fixDumpOptions, m_pPdStruct)) {
-                                    emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
+                                    emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file")).arg(sRawDmpFile));
                                 }
                             }
 #endif
@@ -366,7 +375,7 @@ void DumpProcess::process()
 
                             if (elf.isValid(m_pPdStruct)) {
                                 if (!elf.fixDump(m_sFileName, m_fixDumpOptions, m_pPdStruct)) {
-                                    emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file"), sRawDmpFile));
+                                    emit errorMessage(QString("%1: %2").arg(tr("Cannot fix dump file")).arg(sRawDmpFile));
                                 }
                             }
 #endif
@@ -374,10 +383,10 @@ void DumpProcess::process()
 
                         file.close();
                     } else {
-                        emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file"), sRawDmpFile));
+                        emit errorMessage(QString("%1: %2").arg(tr("Cannot open dump file")).arg(sRawDmpFile));
                     }
                 } else {
-                    emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file"), sRawDmpFile));
+                    emit errorMessage(QString("%1: %2").arg(tr("Cannot write data to file")).arg(sRawDmpFile));
                 }
             }
 

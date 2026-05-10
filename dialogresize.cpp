@@ -22,6 +22,9 @@
 
 #include "ui_dialogresize.h"
 
+#include <QMessageBox>
+#include <limits>
+
 DialogResize::DialogResize(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent, false), ui(new Ui::DialogResize)
 {
     ui->setupUi(this);
@@ -29,6 +32,7 @@ DialogResize::DialogResize(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
     m_pData = pData;
 
     ui->checkBoxHex->setChecked(true);
+    ui->lineEditValue->setMaxValue((std::numeric_limits<qint64>::max)());
     ui->lineEditValue->setValue_uint64(pData->nNewSize);
 }
 
@@ -48,7 +52,14 @@ void DialogResize::on_pushButtonCancel_clicked()
 
 void DialogResize::on_pushButtonOK_clicked()
 {
-    m_pData->nNewSize = ui->lineEditValue->getValue_uint64();
+    const quint64 nValue = ui->lineEditValue->getValue_uint64();
+
+    if (nValue > (quint64)(std::numeric_limits<qint64>::max)()) {
+        QMessageBox::warning(this, tr("Error"), tr("The new size is too large."));
+        return;
+    }
+
+    m_pData->nNewSize = (qint64)nValue;
 
     accept();
 }

@@ -115,10 +115,16 @@ QString DialogShowData::getDataString(DTYPE dtype)
     if ((dtype == DTYPE_HEX) || (dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) ||
         (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) ||
         (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
+        XBinary binary(m_pDevice);
+        QByteArray baArray = binary.read_array(m_nOffset, m_nSize);
+        qint32 nDataSize = baArray.size();
+
+        sResult.reserve(nDataSize * 6 + 128);
+
         if (dtype == DTYPE_C) {
-            sResult += QString("const uint8_t data[%1] = {").arg(m_nSize);
+            sResult += QString("const uint8_t data[%1] = {").arg(nDataSize);
         } else if (dtype == DTYPE_CPP) {
-            sResult += QString("constexpr std::array<uint8_t, %1> data = {").arg(m_nSize);
+            sResult += QString("constexpr std::array<uint8_t, %1> data = {").arg(nDataSize);
         } else if (dtype == DTYPE_JAVA) {
             sResult += QString("final byte[] data = {");
         } else if (dtype == DTYPE_JAVASCRIPT) {
@@ -128,11 +134,11 @@ QString DialogShowData::getDataString(DTYPE dtype)
         } else if (dtype == DTYPE_CSHARP) {
             sResult += QString("const byte[] data = {");
         } else if (dtype == DTYPE_VBNET) {
-            sResult += QString("Dim data As Byte(%1) = {").arg(m_nSize);
+            sResult += QString("Dim data As Byte(%1) = {").arg(nDataSize);
         } else if (dtype == DTYPE_RUST) {
-            sResult += QString("let data: [u8; 0x%1] = [").arg(m_nSize, 0, 16);
+            sResult += QString("let data: [u8; 0x%1] = [").arg(nDataSize, 0, 16);
         } else if (dtype == DTYPE_PASCAL) {
-            sResult += QString("data: array[0..%1] of Byte = (").arg(m_nSize - 1);
+            sResult += QString("data: array[0..%1] of Byte = (").arg(nDataSize - 1);
         } else if (dtype == DTYPE_LUA) {
             sResult += QString("data = {");
         } else if (dtype == DTYPE_GO) {
@@ -150,10 +156,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
         if (bIsGroup) {
             sResult += "\n";
         }
-
-        XBinary binary(m_pDevice);
-
-        for (qint32 i = 0; i < m_nSize; i++) {
+        for (qint32 i = 0; i < nDataSize; i++) {
             if (bIsGroup && ((i % nElementsProLine) == 0)) {
                 sResult += "    ";
 
@@ -164,21 +167,23 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 }
             }
 
+            quint8 nByte = (quint8)(unsigned char)baArray.at(i);
+
             if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
                 (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) ||
                 (dtype == DTYPE_FASM)) {
-                sResult += "0x" + XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
+                sResult += "0x" + XBinary::valueToHex(nByte).toUpper();
             } else if (dtype == DTYPE_VBNET) {
-                sResult += "&H" + XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
+                sResult += "&H" + XBinary::valueToHex(nByte).toUpper();
             } else if (dtype == DTYPE_PASCAL) {
-                sResult += "$" + XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
+                sResult += "$" + XBinary::valueToHex(nByte).toUpper();
             } else if (dtype == DTYPE_MASM) {
-                sResult += XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper() + "h";
+                sResult += XBinary::valueToHex(nByte).toUpper() + "h";
             } else if (dtype == DTYPE_HEX) {
-                sResult += XBinary::valueToHex(binary.read_uint8(m_nOffset + i)).toUpper();
+                sResult += XBinary::valueToHex(nByte).toUpper();
             }
 
-            if (i != (m_nSize - 1)) {
+            if (i != (nDataSize - 1)) {
                 if (dtype == DTYPE_HEX) {
                     sResult += " ";
                 } else {
@@ -186,7 +191,7 @@ QString DialogShowData::getDataString(DTYPE dtype)
                 }
             }
 
-            if (bIsGroup && (((i + 1) % nElementsProLine == 0) || (i == (m_nSize - 1)))) {
+            if (bIsGroup && (((i + 1) % nElementsProLine == 0) || (i == (nDataSize - 1)))) {
                 sResult += "\n";
             } else {
                 sResult += " ";

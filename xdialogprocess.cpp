@@ -63,6 +63,8 @@ XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject) :
 
     connect(m_pThread, SIGNAL(started()), m_pThreadObject, SLOT(_process()));
     connect(m_pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(m_pThreadObject, SIGNAL(completed(qint64)), m_pThreadObject, SLOT(moveToGuiThread()));
+    connect(m_pThreadObject, SIGNAL(completed(qint64)), m_pThread, SLOT(quit()));
     connect(m_pThreadObject, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
     // connect(m_pThreadObject, SIGNAL(warningMessage(QString)), this, SLOT(warningMessageSlot(QString)));
     // connect(m_pThreadObject, SIGNAL(infoMessage(QString)), this, SLOT(infoMessageSlot(QString)));

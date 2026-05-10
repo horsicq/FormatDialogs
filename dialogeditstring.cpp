@@ -134,7 +134,7 @@ void DialogEditString::adjust()
     QByteArray baString =
         XBinary::getStringData(static_cast<XBinary::VT>(ui->comboBoxType->currentData().toUInt()), ui->lineEditString->text(), ui->checkBoxNullTerminated->isChecked());
 
-    QString sStatus = QString("%1: %2").arg(tr("Bytes available"), QString::number(nMax - baString.size()));
+    QString sStatus = QString("%1: %2").arg(tr("Bytes available")).arg(QString::number(nMax - baString.size()));
 
     ui->labelAvailable->setText(sStatus);
 
