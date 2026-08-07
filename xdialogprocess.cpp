@@ -230,7 +230,12 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
             QThread::msleep(10);
         }
 
-        if (isSuccess()) {
+        // Break as soon as the worker finishes. isSuccess() cannot be used here:
+        // it is only set by the queued onCompleted() slot, which cannot run while this
+        // loop blocks the GUI event loop in msleep() -- so it would busy-sleep the full
+        // delay on every fast run. isPdStructFinished() reads the worker-updated struct
+        // directly, the same check waitForFinished() uses.
+        if (XBinary::isPdStructFinished(getPdStruct())) {
             break;
         }
     }
