@@ -39,29 +39,36 @@ public:
         TYPE_ADDRESS
     };
 
-    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue);
+    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue = 0);
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type, XADDR nCurrentValue);
-    ~DialogGoToAddress();
+    ~DialogGoToAddress() override;
 
-    virtual void adjustView();
+    void adjustView() override;
 
-    qint64 getValue();  // mb TODO XADDR
+    XADDR getValue() const;
 
 private:
+    void initialize();
     void adjustTitle(TYPE type);
+    void updateRangeDescription();
+    void updateState();
+    bool readValue(XADDR *pValue, QString *pError = nullptr) const;
+    bool isValueValid(XADDR nValue) const;
+    QString formatValue(XADDR nValue) const;
 
 private slots:
-    void on_pushButtonCancel_clicked();
-    void on_pushButtonOK_clicked();
+    void acceptValue();
     void on_checkBoxHex_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
 
 private:
     Ui::DialogGoToAddress *ui;
     TYPE m_type;
-    XBinary::_MEMORY_MAP *m_pMemoryMap;
+    XBinary::_MEMORY_MAP m_memoryMap;
+    bool m_bUseMemoryMap;
+    bool m_bHasMemoryMap;
     XADDR m_nMinValue;
     XADDR m_nMaxValue;
     XADDR m_nValue;
