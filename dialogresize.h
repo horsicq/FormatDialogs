@@ -43,14 +43,17 @@ public:
     virtual void adjustView();
 
 private slots:
-    void on_pushButtonCancel_clicked();
-    void on_pushButtonOK_clicked();
-    void on_checkBoxHex_toggled(bool bChecked);
+    void acceptResize();
+    void setHexMode(bool bChecked);
+    void updateState();
 
 protected:
     virtual void registerShortcuts(bool bState);
 
 private:
+    bool readNewSize(qint64 *pValue, QString *pError = nullptr) const;
+    QString formatSize(qint64 nValue) const;
+
     Ui::DialogResize *ui;
     DATA *m_pData;
 };
