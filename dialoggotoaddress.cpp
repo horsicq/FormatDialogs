@@ -27,7 +27,7 @@
 #include "ui_dialoggotoaddress.h"
 #include "xoptions.h"
 
-DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue)
+DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue, XADDR nMaximumValue)
     : XShortcutsDialog(pParent, false),
       ui(new Ui::DialogGoToAddress),
       m_type(type),
@@ -35,7 +35,7 @@ DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMe
       m_bUseMemoryMap(true),
       m_bHasMemoryMap(pMemoryMap != nullptr),
       m_nMinValue(0),
-      m_nMaxValue(0),
+      m_nMaxValue(nMaximumValue),
       m_nValue(nCurrentValue)
 {
     if (pMemoryMap) {
@@ -100,10 +100,8 @@ void DialogGoToAddress::initialize()
     updateState();
     adjustView();
 
-    const XADDR nSignedMaximum = static_cast<XADDR>((std::numeric_limits<qint64>::max)());
-    const bool bSignedDomain = (m_type == TYPE_OFFSET) || (m_type == TYPE_RELVIRTUALADDRESS);
     const bool bConfigurationAvailable = m_bUseMemoryMap ? m_bHasMemoryMap
-                                                         : ((m_nMinValue <= m_nMaxValue) && (!bSignedDomain || (m_nMinValue <= nSignedMaximum)));
+                                                         : (m_nMinValue <= effectiveMaximum());
     ui->lineEditValue->setEnabled(bConfigurationAvailable);
     ui->checkBoxHex->setEnabled(bConfigurationAvailable);
 
@@ -121,7 +119,12 @@ void DialogGoToAddress::adjustView()
     adjustSize();
 }
 
-XADDR DialogGoToAddress::getValue() const
+qint64 DialogGoToAddress::getValue()
+{
+    return static_cast<qint64>(m_nValue);
+}
+
+XADDR DialogGoToAddress::getValue_XADDR() const
 {
     return m_nValue;
 }
@@ -172,11 +175,12 @@ void DialogGoToAddress::updateRangeDescription()
         } else {
             ui->labelRange->setText(tr("Enter an address backed by mapped data."));
         }
-    } else {
-        XADDR nEffectiveMaximum = m_nMaxValue;
-        if ((m_type == TYPE_OFFSET) || (m_type == TYPE_RELVIRTUALADDRESS)) {
-            nEffectiveMaximum = qMin(nEffectiveMaximum, static_cast<XADDR>((std::numeric_limits<qint64>::max)()));
+        if (effectiveMaximum() < (XADDR_MAX - 1)) {
+            ui->labelRange->setText(ui->labelRange->text() + QLatin1Char(' ') +
+                                    tr("The maximum supported value is %1.").arg(formatValue(effectiveMaximum())));
         }
+    } else {
+        const XADDR nEffectiveMaximum = effectiveMaximum();
 
         if (m_nMinValue <= nEffectiveMaximum) {
             ui->labelRange->setText(tr("Allowed range: %1 to %2 (inclusive).").arg(formatValue(m_nMinValue), formatValue(nEffectiveMaximum)));
@@ -229,14 +233,15 @@ bool DialogGoToAddress::readValue(XADDR *pValue, QString *pError) const
                     *pError = tr("Memory-map information is unavailable.");
                     return false;
                 }
-                *pError = tr("The value does not identify mapped physical data.");
-            } else if (m_nMinValue > m_nMaxValue) {
+                if (nValue > effectiveMaximum()) {
+                    *pError = tr("Value must not exceed %1.").arg(formatValue(effectiveMaximum()));
+                } else {
+                    *pError = tr("The value does not identify mapped physical data.");
+                }
+            } else if (m_nMinValue > effectiveMaximum()) {
                 *pError = tr("The allowed range is invalid.");
             } else {
-                XADDR nEffectiveMaximum = m_nMaxValue;
-                if ((m_type == TYPE_OFFSET) || (m_type == TYPE_RELVIRTUALADDRESS)) {
-                    nEffectiveMaximum = qMin(nEffectiveMaximum, static_cast<XADDR>((std::numeric_limits<qint64>::max)()));
-                }
+                const XADDR nEffectiveMaximum = effectiveMaximum();
                 *pError = tr("Value must be between %1 and %2 (inclusive).").arg(formatValue(m_nMinValue), formatValue(nEffectiveMaximum));
             }
         }
@@ -251,15 +256,12 @@ bool DialogGoToAddress::readValue(XADDR *pValue, QString *pError) const
 
 bool DialogGoToAddress::isValueValid(XADDR nValue) const
 {
-    if (nValue == XADDR_MAX) {
+    if ((nValue == XADDR_MAX) || (nValue > effectiveMaximum())) {
         return false;
     }
 
     if (!m_bUseMemoryMap) {
-        XADDR nEffectiveMaximum = m_nMaxValue;
-        if ((m_type == TYPE_OFFSET) || (m_type == TYPE_RELVIRTUALADDRESS)) {
-            nEffectiveMaximum = qMin(nEffectiveMaximum, static_cast<XADDR>((std::numeric_limits<qint64>::max)()));
-        }
+        const XADDR nEffectiveMaximum = effectiveMaximum();
 
         return (m_nMinValue <= nEffectiveMaximum) && (nValue >= m_nMinValue) && (nValue <= nEffectiveMaximum);
     }
@@ -278,6 +280,17 @@ bool DialogGoToAddress::isValueValid(XADDR nValue) const
     }
 
     return XBinary::isAddressValid(&memoryMap, nValue) && XBinary::isAddressPhysical(&memoryMap, nValue);
+}
+
+XADDR DialogGoToAddress::effectiveMaximum() const
+{
+    XADDR nResult = qMin(m_nMaxValue, XADDR_MAX - 1);
+
+    if ((m_type == TYPE_OFFSET) || (m_type == TYPE_RELVIRTUALADDRESS)) {
+        nResult = qMin(nResult, static_cast<XADDR>((std::numeric_limits<qint64>::max)()));
+    }
+
+    return nResult;
 }
 
 QString DialogGoToAddress::formatValue(XADDR nValue) const

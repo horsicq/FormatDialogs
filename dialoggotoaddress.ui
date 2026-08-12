@@ -84,9 +84,6 @@
    </item>
    <item>
     <widget class="QLabel" name="labelStatus">
-     <property name="accessibleName">
-      <string>Validation status</string>
-     </property>
      <property name="text">
       <string>Enter a destination value.</string>
      </property>

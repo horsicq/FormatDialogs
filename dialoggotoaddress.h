@@ -39,13 +39,15 @@ public:
         TYPE_ADDRESS
     };
 
-    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue = 0);
+    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue = 0,
+                      XADDR nMaximumValue = XADDR_MAX - 1);
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type, XADDR nCurrentValue);
     ~DialogGoToAddress() override;
 
     void adjustView() override;
 
-    XADDR getValue() const;
+    Q_DECL_DEPRECATED_X("Use getValue_XADDR() to preserve unsigned 64-bit addresses") qint64 getValue();
+    XADDR getValue_XADDR() const;
 
 private:
     void initialize();
@@ -54,6 +56,7 @@ private:
     void updateState();
     bool readValue(XADDR *pValue, QString *pError = nullptr) const;
     bool isValueValid(XADDR nValue) const;
+    XADDR effectiveMaximum() const;
     QString formatValue(XADDR nValue) const;
 
 private slots:
