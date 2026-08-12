@@ -40,7 +40,7 @@ class XDialogProcess : public XShortcutsDialog {
 
 public:
     explicit XDialogProcess(QWidget *pParent);
-    XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject);
+    XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject, bool bOwnThreadObject = false);
     ~XDialogProcess();
 
     XBinary::PDSTRUCT *getPdStruct();
@@ -79,6 +79,7 @@ private:
     quint64 m_nSpeed[5];
     XThreadObject *m_pThreadObject;
     QThread *m_pThread;
+    bool m_bOwnThreadObject;
     bool m_bSuccess;
 };
 

@@ -28,6 +28,7 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
 
     m_pThreadObject = nullptr;
     m_pThread = nullptr;
+    m_bOwnThreadObject = false;
     m_bSuccess = false;
 
     memset(m_nSpeed, 0, sizeof m_nSpeed);
@@ -54,12 +55,16 @@ XDialogProcess::XDialogProcess(QWidget *pParent) : XShortcutsDialog(pParent, fal
     setAdvanced(true);
 }
 
-XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject) : XDialogProcess(pParent)
+XDialogProcess::XDialogProcess(QWidget *pParent, XThreadObject *pThreadObject, bool bOwnThreadObject) : XDialogProcess(pParent)
 {
     m_pThreadObject = pThreadObject;
-    m_pThread = new QThread;
+    m_bOwnThreadObject = bOwnThreadObject;
 
-    m_pThreadObject->moveToThread(m_pThread);
+    if (!m_pThreadObject) {
+        return;
+    }
+
+    m_pThread = new QThread;
 
     connect(m_pThread, SIGNAL(started()), m_pThreadObject, SLOT(_process()));
     connect(m_pThreadObject, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
@@ -81,6 +86,12 @@ XDialogProcess::~XDialogProcess()
     if (m_pThread) {
         m_pThread->quit();
         m_pThread->wait();
+
+        if (m_bOwnThreadObject) {
+            delete m_pThreadObject;
+            m_pThreadObject = nullptr;
+        }
+
         delete m_pThread;
     }
 
@@ -94,7 +105,7 @@ XBinary::PDSTRUCT *XDialogProcess::getPdStruct()
 
 void XDialogProcess::stop()
 {
-    m_pdStruct.bIsStop = true;
+    XBinary::setPdStructStopped(&m_pdStruct);
 }
 
 bool XDialogProcess::isSuccess()
@@ -149,8 +160,12 @@ void XDialogProcess::timerSlot()
         ui->labelTime->setText(XBinary::msecToDate(nElapsed));
     }
 
-    if (getPdStruct()->_pdRecord[0].nTotal) {
-        double dPercentage = static_cast<double>(getPdStruct()->_pdRecord[0].nCurrent) / static_cast<double>(getPdStruct()->_pdRecord[0].nTotal);
+    const XBinary::PDSTRUCT snapshot = XBinary::getPdStructSnapshot(&m_pdStruct);
+    const qint64 nCurrent = snapshot._pdRecord[0].nCurrent.loadAcquire();
+    const qint64 nTotal = snapshot._pdRecord[0].nTotal.loadAcquire();
+
+    if (nTotal > 0) {
+        const long double dPercentage = static_cast<long double>(qBound((qint64)0, nCurrent, nTotal)) / static_cast<long double>(nTotal);
 
         if (dPercentage > 0) {
             qint64 nRemain = static_cast<qint64>(nElapsed / dPercentage) - nElapsed;
@@ -168,12 +183,20 @@ void XDialogProcess::timerSlot()
             ui->labelRemain->hide();
             ui->labelRemainingPrefix->hide();
         }
+    } else {
+        ui->labelRemain->hide();
+        ui->labelRemainingPrefix->hide();
     }
 }
 
 void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar, QLabel *pLabel, bool bIsEnabled)
 {
-    if ((getPdStruct()->_pdRecord[nIndex].bIsValid) && (bIsEnabled)) {
+    const XBinary::PDSTRUCT snapshot = XBinary::getPdStructSnapshot(&m_pdStruct);
+    const XBinary::PDRECORD &record = snapshot._pdRecord[nIndex];
+    const qint64 nCurrent = record.nCurrent.loadAcquire();
+    const qint64 nTotal = record.nTotal.loadAcquire();
+
+    if (record.bIsValid.loadAcquire() && bIsEnabled) {
         pProgressBar->show();
         pLabel->show();
 
@@ -181,31 +204,30 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
 
         pProgressBar->setMaximum(100);
 
-        if (getPdStruct()->_pdRecord[nIndex].nTotal) {
-            qint32 nValue = (getPdStruct()->_pdRecord[nIndex].nCurrent * 100) / (getPdStruct()->_pdRecord[nIndex].nTotal);
+        if (nTotal > 0) {
+            const qint64 nBoundedCurrent = qBound((qint64)0, nCurrent, nTotal);
+            const qint32 nValue = qBound((qint32)0,
+                                         static_cast<qint32>((static_cast<long double>(nBoundedCurrent) * 100.0L) / static_cast<long double>(nTotal)),
+                                         (qint32)100);
             pProgressBar->setValue(nValue);
 
-            sStatus += QString("[%1/%2] ").arg(QString::number(getPdStruct()->_pdRecord[nIndex].nCurrent), QString::number(getPdStruct()->_pdRecord[nIndex].nTotal));
+            sStatus += QString("[%1/%2] ").arg(QString::number(nCurrent), QString::number(nTotal));
         } else {
             pProgressBar->setValue(0);
         }
 
-        if (getPdStruct()->_pdRecord[nIndex].nCurrent == 0) {
+        if (nCurrent == 0) {
             m_nSpeed[nIndex] = 0;
         }
 
         m_nSpeed[nIndex]++;
 
         if (m_nSpeed[nIndex]) {
-            quint64 nCurrent = getPdStruct()->_pdRecord[nIndex].nCurrent;
-
-            double dCurrent = static_cast<double>(nCurrent) / m_nSpeed[nIndex];
+            const double dCurrent = static_cast<double>(qMax((qint64)0, nCurrent)) / m_nSpeed[nIndex];
             pLabel->setText(QString::number(dCurrent, 'f', 2));
         }
 
-        QString _sStatus = getPdStruct()->_pdRecord[nIndex].sStatus;
-
-        sStatus += _sStatus;
+        sStatus += record.sStatus;
 
         pProgressBar->setFormat(sStatus);
     } else {
@@ -240,8 +262,9 @@ qint32 XDialogProcess::showDialogDelay(quint64 nMsec)
         }
     }
 
-    if (!m_pdStruct.sInfoString.isEmpty()) {
-        QMessageBox::information(XOptions::getMainWidget(this), tr("Info"), m_pdStruct.sInfoString);
+    const QString sInfoString = XBinary::getPdStructInfoString(&m_pdStruct);
+    if (!sInfoString.isEmpty()) {
+        QMessageBox::information(XOptions::getMainWidget(this), tr("Info"), sInfoString);
     }
 
     if (!isSuccess()) {
@@ -266,15 +289,21 @@ XBinary::PDSTRUCT XDialogProcess::createPdStruct(XOptions *pXOptions)
 {
     XBinary::PDSTRUCT pdStruct = XBinary::createPdStruct();
 
-    pdStruct.nBufferSize = pXOptions->getValue(XOptions::ID_FEATURE_READBUFFERSIZE).toInt();
-    pdStruct.nFileBufferSize = pXOptions->getValue(XOptions::ID_FEATURE_FILEBUFFERSIZE).toInt();
+    if (pXOptions) {
+        pdStruct.nBufferSize = pXOptions->getValue(XOptions::ID_FEATURE_READBUFFERSIZE).toInt();
+        pdStruct.nFileBufferSize = pXOptions->getValue(XOptions::ID_FEATURE_FILEBUFFERSIZE).toInt();
+    }
 
     return pdStruct;
 }
 
 void XDialogProcess::start()
 {
-    if (m_pThread) {
+    if (m_pThread && m_pThreadObject && !m_pThread->isRunning()) {
+        if (m_pThreadObject->thread() != m_pThread) {
+            m_pThreadObject->moveToThread(m_pThread);
+        }
+
         m_pThread->start();
     }
 }
