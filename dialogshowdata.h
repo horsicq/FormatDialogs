@@ -57,7 +57,7 @@ class DialogShowData : public XShortcutsDialog {
 
 public:
     explicit DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
-    ~DialogShowData();
+    ~DialogShowData() override;
 
     void adjustView() override;
 
@@ -73,13 +73,14 @@ protected:
     void registerShortcuts(bool bState) override;
 
 private:
-    QString getDataString(DTYPE dtype);
+    void loadData(QIODevice *pDevice, qint64 nSize);
+    QString getDataString(DTYPE dtype) const;
     void _addItem(const QString &sName, DTYPE dtype);
 
     Ui::DialogShowData *ui;
-    QIODevice *m_pDevice;
+    QByteArray m_baData;
+    QString m_sSelectionSummary;
     qint64 m_nOffset;
-    qint64 m_nSize;
 };
 
 #endif  // DIALOGSHOWDATA_H

@@ -2,43 +2,64 @@
 <ui version="4.0">
  <class>DialogSearch</class>
  <widget class="QDialog" name="DialogSearch">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>421</width>
-    <height>371</height>
+    <width>540</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Search</string>
   </property>
-  <property name="modal">
+  <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>10</number>
+   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBoxSearchFrom"/>
-     </item>
-    </layout>
+    <widget class="QWidget" name="widgetSearchFrom" native="true">
+     <layout class="QFormLayout" name="formLayoutSearchFrom">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelSearchFrom">
+        <property name="text">
+         <string>&amp;Search from:</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboBoxSearchFrom</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxSearchFrom">
+        <property name="accessibleName">
+         <string>Search starting point</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidgetSearch">
@@ -49,33 +70,47 @@
       <attribute name="title">
        <string>String</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
+      <layout class="QVBoxLayout" name="verticalLayoutString">
+       <property name="spacing">
+        <number>8</number>
        </property>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEditString"/>
+        <widget class="QLabel" name="labelString">
+         <property name="text">
+          <string>&amp;Text to find:</string>
+         </property>
+         <property name="buddy">
+          <cstring>lineEditString</cstring>
+         </property>
+        </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <widget class="QLineEdit" name="lineEditString">
+         <property name="accessibleName">
+          <string>Text to find</string>
+         </property>
+         <property name="placeholderText">
+          <string>Enter text to search for</string>
+         </property>
+         <property name="maxLength">
+          <number>256</number>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutStringOptions">
          <item>
           <widget class="QCheckBox" name="checkBoxMatchCase">
            <property name="text">
-            <string>Match case</string>
+            <string>Match &amp;case</string>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_3">
+          <spacer name="horizontalSpacerString">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -88,160 +123,32 @@
           </spacer>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBoxType">
+          <widget class="QLabel" name="labelEncoding">
+           <property name="text">
+            <string>&amp;Encoding:</string>
+           </property>
+           <property name="buddy">
+            <cstring>comboBoxEncoding</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBoxEncoding">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabSignature">
-      <attribute name="title">
-       <string>Signature</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QPlainTextEdit" name="plainTextEditSignature"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabValue">
-      <attribute name="title">
-       <string>Value</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QLineEdit" name="lineEditValue"/>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBoxEndianness"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="3" column="1">
-          <widget class="QRadioButton" name="radioButtonUshort">
-           <property name="text">
-            <string notr="true">ushort</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="radioButtonChar">
-           <property name="text">
-            <string notr="true">char</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="radioButtonInt">
-           <property name="text">
-            <string notr="true">int</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButtonByte">
-           <property name="text">
-            <string notr="true">byte</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QRadioButton" name="radioButtonShort">
-           <property name="text">
-            <string notr="true">short</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QRadioButton" name="radioButtonFloat">
-           <property name="text">
-            <string notr="true">float</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QRadioButton" name="radioButtonUchar">
-           <property name="text">
-            <string notr="true">uchar</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="radioButtonWord">
-           <property name="text">
-            <string notr="true">word</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QRadioButton" name="radioButtonDword">
-           <property name="text">
-            <string notr="true">dword</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QRadioButton" name="radioButtonQword">
-           <property name="text">
-            <string notr="true">qword</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QRadioButton" name="radioButtonUint">
-           <property name="text">
-            <string notr="true">uint</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QRadioButton" name="radioButtonInt64">
-           <property name="text">
-            <string notr="true">int64</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QRadioButton" name="radioButtonUint64">
-           <property name="text">
-            <string notr="true">uint64</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="4">
-          <widget class="QRadioButton" name="radioButtonDouble">
-           <property name="text">
-            <string notr="true">double</string>
+           <property name="accessibleName">
+            <string>Text encoding</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer">
+        <spacer name="verticalSpacerString">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -253,50 +160,224 @@
          </property>
         </spacer>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSignature">
+      <attribute name="title">
+       <string>Signature</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayoutSignature">
+       <property name="spacing">
+        <number>8</number>
+       </property>
        <item>
-        <widget class="QLineEdit" name="lineEditHex">
-         <property name="readOnly">
+        <widget class="QLabel" name="labelSignature">
+         <property name="text">
+          <string>&amp;Byte signature:</string>
+         </property>
+         <property name="buddy">
+          <cstring>lineEditSignature</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditSignature">
+         <property name="accessibleName">
+          <string>Byte signature</string>
+         </property>
+         <property name="placeholderText">
+          <string>e.g. 4D 5A ?? 00</string>
+         </property>
+         <property name="maxLength">
+          <number>256</number>
+         </property>
+         <property name="clearButtonEnabled">
           <bool>true</bool>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelSignatureHelp">
+         <property name="text">
+          <string>Enter hexadecimal byte pairs. Use ?? to match any byte.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacerSignature">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabValue">
+      <attribute name="title">
+       <string>Value</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayoutValue">
+       <item>
+        <layout class="QFormLayout" name="formLayoutValue">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelValueType">
+           <property name="text">
+            <string>&amp;Type:</string>
+           </property>
+           <property name="buddy">
+            <cstring>comboBoxValueType</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="comboBoxValueType">
+           <property name="accessibleName">
+            <string>Value type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelValue">
+           <property name="text">
+            <string>&amp;Value:</string>
+           </property>
+           <property name="buddy">
+            <cstring>lineEditValue</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEditValue">
+           <property name="accessibleName">
+            <string>Search value</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="labelValueHelp">
+           <property name="text">
+            <string>Enter up to 8 hexadecimal digits.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="labelEndianness">
+           <property name="text">
+            <string>&amp;Endianness:</string>
+           </property>
+           <property name="buddy">
+            <cstring>comboBoxEndianness</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="comboBoxEndianness">
+           <property name="accessibleName">
+            <string>Byte order</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="labelHex">
+           <property name="text">
+            <string>Encoded &amp;bytes:</string>
+           </property>
+           <property name="buddy">
+            <cstring>lineEditHex</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="lineEditHex">
+           <property name="accessibleName">
+            <string>Encoded bytes in hexadecimal</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacerValue">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonOK">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonCancel">
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QLabel" name="labelStatus">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>36</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Enter text to search for.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboBoxSearchFrom</tabstop>
+  <tabstop>tabWidgetSearch</tabstop>
+  <tabstop>lineEditString</tabstop>
+  <tabstop>checkBoxMatchCase</tabstop>
+  <tabstop>comboBoxEncoding</tabstop>
+  <tabstop>lineEditSignature</tabstop>
+  <tabstop>comboBoxValueType</tabstop>
+  <tabstop>lineEditValue</tabstop>
+  <tabstop>comboBoxEndianness</tabstop>
+  <tabstop>lineEditHex</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

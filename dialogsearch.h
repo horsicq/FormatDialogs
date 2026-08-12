@@ -33,45 +33,29 @@ class DialogSearch : public XShortcutsDialog {
 
 public:
     struct OPTIONS {
-        bool bShowBegin;
+        bool bShowBegin = false;
     };
 
     explicit DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCHDATA *pSearchData, XBinary::SEARCHMODE searchMode, const OPTIONS &options);
-    ~DialogSearch();
+    ~DialogSearch() override;
 
-    virtual void adjustView();
+    void adjustView() override;
 
 private slots:
-    void on_pushButtonCancel_clicked();
-    void on_pushButtonOK_clicked();
-    void on_tabWidgetSearch_currentChanged(int nIndex);
-    void on_lineEditValue_textChanged(const QString &sText);
-    void on_comboBoxEndianness_currentIndexChanged(int nIndex);
-    void on_radioButtonByte_toggled(bool bChecked);
-    void on_radioButtonWord_toggled(bool bChecked);
-    void on_radioButtonDword_toggled(bool bChecked);
-    void on_radioButtonQword_toggled(bool bChecked);
-    void on_radioButtonChar_toggled(bool bChecked);
-    void on_radioButtonUchar_toggled(bool bChecked);
-    void on_radioButtonShort_toggled(bool bChecked);
-    void on_radioButtonUshort_toggled(bool bChecked);
-    void on_radioButtonInt_toggled(bool bChecked);
-    void on_radioButtonUint_toggled(bool bChecked);
-    void on_radioButtonInt64_toggled(bool bChecked);
-    void on_radioButtonUint64_toggled(bool bChecked);
-    void on_radioButtonFloat_toggled(bool bChecked);
-    void on_radioButtonDouble_toggled(bool bChecked);
-    void ajustValue();
+    void acceptSearch();
+    void updateModeState();
+    void updateValue();
     void checkValid();
-    void on_plainTextEditString_textChanged();
-    void on_plainTextEditSignature_textChanged();
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
 
 private:
+    XBinary::VT currentValueType() const;
+    bool readValue(QVariant *pValue, QString *pHex, QString *pError) const;
+    void setStatus(const QString &sText);
+
     Ui::DialogSearch *ui;
-    QIODevice *m_pDevice;
     XBinary::SEARCHDATA *m_pSearchData;
 };
 

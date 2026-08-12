@@ -52,6 +52,7 @@ protected:
 
 private:
     bool readNewSize(qint64 *pValue, QString *pError = nullptr) const;
+    QString formatInputValue(qint64 nValue) const;
     QString formatSize(qint64 nValue) const;
 
     Ui::DialogResize *ui;

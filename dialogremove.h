@@ -21,8 +21,10 @@
 #ifndef DIALOGREMOVE_H
 #define DIALOGREMOVE_H
 
-#include "xbinary.h"
 #include "xshortcutsdialog.h"
+
+class QPushButton;
+class QString;
 
 namespace Ui {
 class DialogRemove;
@@ -38,22 +40,26 @@ public:
         qint64 nMaxSize;
     };
 
-    DialogRemove(QWidget *pParent, DATA *pData);
-    ~DialogRemove();
+    explicit DialogRemove(QWidget *pParent, DATA *pData);
+    ~DialogRemove() override;
 
-    virtual void adjustView();
+    void adjustView() override;
 
 private slots:
-    void on_pushButtonCancel_clicked();
-    void on_pushButtonOK_clicked();
+    void acceptRemove();
+    void updateState();
     void on_checkBoxHex_toggled(bool bChecked);
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
 
 private:
+    bool readRange(qint64 *pnOffset, qint64 *pnSize, QString *psError) const;
+    QString formatOffset(qint64 nValue) const;
+
     Ui::DialogRemove *ui;
     DATA *m_pData;
+    QPushButton *m_pRemoveButton;
 };
 
 #endif  // DIALOGREMOVE_H

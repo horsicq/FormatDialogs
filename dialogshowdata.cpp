@@ -20,15 +20,31 @@
  */
 #include "dialogshowdata.h"
 
+#include <QListWidgetItem>
+#include <QScrollBar>
+
 #include "ui_dialogshowdata.h"
 
-DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize) : XShortcutsDialog(pParent, true), ui(new Ui::DialogShowData)
+namespace {
+const qint64 MAX_DATA_SIZE = 0x10000;
+
+QString joinTokens(const QStringList &listTokens, qint32 nBegin, qint32 nCount)
+{
+    QStringList listLine;
+    listLine.reserve(nCount);
+
+    for (qint32 i = 0; i < nCount; i++) {
+        listLine.append(listTokens.at(nBegin + i));
+    }
+
+    return listLine.join(QStringLiteral(", "));
+}
+}  // namespace
+
+DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize)
+    : XShortcutsDialog(pParent, true), ui(new Ui::DialogShowData), m_nOffset(nOffset)
 {
     ui->setupUi(this);
-
-    m_pDevice = pDevice;
-    m_nOffset = nOffset;
-    m_nSize = qMin(nSize, static_cast<qint64>(0x10000));
 
     _addItem(tr("Hex"), DTYPE_HEX);
     _addItem(tr("Plain Text"), DTYPE_PLAINTEXT);
@@ -56,7 +72,24 @@ DialogShowData::DialogShowData(QWidget *pParent, QIODevice *pDevice, qint64 nOff
     ui->spinBoxElementsProLine->blockSignals(false);
     ui->checkBoxGroup->blockSignals(false);
 
+    XOptions::setMonoFont(ui->plainTextEditData);
+    ui->plainTextEditData->setPlaceholderText(tr("No readable data is available for this selection."));
+    ui->splitter->setStretchFactor(0, 0);
+    ui->splitter->setStretchFactor(1, 1);
+    ui->splitter->setChildrenCollapsible(false);
+
+    loadData(pDevice, nSize);
+    ui->labelSelectionSummary->setText(m_sSelectionSummary);
+
     ui->listWidgetType->setCurrentRow(0);
+    adjustView();
+    if (m_baData.isEmpty()) {
+        ui->listWidgetType->setEnabled(false);
+        ui->plainTextEditData->setEnabled(false);
+        ui->pushButtonOK->setFocus(Qt::OtherFocusReason);
+    } else {
+        ui->listWidgetType->setFocus(Qt::OtherFocusReason);
+    }
 }
 
 DialogShowData::~DialogShowData()
@@ -66,6 +99,12 @@ DialogShowData::~DialogShowData()
 
 void DialogShowData::adjustView()
 {
+    const qint32 nFormatWidth = ui->listWidgetType->sizeHintForColumn(0) + ui->listWidgetType->frameWidth() * 2 +
+                                ui->listWidgetType->verticalScrollBar()->sizeHint().width() + 28;
+    ui->widgetFormat->setMinimumWidth(qMax(150, nFormatWidth));
+    ui->splitter->setSizes(QList<int>() << qMax(150, nFormatWidth) << qMax(480, width() - nFormatWidth));
+
+    setMinimumSize(qMax(560, minimumSizeHint().width()), qMax(320, minimumSizeHint().height()));
 }
 
 void DialogShowData::on_pushButtonOK_clicked()
@@ -73,23 +112,90 @@ void DialogShowData::on_pushButtonOK_clicked()
     close();
 }
 
+void DialogShowData::loadData(QIODevice *pDevice, qint64 nSize)
+{
+    m_baData.clear();
+
+    if (!pDevice) {
+        m_sSelectionSummary = tr("The source device is unavailable.");
+        return;
+    }
+    if ((m_nOffset < 0) || (nSize < -1)) {
+        m_sSelectionSummary = tr("The selected source range is invalid.");
+        return;
+    }
+    if (!pDevice->isReadable()) {
+        m_sSelectionSummary = tr("The source device is not readable.");
+        return;
+    }
+
+    const qint64 nDeviceSize = pDevice->size();
+    if ((nDeviceSize < 0) || (m_nOffset > nDeviceSize)) {
+        m_sSelectionSummary = tr("The selected source range is outside the available data.");
+        return;
+    }
+
+    const qint64 nAvailableSize = nDeviceSize - m_nOffset;
+    const qint64 nSelectionSize = (nSize == -1) ? nAvailableSize : nSize;
+    if (nSelectionSize == 0) {
+        m_sSelectionSummary = tr("No bytes were selected.");
+        return;
+    }
+
+    const qint64 nTargetSize = qMin(nSelectionSize, MAX_DATA_SIZE);
+    const qint64 nReadSize = qMin(nTargetSize, nAvailableSize);
+    if (nReadSize <= 0) {
+        m_sSelectionSummary = tr("No bytes are available at offset 0x%1.").arg(QString::number(m_nOffset, 16).toUpper());
+        return;
+    }
+
+    const qint64 nOriginalPosition = pDevice->pos();
+    m_baData = XBinary::read_array(pDevice, m_nOffset, nReadSize);
+    const bool bPositionRestored = (nOriginalPosition < 0) || pDevice->seek(nOriginalPosition);
+    const QString sOffset = QString::number(m_nOffset, 16).toUpper();
+
+    if (m_baData.isEmpty()) {
+        m_sSelectionSummary = tr("No bytes could be read at offset 0x%1.").arg(sOffset);
+    } else if (m_baData.size() < nTargetSize) {
+        m_sSelectionSummary =
+            tr("Offset 0x%1 — read %2 of %3 requested bytes.").arg(sOffset).arg(m_baData.size()).arg(nSelectionSize);
+    } else if (nSelectionSize > MAX_DATA_SIZE) {
+        m_sSelectionSummary = tr("Offset 0x%1 — showing the first %2 of %3 selected bytes (limit: %4).")
+                                  .arg(sOffset)
+                                  .arg(m_baData.size())
+                                  .arg(nSelectionSize)
+                                  .arg(MAX_DATA_SIZE);
+    } else {
+        m_sSelectionSummary = tr("Offset 0x%1 — showing %2 bytes.").arg(sOffset).arg(m_baData.size());
+    }
+
+    if (!bPositionRestored) {
+        m_sSelectionSummary += QLatin1Char(' ');
+        m_sSelectionSummary += tr("The source position could not be restored.");
+    }
+}
+
 void DialogShowData::reload()
 {
-    if (ui->listWidgetType->currentRow() != -1) {
-        DTYPE dtype = static_cast<DTYPE>(ui->listWidgetType->currentItem()->data(Qt::UserRole).toUInt());
-
-        if ((dtype == DTYPE_BASE64) || (dtype == DTYPE_PLAINTEXT)) {
-            ui->checkBoxGroup->setEnabled(false);
-            ui->spinBoxElementsProLine->setEnabled(false);
-        } else {
-            ui->checkBoxGroup->setEnabled(true);
-            ui->spinBoxElementsProLine->setEnabled(ui->checkBoxGroup->isChecked());
-        }
-
-        QString sData = getDataString(dtype);
-
-        ui->plainTextEditData->setPlainText(sData);
+    QListWidgetItem *pCurrentItem = ui->listWidgetType->currentItem();
+    if (!pCurrentItem) {
+        ui->plainTextEditData->clear();
+        ui->pushButtonCopy->setEnabled(false);
+        return;
     }
+
+    const DTYPE dtype = static_cast<DTYPE>(pCurrentItem->data(Qt::UserRole).toUInt());
+    const bool bHasData = !m_baData.isEmpty();
+    const bool bSupportsWrapping = bHasData && (dtype != DTYPE_BASE64) && (dtype != DTYPE_PLAINTEXT);
+    const bool bWrap = bSupportsWrapping && ui->checkBoxGroup->isChecked();
+
+    ui->checkBoxGroup->setEnabled(bSupportsWrapping);
+    ui->labelElementsProLine->setEnabled(bWrap);
+    ui->spinBoxElementsProLine->setEnabled(bWrap);
+
+    const QString sData = getDataString(dtype);
+    ui->plainTextEditData->setPlainText(sData);
+    ui->pushButtonCopy->setEnabled(bHasData && !sData.isEmpty());
 }
 
 void DialogShowData::on_pushButtonCopy_clicked()
@@ -104,128 +210,135 @@ void DialogShowData::on_listWidgetType_currentRowChanged(int nCurrentRow)
     reload();
 }
 
-QString DialogShowData::getDataString(DTYPE dtype)
+QString DialogShowData::getDataString(DTYPE dtype) const
 {
-    // TODO
-    QString sResult;
+    if (m_baData.isEmpty()) {
+        return QString();
+    }
+    if (dtype == DTYPE_BASE64) {
+        return QString::fromLatin1(m_baData.toBase64());
+    }
+    if (dtype == DTYPE_PLAINTEXT) {
+        return XBinary::dataToString(m_baData, XBinary::DSMODE_NONE);
+    }
 
-    qint32 nElementsProLine = ui->spinBoxElementsProLine->value();
-    bool bIsGroup = ui->checkBoxGroup->isChecked();
+    const qint32 nDataSize = m_baData.size();
+    const qint32 nElementsProLine = qMax(1, ui->spinBoxElementsProLine->value());
+    const bool bIsGroup = ui->checkBoxGroup->isChecked();
+    QStringList listTokens;
+    listTokens.reserve(nDataSize);
 
-    if ((dtype == DTYPE_HEX) || (dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET) ||
-        (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) || (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_PASCAL) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) ||
-        (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) || (dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
-        XBinary binary(m_pDevice);
-        QByteArray baArray = binary.read_array(m_nOffset, m_nSize);
-        qint32 nDataSize = baArray.size();
+    for (qint32 i = 0; i < nDataSize; i++) {
+        const quint8 nByte = static_cast<quint8>(m_baData.at(i));
+        const QString sHex = XBinary::valueToHex(nByte).toUpper();
+        QString sToken;
 
-        sResult.reserve(nDataSize * 6 + 128);
-
-        if (dtype == DTYPE_C) {
-            sResult += QString("const uint8_t data[%1] = {").arg(nDataSize);
-        } else if (dtype == DTYPE_CPP) {
-            sResult += QString("constexpr std::array<uint8_t, %1> data = {").arg(nDataSize);
-        } else if (dtype == DTYPE_JAVA) {
-            sResult += QString("final byte[] data = {");
-        } else if (dtype == DTYPE_JAVASCRIPT) {
-            sResult += QString("const data = new Uint8Array([");
-        } else if (dtype == DTYPE_PYTHON) {
-            sResult += QString("data = bytes([");
-        } else if (dtype == DTYPE_CSHARP) {
-            sResult += QString("const byte[] data = {");
+        if (dtype == DTYPE_HEX) {
+            sToken = sHex;
         } else if (dtype == DTYPE_VBNET) {
-            sResult += QString("Dim data As Byte(%1) = {").arg(nDataSize);
-        } else if (dtype == DTYPE_RUST) {
-            sResult += QString("let data: [u8; 0x%1] = [").arg(nDataSize, 0, 16);
+            sToken = QStringLiteral("&H") + sHex;
         } else if (dtype == DTYPE_PASCAL) {
-            sResult += QString("data: array[0..%1] of Byte = (").arg(nDataSize - 1);
-        } else if (dtype == DTYPE_LUA) {
-            sResult += QString("data = {");
-        } else if (dtype == DTYPE_GO) {
-            sResult += QString("data := [...]byte {");
-        } else if (dtype == DTYPE_CRYSTAL) {
-            sResult += QString("data = [");
-        } else if (dtype == DTYPE_SWIFT) {
-            sResult += QString("let data: [UInt8] = [");
+            sToken = QStringLiteral("$") + sHex;
         } else if (dtype == DTYPE_MASM) {
-            sResult += QString("data: ");
-        } else if (dtype == DTYPE_FASM) {
-            sResult += QString("data: ");
-        }
-
-        if (bIsGroup) {
-            sResult += "\n";
-        }
-        for (qint32 i = 0; i < nDataSize; i++) {
-            if (bIsGroup && ((i % nElementsProLine) == 0)) {
-                sResult += "    ";
-
-                if (dtype == DTYPE_MASM) {
-                    sResult += "DB ";
-                } else if (dtype == DTYPE_FASM) {
-                    sResult += "db ";
-                }
-            }
-
-            quint8 nByte = (quint8)(unsigned char)baArray.at(i);
-
-            if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_RUST) || (dtype == DTYPE_PYTHON) ||
-                (dtype == DTYPE_JAVASCRIPT) || (dtype == DTYPE_LUA) || (dtype == DTYPE_GO) || (dtype == DTYPE_CRYSTAL) || (dtype == DTYPE_SWIFT) ||
-                (dtype == DTYPE_FASM)) {
-                sResult += "0x" + XBinary::valueToHex(nByte).toUpper();
-            } else if (dtype == DTYPE_VBNET) {
-                sResult += "&H" + XBinary::valueToHex(nByte).toUpper();
-            } else if (dtype == DTYPE_PASCAL) {
-                sResult += "$" + XBinary::valueToHex(nByte).toUpper();
-            } else if (dtype == DTYPE_MASM) {
-                sResult += XBinary::valueToHex(nByte).toUpper() + "h";
-            } else if (dtype == DTYPE_HEX) {
-                sResult += XBinary::valueToHex(nByte).toUpper();
-            }
-
-            if (i != (nDataSize - 1)) {
-                if (dtype == DTYPE_HEX) {
-                    sResult += " ";
-                } else {
-                    sResult += ",";
-                }
-            }
-
-            if (bIsGroup && (((i + 1) % nElementsProLine == 0) || (i == (nDataSize - 1)))) {
-                sResult += "\n";
-            } else {
-                sResult += " ";
+            sToken = ((nByte >= 0xA0) ? QStringLiteral("0") : QString()) + sHex + QLatin1Char('h');
+        } else {
+            sToken = QStringLiteral("0x") + sHex;
+            if ((dtype == DTYPE_JAVA) && (nByte >= 0x80)) {
+                sToken.prepend(QStringLiteral("(byte) "));
             }
         }
-    } else if (dtype == DTYPE_BASE64) {
-        XBinary binary(m_pDevice);
-        QByteArray baArray = binary.read_array(m_nOffset, m_nSize);
-        sResult = baArray.toBase64();
-    } else if (dtype == DTYPE_PLAINTEXT) {
-        XBinary binary(m_pDevice);
-        QByteArray baArray = binary.read_array(m_nOffset, m_nSize);
-        sResult = XBinary::dataToString(baArray, XBinary::DSMODE_NONE);
+
+        listTokens.append(sToken);
     }
 
-    if ((dtype == DTYPE_C) || (dtype == DTYPE_CPP) || (dtype == DTYPE_CSHARP) || (dtype == DTYPE_JAVA) || (dtype == DTYPE_VBNET)) {
-        sResult += "};";
-    } else if (dtype == DTYPE_RUST) {
-        sResult += "];";
-    } else if (dtype == DTYPE_PYTHON) {
-        sResult += "])";
+    if (dtype == DTYPE_HEX) {
+        if (!bIsGroup) {
+            return listTokens.join(QLatin1Char(' '));
+        }
+
+        QStringList listLines;
+        for (qint32 nBegin = 0; nBegin < nDataSize; nBegin += nElementsProLine) {
+            const qint32 nCount = qMin(nElementsProLine, nDataSize - nBegin);
+            listLines.append(listTokens.mid(nBegin, nCount).join(QLatin1Char(' ')));
+        }
+        return listLines.join(QLatin1Char('\n'));
+    }
+
+    if ((dtype == DTYPE_MASM) || (dtype == DTYPE_FASM)) {
+        const QString sDirective = (dtype == DTYPE_MASM) ? QStringLiteral("DB") : QStringLiteral("db");
+        if (!bIsGroup) {
+            return QStringLiteral("data: %1 %2").arg(sDirective, listTokens.join(QStringLiteral(", ")));
+        }
+
+        QStringList listLines;
+        for (qint32 nBegin = 0; nBegin < nDataSize; nBegin += nElementsProLine) {
+            const qint32 nCount = qMin(nElementsProLine, nDataSize - nBegin);
+            const QString sLabel = (nBegin == 0) ? QStringLiteral("data: ") : QStringLiteral("      ");
+            listLines.append(sLabel + sDirective + QLatin1Char(' ') + joinTokens(listTokens, nBegin, nCount));
+        }
+        return listLines.join(QLatin1Char('\n'));
+    }
+
+    QString sPrefix;
+    QString sSuffix;
+    if (dtype == DTYPE_C) {
+        sPrefix = QStringLiteral("const uint8_t data[%1] = {").arg(nDataSize);
+        sSuffix = QStringLiteral("};");
+    } else if (dtype == DTYPE_CPP) {
+        sPrefix = QStringLiteral("constexpr std::array<uint8_t, %1> data = {").arg(nDataSize);
+        sSuffix = QStringLiteral("};");
+    } else if (dtype == DTYPE_JAVA) {
+        sPrefix = QStringLiteral("final byte[] data = {");
+        sSuffix = QStringLiteral("};");
     } else if (dtype == DTYPE_JAVASCRIPT) {
-        sResult += "]);";
+        sPrefix = QStringLiteral("const data = new Uint8Array([");
+        sSuffix = QStringLiteral("]);");
+    } else if (dtype == DTYPE_PYTHON) {
+        sPrefix = QStringLiteral("data = bytes([");
+        sSuffix = QStringLiteral("])");
+    } else if (dtype == DTYPE_CSHARP) {
+        sPrefix = QStringLiteral("byte[] data = {");
+        sSuffix = QStringLiteral("};");
+    } else if (dtype == DTYPE_VBNET) {
+        sPrefix = QStringLiteral("Dim data As Byte() = {");
+        sSuffix = QStringLiteral("}");
+    } else if (dtype == DTYPE_RUST) {
+        sPrefix = QStringLiteral("let data: [u8; %1] = [").arg(nDataSize);
+        sSuffix = QStringLiteral("];");
     } else if (dtype == DTYPE_PASCAL) {
-        sResult += ");";
-    } else if ((dtype == DTYPE_LUA) || (dtype == DTYPE_GO)) {
-        sResult += "}";
+        sPrefix = QStringLiteral("const\n  data: array[0..%1] of Byte = (").arg(nDataSize - 1);
+        sSuffix = QStringLiteral(");");
+    } else if (dtype == DTYPE_LUA) {
+        sPrefix = QStringLiteral("data = {");
+        sSuffix = QStringLiteral("}");
+    } else if (dtype == DTYPE_GO) {
+        sPrefix = QStringLiteral("var data = [...]byte{");
+        sSuffix = QStringLiteral("}");
     } else if (dtype == DTYPE_CRYSTAL) {
-        sResult += "] of UInt8";
+        sPrefix = QStringLiteral("data = [");
+        sSuffix = QStringLiteral("] of UInt8");
     } else if (dtype == DTYPE_SWIFT) {
-        sResult += "]";
+        sPrefix = QStringLiteral("let data: [UInt8] = [");
+        sSuffix = QStringLiteral("]");
+    } else {
+        return QString();
     }
 
-    // sResult = XBinary::read_array(m_pDevice, m_nOffset, m_nSize).toHex();
+    if (!bIsGroup) {
+        return sPrefix + QLatin1Char(' ') + listTokens.join(QStringLiteral(", ")) + QLatin1Char(' ') + sSuffix;
+    }
+
+    QString sResult = sPrefix + QLatin1Char('\n');
+    for (qint32 nBegin = 0; nBegin < nDataSize; nBegin += nElementsProLine) {
+        const qint32 nCount = qMin(nElementsProLine, nDataSize - nBegin);
+        const bool bLastLine = (nBegin + nCount) == nDataSize;
+        sResult += QStringLiteral("    ") + joinTokens(listTokens, nBegin, nCount);
+        if (!bLastLine || (dtype == DTYPE_GO)) {
+            sResult += QLatin1Char(',');
+        }
+        sResult += QLatin1Char('\n');
+    }
+    sResult += sSuffix;
 
     return sResult;
 }

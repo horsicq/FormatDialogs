@@ -34,6 +34,8 @@ DialogResize::DialogResize(QWidget *pParent, DATA *pData) : XShortcutsDialog(pPa
 
     ui->checkBoxHex->setChecked(true);
     ui->lineEditValue->setMaxValue((std::numeric_limits<qint64>::max)());
+    // Select the 64-bit validator even when the initial value is unavailable.
+    ui->lineEditValue->setValue_uint64(0);
 
     if (m_pData && (m_pData->nNewSize >= 0)) {
         ui->lineEditValue->setValue_uint64((quint64)m_pData->nNewSize);
@@ -140,13 +142,18 @@ void DialogResize::updateState()
     if (m_pData->nOldSize < 0) {
         ui->labelCurrentValue->setText(tr("Invalid"));
         ui->labelStatus->setText(tr("The current size is invalid."));
+        ui->lineEditValue->setEnabled(false);
+        ui->checkBoxHex->setEnabled(false);
         if (pOKButton) {
             pOKButton->setEnabled(false);
         }
         return;
     }
 
-    ui->labelCurrentValue->setText(formatSize(m_pData->nOldSize));
+    ui->lineEditValue->setEnabled(true);
+    ui->checkBoxHex->setEnabled(true);
+    ui->labelCurrentValue->setText(formatInputValue(m_pData->nOldSize));
+    ui->labelCurrentValue->setToolTip(formatSize(m_pData->nOldSize));
 
     qint64 nValue = 0;
     QString sError;
@@ -172,6 +179,13 @@ bool DialogResize::readNewSize(qint64 *pValue, QString *pError) const
     if (!m_pData) {
         if (pError) {
             *pError = tr("Resize information is unavailable.");
+        }
+        return false;
+    }
+
+    if (m_pData->nOldSize < 0) {
+        if (pError) {
+            *pError = tr("The current size is invalid.");
         }
         return false;
     }
@@ -202,16 +216,25 @@ bool DialogResize::readNewSize(qint64 *pValue, QString *pError) const
     return true;
 }
 
+QString DialogResize::formatInputValue(qint64 nValue) const
+{
+    if (ui->checkBoxHex->isChecked()) {
+        return QString("%1").arg((quint64)nValue, 16, 16, QChar('0')).toUpper();
+    }
+
+    return QString::number(nValue);
+}
+
 QString DialogResize::formatSize(qint64 nValue) const
 {
     const QString sDecimal = QLocale().toString(nValue);
     const QString sHex = QString::number((quint64)nValue, 16).toUpper();
 
     if (ui->checkBoxHex->isChecked()) {
-        return tr("0x%1 (%2 bytes)").arg(sHex, sDecimal);
+        return tr("0x%1 (%2 B)").arg(sHex, sDecimal);
     }
 
-    return tr("%1 bytes (0x%2)").arg(sDecimal, sHex);
+    return tr("%1 B (0x%2)").arg(sDecimal, sHex);
 }
 
 void DialogResize::registerShortcuts(bool bState)

@@ -21,15 +21,15 @@
 #ifndef DIALOGHEXSIGNATURE_H
 #define DIALOGHEXSIGNATURE_H
 
-#include <QClipboard>
-#include <QDialog>
-#include <QPushButton>
+#include <QByteArray>
 
 #include "dialogsearchsignatures.h"
 #include "dialogsearchvalues.h"
-#include "xbinary.h"
-#include "xoptions.h"
-#include "xshortcuts.h"
+#include "xshortcutsdialog.h"
+
+class QEvent;
+class QIODevice;
+class QTableWidgetItem;
 
 namespace Ui {
 class DialogHexSignature;
@@ -42,12 +42,11 @@ class DialogHexSignature : public XShortcutsDialog {
 
 public:
     explicit DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
-    ~DialogHexSignature();
+    ~DialogHexSignature() override;
 
-    virtual void adjustView();
+    void adjustView() override;
 
 private slots:
-    void on_pushButtonOK_clicked();
     void reload();
     void on_pushButtonCopy_clicked();
     void on_checkBoxSpaces_toggled(bool bChecked);
@@ -55,15 +54,29 @@ private slots:
     void on_lineEditWildcard_textChanged(const QString &sText);
     void on_pushButtonScan_clicked();
     void on_checkBoxANSI_toggled(bool bChecked);
+    void on_pushButtonClearWildcards_clicked();
+    void on_tableWidgetBytes_cellClicked(qint32 nRow, qint32 nColumn);
 
 protected:
-    virtual void registerShortcuts(bool bState);
+    void registerShortcuts(bool bState) override;
+    bool eventFilter(QObject *pWatched, QEvent *pEvent) override;
 
 private:
+    enum ITEM_ROLE {
+        ITEM_ROLE_BYTE_VALUE = Qt::UserRole,
+        ITEM_ROLE_WILDCARD
+    };
+
+    QString buildSignature() const;
+    void setWildcardState(QTableWidgetItem *pItem, bool bState);
+    void updateByteItem(QTableWidgetItem *pItem);
+    qint32 getWildcardCount() const;
+    bool isSignatureValid(const QString &sSignature) const;
+
     Ui::DialogHexSignature *ui;
-    QPushButton *m_pPushButton[G_N_MAX_BYTES];
     QByteArray m_baData;
     QIODevice *m_pDevice;
+    qint64 m_nOffset;
 };
 
 #endif  // DIALOGHEXSIGNATURE_H
