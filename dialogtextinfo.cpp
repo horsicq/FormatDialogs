@@ -22,9 +22,31 @@
 
 #include "ui_dialogtextinfo.h"
 
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSaveFile>
+#include <QSignalBlocker>
+
 DialogTextInfo::DialogTextInfo(QWidget *pParent) : XShortcutsDialog(pParent, true), ui(new Ui::DialogTextInfo)
 {
     ui->setupUi(this);
+
+    ui->textEditInfo->setAccessibleName(tr("Information"));
+    ui->textEditInfo->setAccessibleDescription(tr("Read-only information content"));
+    ui->checkBoxWrap->setAccessibleName(tr("Wrap long lines"));
+    ui->labelStatus->setAccessibleName(tr("Content status"));
+
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    QPushButton *pSaveButton = ui->buttonBox->button(QDialogButtonBox::Save);
+    QPushButton *pCloseButton = ui->buttonBox->button(QDialogButtonBox::Close);
+    pSaveButton->setDefault(false);
+    pSaveButton->setAutoDefault(false);
+    pCloseButton->setDefault(true);
+    connect(pSaveButton, &QPushButton::clicked, this, &DialogTextInfo::saveResult);
+    connect(ui->textEditInfo, &QTextEdit::textChanged, this, &DialogTextInfo::onTextChanged);
+
+    setWrap(true);
+    clearContent(tr("No information to display."));
 }
 
 DialogTextInfo::~DialogTextInfo()
@@ -34,6 +56,9 @@ DialogTextInfo::~DialogTextInfo()
 
 void DialogTextInfo::setWrap(bool bState)
 {
+    const QSignalBlocker blocker(ui->checkBoxWrap);
+    ui->checkBoxWrap->setChecked(bState);
+
     if (bState) {
         ui->textEditInfo->setLineWrapMode(QTextEdit::WidgetWidth);
     } else {
@@ -51,80 +76,181 @@ void DialogTextInfo::setText(const QString &sText)
     ui->textEditInfo->setPlainText(sText);
 }
 
-void DialogTextInfo::setByteArray(const QByteArray &baData)
+void DialogTextInfo::setHtml(const QString &sHtml)
 {
-    QString sString = QString::fromUtf8(baData.data());
-
-    if (Qt::mightBeRichText(sString)) {
-        ui->textEditInfo->setHtml(sString);
-    } else {
-        ui->textEditInfo->setPlainText(sString);
-    }
+    ui->textEditInfo->setHtml(sHtml);
 }
 
-void DialogTextInfo::setFileName(const QString &sFileName)
+void DialogTextInfo::setByteArray(const QByteArray &baData)
 {
-    QFile file;
-    file.setFileName(sFileName);
+    setText(QString::fromUtf8(baData.constData(), baData.size()));
+}
+
+void DialogTextInfo::setHtmlByteArray(const QByteArray &baData)
+{
+    setHtml(QString::fromUtf8(baData.constData(), baData.size()));
+}
+
+bool DialogTextInfo::setFileName(const QString &sFileName)
+{
+    return setFileName(sFileName, false);
+}
+
+bool DialogTextInfo::setFileName(const QString &sFileName, bool bHtml)
+{
+    QFile file(sFileName);
 
     if (file.open(QFile::ReadOnly)) {
-        QByteArray baData = file.readAll();
-        setByteArray(baData);
+        const QByteArray baData = file.readAll();
         file.close();
+
+        if (bHtml) {
+            setHtmlByteArray(baData);
+        } else {
+            setByteArray(baData);
+        }
+
+        return true;
     }
+
+    clearContent(tr("Cannot read the selected file."));
+    return false;
 }
 
 void DialogTextInfo::setStringList(const QList<QString> &listString)
 {
-    setText(QStringList(listString).join("\r\n"));
+    QStringList listText;
+    listText.reserve(listString.size());
+
+    for (const QString &sText : listString) {
+        listText.append(sText);
+    }
+
+    setText(listText.join(QLatin1Char('\n')));
 }
 
-void DialogTextInfo::setDevice(QIODevice *pDevice)
+bool DialogTextInfo::setDevice(QIODevice *pDevice)
 {
-    Q_UNUSED(pDevice)
-    // TODO
+    return setDevice(pDevice, false);
+}
+
+bool DialogTextInfo::setDevice(QIODevice *pDevice, bool bHtml)
+{
+    if (!pDevice || !pDevice->isOpen() || !pDevice->isReadable()) {
+        clearContent(tr("A readable device is required."));
+        return false;
+    }
+
+    const bool bSequential = pDevice->isSequential();
+    const qint64 nOriginalPosition = pDevice->pos();
+
+    if (!bSequential && !pDevice->seek(0)) {
+        clearContent(tr("The device cannot be read from the beginning."));
+        return false;
+    }
+
+    const QByteArray baData = pDevice->readAll();
+
+    if (!bSequential && (nOriginalPosition >= 0)) {
+        if (!pDevice->seek(nOriginalPosition)) {
+            clearContent(tr("The device position could not be restored."));
+            return false;
+        }
+    }
+
+    if (bHtml) {
+        setHtmlByteArray(baData);
+    } else {
+        setByteArray(baData);
+    }
+
+    return true;
+}
+
+bool DialogTextInfo::saveToFile(const QString &sFileName) const
+{
+    QSaveFile file(sFileName);
+    const QByteArray baText = ui->textEditInfo->toPlainText().toUtf8();
+
+    return file.open(QIODevice::WriteOnly) &&
+           (file.write(baText) == baText.size()) && file.commit();
 }
 
 void DialogTextInfo::adjustView()
 {
-    // TODO
+    getGlobalOptions()->adjustWidget(ui->textEditInfo, XOptions::ID_VIEW_FONT_TEXTEDITS);
 }
 #ifdef USE_ARCHIVE
 void DialogTextInfo::setArchive(const QString &sFileName, const QString &sRecordFileName)
 {
-    QByteArray baData = XArchives::decompress(sFileName, sRecordFileName);
+    const QByteArray baData = XArchives::decompress(sFileName, sRecordFileName);
 
-    setByteArray(baData);
+    if (baData.isEmpty()) {
+        clearContent(tr("The archive record is empty or cannot be read."));
+    } else {
+        setByteArray(baData);
+    }
 }
 #endif
 #ifdef USE_ARCHIVE
 void DialogTextInfo::setArchive(QIODevice *pDevice, const QString &sRecordFileName)
 {
-    QByteArray baData = XArchives::decompress(pDevice, sRecordFileName);
+    if (!pDevice || !pDevice->isOpen() || !pDevice->isReadable()) {
+        clearContent(tr("A readable archive device is required."));
+        return;
+    }
 
-    setByteArray(baData);
+    const QByteArray baData = XArchives::decompress(pDevice, sRecordFileName);
+
+    if (baData.isEmpty()) {
+        clearContent(tr("The archive record is empty or cannot be read."));
+    } else {
+        setByteArray(baData);
+    }
 }
 #endif
-void DialogTextInfo::on_pushButtonClose_clicked()
+void DialogTextInfo::on_checkBoxWrap_toggled(bool bChecked)
 {
-    close();
+    setWrap(bChecked);
 }
 
-void DialogTextInfo::on_pushButtonSave_clicked()
+void DialogTextInfo::onTextChanged()
+{
+    updateStatus();
+}
+
+void DialogTextInfo::saveResult()
 {
     QString sFilter = QString("%1 (*.txt)").arg(tr("Text documents"));
     QString sFileName = QFileDialog::getSaveFileName(this, tr("Save result"), QString("%1.txt").arg(tr("Result")), sFilter);
 
     if (!sFileName.isEmpty()) {
-        QFile file;
-        file.setFileName(sFileName);
-
-        if (file.open(QIODevice::ReadWrite)) {
-            QString sText = ui->textEditInfo->toPlainText();
-            file.write(sText.toUtf8());
-            file.close();
+        if (!saveToFile(sFileName)) {
+            QMessageBox::critical(XOptions::getMainWidget(this), tr("Error"), QString("%1: %2").arg(tr("Cannot save file"), sFileName));
         }
     }
+}
+
+void DialogTextInfo::clearContent(const QString &sStatus)
+{
+    ui->textEditInfo->clear();
+    ui->labelStatus->setText(sStatus);
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
+}
+
+void DialogTextInfo::updateStatus()
+{
+    const QString sText = ui->textEditInfo->toPlainText();
+    const qsizetype nCharacters = sText.size();
+    const qsizetype nLines = sText.isEmpty() ? 0 : (sText.count(QLatin1Char('\n')) + 1);
+
+    if (sText.isEmpty()) {
+        ui->labelStatus->setText(tr("No information to display."));
+    } else {
+        ui->labelStatus->setText(tr("%1 characters, %2 lines.").arg(nCharacters).arg(nLines));
+    }
+
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(!sText.isEmpty());
 }
 
 void DialogTextInfo::registerShortcuts(bool bState)

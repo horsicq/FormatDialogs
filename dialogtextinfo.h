@@ -35,28 +35,37 @@ class DialogTextInfo : public XShortcutsDialog {
 
 public:
     explicit DialogTextInfo(QWidget *pParent);
-    ~DialogTextInfo();
+    ~DialogTextInfo() override;
 
     void setWrap(bool bState);
     void setTitle(const QString &sTitle);
     void setText(const QString &sText);
+    void setHtml(const QString &sHtml);
     void setByteArray(const QByteArray &baData);
-    void setFileName(const QString &sFileName);
+    void setHtmlByteArray(const QByteArray &baData);
+    bool setFileName(const QString &sFileName);
+    bool setFileName(const QString &sFileName, bool bHtml);
     void setStringList(const QList<QString> &listString);
-    void setDevice(QIODevice *pDevice);
+    bool setDevice(QIODevice *pDevice);
+    bool setDevice(QIODevice *pDevice, bool bHtml);
+    bool saveToFile(const QString &sFileName) const;
     void adjustView() override;
 #ifdef USE_ARCHIVE
     void setArchive(const QString &sFileName, const QString &sRecordFileName);
     void setArchive(QIODevice *pDevice, const QString &sRecordFileName);
 #endif
 private slots:
-    void on_pushButtonClose_clicked();
-    void on_pushButtonSave_clicked();
+    void on_checkBoxWrap_toggled(bool bChecked);
+    void onTextChanged();
+    void saveResult();
 
 protected:
     void registerShortcuts(bool bState) override;
 
 private:
+    void clearContent(const QString &sStatus);
+    void updateStatus();
+
     Ui::DialogTextInfo *ui;
 };
 
