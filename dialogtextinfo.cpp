@@ -27,6 +27,11 @@
 #include <QSaveFile>
 #include <QSignalBlocker>
 
+namespace {
+constexpr qint64 MAXIMUM_CONTENT_SIZE = 64 * 1024 * 1024;
+constexpr qint64 READ_CHUNK_SIZE = 64 * 1024;
+}
+
 DialogTextInfo::DialogTextInfo(QWidget *pParent) : XShortcutsDialog(pParent, true), ui(new Ui::DialogTextInfo)
 {
     ui->setupUi(this);
@@ -101,16 +106,9 @@ bool DialogTextInfo::loadFile(const QString &sFileName, bool bHtml)
     QFile file(sFileName);
 
     if (file.open(QFile::ReadOnly)) {
-        const QByteArray baData = file.readAll();
+        const bool bResult = loadDevice(&file, bHtml);
         file.close();
-
-        if (bHtml) {
-            setHtmlByteArray(baData);
-        } else {
-            setByteArray(baData);
-        }
-
-        return true;
+        return bResult;
     }
 
     clearContent(tr("Cannot read the selected file."));
@@ -136,26 +134,54 @@ void DialogTextInfo::setDevice(QIODevice *pDevice)
 
 bool DialogTextInfo::loadDevice(QIODevice *pDevice, bool bHtml)
 {
-    if (!pDevice || !pDevice->isOpen() || !pDevice->isReadable()) {
-        clearContent(tr("A readable device is required."));
+    if (!pDevice || !pDevice->isOpen() || !pDevice->isReadable() || pDevice->isSequential()) {
+        clearContent(tr("A readable random-access device is required."));
         return false;
     }
 
-    const bool bSequential = pDevice->isSequential();
     const qint64 nOriginalPosition = pDevice->pos();
+    const qint64 nSize = pDevice->size();
 
-    if (!bSequential && !pDevice->seek(0)) {
+    if ((nOriginalPosition < 0) || (nSize < 0)) {
+        clearContent(tr("The device size or position is unavailable."));
+        return false;
+    }
+
+    if (nSize > MAXIMUM_CONTENT_SIZE) {
+        clearContent(tr("The information is too large to display."));
+        return false;
+    }
+
+    if (!pDevice->seek(0)) {
         clearContent(tr("The device cannot be read from the beginning."));
         return false;
     }
 
-    const QByteArray baData = pDevice->readAll();
+    QByteArray baData;
+    baData.reserve(static_cast<int>(nSize));
+    char buffer[READ_CHUNK_SIZE];
+    bool bReadSuccess = true;
 
-    if (!bSequential && (nOriginalPosition >= 0)) {
-        if (!pDevice->seek(nOriginalPosition)) {
-            clearContent(tr("The device position could not be restored."));
-            return false;
+    while (baData.size() < nSize) {
+        const qint64 nRemaining = nSize - baData.size();
+        const qint64 nRead = pDevice->read(buffer, qMin(nRemaining, READ_CHUNK_SIZE));
+
+        if (nRead <= 0) {
+            bReadSuccess = false;
+            break;
         }
+
+        baData.append(buffer, static_cast<int>(nRead));
+    }
+
+    if (!pDevice->seek(nOriginalPosition)) {
+        clearContent(tr("The device position could not be restored."));
+        return false;
+    }
+
+    if (!bReadSuccess) {
+        clearContent(tr("Cannot read the complete information from the device."));
+        return false;
     }
 
     if (bHtml) {
