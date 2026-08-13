@@ -43,11 +43,11 @@ public:
     void setHtml(const QString &sHtml);
     void setByteArray(const QByteArray &baData);
     void setHtmlByteArray(const QByteArray &baData);
-    bool setFileName(const QString &sFileName);
-    bool setFileName(const QString &sFileName, bool bHtml);
+    void setFileName(const QString &sFileName);
+    bool loadFile(const QString &sFileName, bool bHtml = false);
     void setStringList(const QList<QString> &listString);
-    bool setDevice(QIODevice *pDevice);
-    bool setDevice(QIODevice *pDevice, bool bHtml);
+    void setDevice(QIODevice *pDevice);
+    bool loadDevice(QIODevice *pDevice, bool bHtml = false);
     bool saveToFile(const QString &sFileName) const;
     void adjustView() override;
 #ifdef USE_ARCHIVE

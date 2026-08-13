@@ -91,12 +91,12 @@ void DialogTextInfo::setHtmlByteArray(const QByteArray &baData)
     setHtml(QString::fromUtf8(baData.constData(), baData.size()));
 }
 
-bool DialogTextInfo::setFileName(const QString &sFileName)
+void DialogTextInfo::setFileName(const QString &sFileName)
 {
-    return setFileName(sFileName, false);
+    loadFile(sFileName);
 }
 
-bool DialogTextInfo::setFileName(const QString &sFileName, bool bHtml)
+bool DialogTextInfo::loadFile(const QString &sFileName, bool bHtml)
 {
     QFile file(sFileName);
 
@@ -129,12 +129,12 @@ void DialogTextInfo::setStringList(const QList<QString> &listString)
     setText(listText.join(QLatin1Char('\n')));
 }
 
-bool DialogTextInfo::setDevice(QIODevice *pDevice)
+void DialogTextInfo::setDevice(QIODevice *pDevice)
 {
-    return setDevice(pDevice, false);
+    loadDevice(pDevice);
 }
 
-bool DialogTextInfo::setDevice(QIODevice *pDevice, bool bHtml)
+bool DialogTextInfo::loadDevice(QIODevice *pDevice, bool bHtml)
 {
     if (!pDevice || !pDevice->isOpen() || !pDevice->isReadable()) {
         clearContent(tr("A readable device is required."));
