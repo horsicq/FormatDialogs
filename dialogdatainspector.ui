@@ -9,9 +9,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>489</height>
+    <width>640</width>
+    <height>540</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>360</height>
+   </size>
+  </property>
+  <property name="accessibleName">
+   <string>Data inspector</string>
+  </property>
+  <property name="accessibleDescription">
+   <string>Inspect selected bytes as numeric, text, and binary values.</string>
   </property>
   <property name="windowTitle">
    <string>Inspector</string>
@@ -21,11 +33,69 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QComboBox" name="comboBoxEndianness"/>
+    <layout class="QGridLayout" name="gridLayoutSelection">
+     <property name="horizontalSpacing">
+      <number>8</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>6</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelEndianness">
+       <property name="text">
+        <string>&amp;Endianness:</string>
+       </property>
+       <property name="buddy">
+        <cstring>comboBoxEndianness</cstring>
+       </property>
+      </widget>
      </item>
-     <item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBoxEndianness">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="accessibleName">
+        <string>Endianness</string>
+       </property>
+       <property name="accessibleDescription">
+        <string>Choose how multi-byte numeric and Unicode values are interpreted.</string>
+       </property>
+       <property name="toolTip">
+        <string>Choose the byte order used for multi-byte values.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" colspan="2" alignment="Qt::AlignRight|Qt::AlignVCenter">
+      <widget class="QCheckBox" name="checkBoxReadonly">
+       <property name="accessibleName">
+        <string>Read-only mode</string>
+       </property>
+       <property name="accessibleDescription">
+        <string>When checked, interpreted values cannot be edited.</string>
+       </property>
+       <property name="toolTip">
+        <string>Prevent changes to the inspected data.</string>
+       </property>
+       <property name="text">
+        <string>Read-only</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelOffset">
+       <property name="text">
+        <string>&amp;Offset:</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEditOffset</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
       <widget class="XLineEditHEX" name="lineEditOffset">
        <property name="minimumSize">
         <size>
@@ -33,9 +103,31 @@
          <height>0</height>
         </size>
        </property>
+       <property name="accessibleName">
+        <string>Selection offset</string>
+       </property>
+       <property name="accessibleDescription">
+        <string>Starting byte offset of the inspected selection.</string>
+       </property>
+       <property name="toolTip">
+        <string>Starting byte offset of the inspected selection.</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="labelSize">
+       <property name="text">
+        <string>&amp;Size:</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEditSize</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
       <widget class="XLineEditHEX" name="lineEditSize">
        <property name="minimumSize">
         <size>
@@ -43,25 +135,17 @@
          <height>0</height>
         </size>
        </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="accessibleName">
+        <string>Selection size</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
+       <property name="accessibleDescription">
+        <string>Number of bytes available in the inspected selection.</string>
        </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBoxReadonly">
-       <property name="text">
-        <string>Readonly</string>
+       <property name="toolTip">
+        <string>Number of bytes available in the inspected selection.</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -69,6 +153,21 @@
    </item>
    <item>
     <widget class="QTableWidget" name="tableWidgetDataInspector">
+     <property name="accessibleName">
+      <string>Interpreted data values</string>
+     </property>
+     <property name="accessibleDescription">
+      <string>Values at the selected offset shown in several numeric, text, and binary formats. Use the arrow keys to navigate rows.</string>
+     </property>
+     <property name="toolTip">
+      <string>Inspect the selected bytes in several formats. Use the arrow keys to navigate rows.</string>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="tabKeyNavigation">
+      <bool>true</bool>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
@@ -84,12 +183,31 @@
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>20</number>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>20</number>
-     </attribute>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelStatus">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="accessibleName">
+      <string>Inspector status</string>
+     </property>
+     <property name="accessibleDescription">
+      <string>Reports the current selection state and whether values can be edited.</string>
+     </property>
+     <property name="text">
+      <string>Ready.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
     </widget>
    </item>
    <item>
@@ -109,8 +227,23 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonClose">
+       <property name="accessibleName">
+        <string>Close data inspector</string>
+       </property>
+       <property name="accessibleDescription">
+        <string>Close this data inspector window.</string>
+       </property>
+       <property name="toolTip">
+        <string>Close the data inspector.</string>
+       </property>
        <property name="text">
-        <string>Close</string>
+        <string>&amp;Close</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -124,7 +257,15 @@
    <extends>QLineEdit</extends>
    <header>xlineedithex.h</header>
   </customwidget>
- </customwidgets>
- <resources/>
+  </customwidgets>
+ <tabstops>
+  <tabstop>comboBoxEndianness</tabstop>
+  <tabstop>lineEditOffset</tabstop>
+  <tabstop>lineEditSize</tabstop>
+  <tabstop>checkBoxReadonly</tabstop>
+  <tabstop>tableWidgetDataInspector</tabstop>
+  <tabstop>pushButtonClose</tabstop>
+ </tabstops>
+  <resources/>
  <connections/>
 </ui>
