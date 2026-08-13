@@ -35,34 +35,40 @@ class DialogEditString : public XShortcutsDialog {
 public:
     struct DATA_STRUCT {
         qint64 nOffset;
-        qint64 nSize;
+        qint64 nSize;  // Encoded content bytes, excluding a null terminator.
         XBinary::VT valueType;
         QString sString;
         bool bIsNullTerminated;
+        qint64 nMaxSize = 0;  // Writable span, including a terminator; nSize is used when zero.
     };
 
     explicit DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct);
-    ~DialogEditString();
+    ~DialogEditString() override;
 
     void adjustView() override;
 
 private slots:
-    void on_pushButtonCancel_clicked();
-    void on_pushButtonOK_clicked();
+    void acceptChanges();
     void on_comboBoxType_currentIndexChanged(int nIndex);
     void on_lineEditString_textChanged(const QString &sStrings);
     void on_checkBoxKeepSize_toggled(bool bChecked);
     void on_checkBoxNullTerminated_toggled(bool bChecked);
-    void adjust();
 
 protected:
     void registerShortcuts(bool bState) override;
 
 private:
+    void updateState();
+    bool configurationValid(QString *pError = nullptr) const;
+    bool buildCandidate(DATA_STRUCT *pData, QByteArray *pEncodedData = nullptr, qint64 *pMaximumSize = nullptr, QString *pError = nullptr) const;
+    qint64 maximumEncodedSize() const;
+    static bool isSupportedType(XBinary::VT valueType);
+
     Ui::DialogEditString *ui;
     QIODevice *m_pDevice;
     DATA_STRUCT *m_pData_struct;
-    qint64 m_nSize;
+    DATA_STRUCT m_initialData;
+    qint64 m_nOriginalSize;
 };
 
 #endif  // DIALOGEDITSTRING_H
