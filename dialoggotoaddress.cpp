@@ -100,8 +100,7 @@ void DialogGoToAddress::initialize()
     updateState();
     adjustView();
 
-    const bool bConfigurationAvailable = m_bUseMemoryMap ? m_bHasMemoryMap
-                                                         : (m_nMinValue <= effectiveMaximum());
+    const bool bConfigurationAvailable = m_bUseMemoryMap ? m_bHasMemoryMap : (m_nMinValue <= effectiveMaximum());
     ui->lineEditValue->setEnabled(bConfigurationAvailable);
     ui->checkBoxHex->setEnabled(bConfigurationAvailable);
 
@@ -160,8 +159,8 @@ void DialogGoToAddress::adjustTitle(DialogGoToAddress::TYPE type)
 
 void DialogGoToAddress::updateRangeDescription()
 {
-    ui->lineEditValue->setAccessibleDescription(
-        ui->checkBoxHex->isChecked() ? tr("Enter unsigned hexadecimal digits without a 0x prefix.") : tr("Enter an unsigned decimal value."));
+    ui->lineEditValue->setAccessibleDescription(ui->checkBoxHex->isChecked() ? tr("Enter unsigned hexadecimal digits without a 0x prefix.")
+                                                                             : tr("Enter an unsigned decimal value."));
 
     if (m_bUseMemoryMap) {
         if (!m_bHasMemoryMap) {
@@ -176,8 +175,7 @@ void DialogGoToAddress::updateRangeDescription()
             ui->labelRange->setText(tr("Enter an address backed by mapped data."));
         }
         if (effectiveMaximum() < (XADDR_MAX - 1)) {
-            ui->labelRange->setText(ui->labelRange->text() + QLatin1Char(' ') +
-                                    tr("The maximum supported value is %1.").arg(formatValue(effectiveMaximum())));
+            ui->labelRange->setText(ui->labelRange->text() + QLatin1Char(' ') + tr("The maximum supported value is %1.").arg(formatValue(effectiveMaximum())));
         }
     } else {
         const XADDR nEffectiveMaximum = effectiveMaximum();
@@ -202,8 +200,7 @@ void DialogGoToAddress::updateState()
     }
     const QString sStatus = bValid ? tr("Ready to go to %1.").arg(formatValue(nValue)) : sError;
     ui->labelStatus->setText(sStatus);
-    const QString sBaseDescription = ui->checkBoxHex->isChecked() ? tr("Enter unsigned hexadecimal digits without a 0x prefix.")
-                                                                  : tr("Enter an unsigned decimal value.");
+    const QString sBaseDescription = ui->checkBoxHex->isChecked() ? tr("Enter unsigned hexadecimal digits without a 0x prefix.") : tr("Enter an unsigned decimal value.");
     ui->lineEditValue->setAccessibleDescription(sBaseDescription + QLatin1Char(' ') + sStatus);
 }
 
@@ -271,12 +268,11 @@ bool DialogGoToAddress::isValueValid(XADDR nValue) const
     XBinary::_MEMORY_MAP memoryMap = m_memoryMap;
 
     if (m_type == TYPE_OFFSET) {
-        return (nValue <= static_cast<XADDR>((std::numeric_limits<qint64>::max)())) &&
-               XBinary::isOffsetValid(&memoryMap, static_cast<qint64>(nValue));
+        return (nValue <= static_cast<XADDR>((std::numeric_limits<qint64>::max)())) && XBinary::isOffsetValid(&memoryMap, static_cast<qint64>(nValue));
     }
     if (m_type == TYPE_RELVIRTUALADDRESS) {
-        return (nValue <= static_cast<XADDR>((std::numeric_limits<qint64>::max)())) &&
-               XBinary::isRelAddressValid(&memoryMap, static_cast<qint64>(nValue)) && XBinary::isRelAddressPhysical(&memoryMap, nValue);
+        return (nValue <= static_cast<XADDR>((std::numeric_limits<qint64>::max)())) && XBinary::isRelAddressValid(&memoryMap, static_cast<qint64>(nValue)) &&
+               XBinary::isRelAddressPhysical(&memoryMap, nValue);
     }
 
     return XBinary::isAddressValid(&memoryMap, nValue) && XBinary::isAddressPhysical(&memoryMap, nValue);

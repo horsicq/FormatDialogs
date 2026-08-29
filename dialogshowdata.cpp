@@ -99,8 +99,8 @@ DialogShowData::~DialogShowData()
 
 void DialogShowData::adjustView()
 {
-    const qint32 nFormatWidth = ui->listWidgetType->sizeHintForColumn(0) + ui->listWidgetType->frameWidth() * 2 +
-                                ui->listWidgetType->verticalScrollBar()->sizeHint().width() + 28;
+    const qint32 nFormatWidth =
+        ui->listWidgetType->sizeHintForColumn(0) + ui->listWidgetType->frameWidth() * 2 + ui->listWidgetType->verticalScrollBar()->sizeHint().width() + 28;
     ui->widgetFormat->setMinimumWidth(qMax(150, nFormatWidth));
     ui->splitter->setSizes(QList<int>() << qMax(150, nFormatWidth) << qMax(480, width() - nFormatWidth));
 
@@ -157,14 +157,10 @@ void DialogShowData::loadData(QIODevice *pDevice, qint64 nSize)
     if (m_baData.isEmpty()) {
         m_sSelectionSummary = tr("No bytes could be read at offset 0x%1.").arg(sOffset);
     } else if (m_baData.size() < nTargetSize) {
-        m_sSelectionSummary =
-            tr("Offset 0x%1 — read %2 of %3 requested bytes.").arg(sOffset).arg(m_baData.size()).arg(nSelectionSize);
+        m_sSelectionSummary = tr("Offset 0x%1 — read %2 of %3 requested bytes.").arg(sOffset).arg(m_baData.size()).arg(nSelectionSize);
     } else if (nSelectionSize > MAX_DATA_SIZE) {
-        m_sSelectionSummary = tr("Offset 0x%1 — showing the first %2 of %3 selected bytes (limit: %4).")
-                                  .arg(sOffset)
-                                  .arg(m_baData.size())
-                                  .arg(nSelectionSize)
-                                  .arg(MAX_DATA_SIZE);
+        m_sSelectionSummary =
+            tr("Offset 0x%1 — showing the first %2 of %3 selected bytes (limit: %4).").arg(sOffset).arg(m_baData.size()).arg(nSelectionSize).arg(MAX_DATA_SIZE);
     } else {
         m_sSelectionSummary = tr("Offset 0x%1 — showing %2 bytes.").arg(sOffset).arg(m_baData.size());
     }

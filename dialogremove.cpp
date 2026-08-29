@@ -26,8 +26,7 @@
 
 #include "ui_dialogremove.h"
 
-DialogRemove::DialogRemove(QWidget *pParent, DATA *pData)
-    : XShortcutsDialog(pParent, false), ui(new Ui::DialogRemove), m_pData(pData), m_pRemoveButton(nullptr)
+DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent, false), ui(new Ui::DialogRemove), m_pData(pData), m_pRemoveButton(nullptr)
 {
     ui->setupUi(this);
 
@@ -158,10 +157,8 @@ void DialogRemove::updateState()
     if (bValid) {
         const qint64 nLastOffset = nOffset + nSize - 1;
         const qint64 nNewSize = nMaxSize - nSize;
-        ui->labelStatus->setText(tr("Remove %1 bytes at offsets %2–%3. New data size: %4 bytes.")
-                                     .arg(nSize)
-                                     .arg(formatOffset(nOffset), formatOffset(nLastOffset))
-                                     .arg(nNewSize));
+        ui->labelStatus->setText(
+            tr("Remove %1 bytes at offsets %2–%3. New data size: %4 bytes.").arg(nSize).arg(formatOffset(nOffset), formatOffset(nLastOffset)).arg(nNewSize));
     } else {
         ui->labelStatus->setText(sError);
     }

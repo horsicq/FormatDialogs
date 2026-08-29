@@ -94,12 +94,10 @@ void DialogResize::acceptResize()
 
     if (nValue < m_pData->nOldSize) {
         const qint64 nRemoved = m_pData->nOldSize - nValue;
-        const QString sMessage =
-            tr("Reducing the size from %1 to %2 will permanently remove %3 from the end.\n\nContinue?")
-                .arg(formatSize(m_pData->nOldSize), formatSize(nValue), formatSize(nRemoved));
+        const QString sMessage = tr("Reducing the size from %1 to %2 will permanently remove %3 from the end.\n\nContinue?")
+                                     .arg(formatSize(m_pData->nOldSize), formatSize(nValue), formatSize(nRemoved));
 
-        if (QMessageBox::warning(this, tr("Confirm shrinking"), sMessage, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) !=
-            QMessageBox::Yes) {
+        if (QMessageBox::warning(this, tr("Confirm shrinking"), sMessage, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Yes) {
             ui->lineEditValue->setFocus(Qt::OtherFocusReason);
             ui->lineEditValue->selectAll();
             return;

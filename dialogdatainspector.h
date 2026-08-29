@@ -32,71 +32,68 @@ class DialogDataInspector;
 }
 
 class DialogDataInspector : public XShortcutsDialog {
-  Q_OBJECT
+    Q_OBJECT
 
-  enum DATAINS {
-    //        DATAINS_BINARY=0,
-    DATAINS_BYTE,
-    DATAINS_WORD,
-    DATAINS_DWORD,
-    DATAINS_QWORD,
-    DATAINS_UINT8,
-    DATAINS_INT8,
-    DATAINS_UINT16,
-    DATAINS_INT16,
-    DATAINS_UINT32,
-    DATAINS_INT32,
-    DATAINS_UINT64,
-    DATAINS_INT64,
-    DATAINS_ANSI,
-    DATAINS_UNICODE,
-    // DATAINS_UTF8, // TODO
-    DATAINS_BINARY,
-    __DATAINS_SIZE
-    // TODO FLOAT16
-    // TODO FLOAT32
-    // TODO FLOAT64
-  };
+    enum DATAINS {
+        //        DATAINS_BINARY=0,
+        DATAINS_BYTE,
+        DATAINS_WORD,
+        DATAINS_DWORD,
+        DATAINS_QWORD,
+        DATAINS_UINT8,
+        DATAINS_INT8,
+        DATAINS_UINT16,
+        DATAINS_INT16,
+        DATAINS_UINT32,
+        DATAINS_INT32,
+        DATAINS_UINT64,
+        DATAINS_INT64,
+        DATAINS_ANSI,
+        DATAINS_UNICODE,
+        // DATAINS_UTF8, // TODO
+        DATAINS_BINARY,
+        __DATAINS_SIZE
+        // TODO FLOAT16
+        // TODO FLOAT32
+        // TODO FLOAT64
+    };
 
 public:
-  explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice,
-                               qint64 nOffset, qint64 nSize);
-  ~DialogDataInspector() override;
+    explicit DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize);
+    ~DialogDataInspector() override;
 
-  void adjustView() override;
-  void setReadonly(bool bState) override;
+    void adjustView() override;
+    void setReadonly(bool bState) override;
 
 public slots:
-  void currentLocationChangedSlot(quint64 nLocation, qint32 nLocationType,
-                                  qint64 nSize);
-  void dataChangedSlot(qint64 nOffset, qint64 nSize);
+    void currentLocationChangedSlot(quint64 nLocation, qint32 nLocationType, qint64 nSize);
+    void dataChangedSlot(qint64 nOffset, qint64 nSize);
 
 private:
-  void addRecord(const QString &sTitle, const DATAINS &datains);
-  void blockSignals(bool bState);
-  void showData(qint64 nOffset, qint64 nSize);
-  void enableRow(qint32 nRow, bool bState);
-  void clearValues();
-  bool isDeviceReady(bool bRequireWritable = false) const;
-  QByteArray createWriteData(DATAINS dataType, const QVariant &varValue,
-                             bool bIsBigEndian) const;
+    void addRecord(const QString &sTitle, const DATAINS &datains);
+    void blockSignals(bool bState);
+    void showData(qint64 nOffset, qint64 nSize);
+    void enableRow(qint32 nRow, bool bState);
+    void clearValues();
+    bool isDeviceReady(bool bRequireWritable = false) const;
+    QByteArray createWriteData(DATAINS dataType, const QVariant &varValue, bool bIsBigEndian) const;
 
 private slots:
-  void valueChangedSlot(QVariant varValue);
-  void on_pushButtonClose_clicked();
-  void on_checkBoxReadonly_stateChanged(int nArg);
-  void on_comboBoxEndianness_currentIndexChanged(int nIndex);
+    void valueChangedSlot(QVariant varValue);
+    void on_pushButtonClose_clicked();
+    void on_checkBoxReadonly_stateChanged(int nArg);
+    void on_comboBoxEndianness_currentIndexChanged(int nIndex);
 
 protected:
-  void registerShortcuts(bool bState) override;
+    void registerShortcuts(bool bState) override;
 
 private:
-  Ui::DialogDataInspector *ui;
-  XLineEditHEX *m_lineEdit[__DATAINS_SIZE];
-  QPointer<QIODevice> m_pDevice;
-  qint64 m_nOffset;
-  qint64 m_nSize;
-  bool m_bSync;
+    Ui::DialogDataInspector *ui;
+    XLineEditHEX *m_lineEdit[__DATAINS_SIZE];
+    QPointer<QIODevice> m_pDevice;
+    qint64 m_nOffset;
+    qint64 m_nSize;
+    bool m_bSync;
 };
 
-#endif // DIALOGDATAINSPECTOR_H
+#endif  // DIALOGDATAINSPECTOR_H

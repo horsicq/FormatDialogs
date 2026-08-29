@@ -206,9 +206,8 @@ void XDialogProcess::setupProgressBar(qint32 nIndex, QProgressBar *pProgressBar,
 
         if (nTotal > 0) {
             const qint64 nBoundedCurrent = qBound((qint64)0, nCurrent, nTotal);
-            const qint32 nValue = qBound((qint32)0,
-                                         static_cast<qint32>((static_cast<long double>(nBoundedCurrent) * 100.0L) / static_cast<long double>(nTotal)),
-                                         (qint32)100);
+            const qint32 nValue =
+                qBound((qint32)0, static_cast<qint32>((static_cast<long double>(nBoundedCurrent) * 100.0L) / static_cast<long double>(nTotal)), (qint32)100);
             pProgressBar->setValue(nValue);
 
             sStatus += QString("[%1/%2] ").arg(QString::number(nCurrent), QString::number(nTotal));

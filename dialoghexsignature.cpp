@@ -39,18 +39,14 @@
 #include "xoptions.h"
 
 DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize)
-    : XShortcutsDialog(pParent, false),
-      ui(new Ui::DialogHexSignature),
-      m_pDevice(pDevice),
-      m_nOffset(nOffset)
+    : XShortcutsDialog(pParent, false), ui(new Ui::DialogHexSignature), m_pDevice(pDevice), m_nOffset(nOffset)
 {
     ui->setupUi(this);
 
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     ui->plainTextEditSignature->setWordWrapMode(QTextOption::WrapAnywhere);
-    ui->lineEditWildcard->setValidator(
-        new QRegularExpressionValidator(QRegularExpression(QStringLiteral("[.?]")), ui->lineEditWildcard));
+    ui->lineEditWildcard->setValidator(new QRegularExpressionValidator(QRegularExpression(QStringLiteral("[.?]")), ui->lineEditWildcard));
     ui->tableWidgetBytes->installEventFilter(this);
     ui->tableWidgetBytes->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableWidgetBytes->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -109,14 +105,9 @@ DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qin
         ui->labelSelectionSummary->setText(tr("No bytes could be read at offset 0x%1.").arg(sOffset));
     } else if (nSafeRequestedSize > G_N_MAX_BYTES) {
         ui->labelSelectionSummary->setText(
-            tr("Offset 0x%1 — showing the first %2 bytes of %3 selected (limit: %4).")
-                .arg(sOffset)
-                .arg(nDataSize)
-                .arg(nSafeRequestedSize)
-                .arg(G_N_MAX_BYTES));
+            tr("Offset 0x%1 — showing the first %2 bytes of %3 selected (limit: %4).").arg(sOffset).arg(nDataSize).arg(nSafeRequestedSize).arg(G_N_MAX_BYTES));
     } else if (nDataSize < nSafeRequestedSize) {
-        ui->labelSelectionSummary->setText(
-            tr("Offset 0x%1 — read %2 bytes of %3 selected.").arg(sOffset).arg(nDataSize).arg(nSafeRequestedSize));
+        ui->labelSelectionSummary->setText(tr("Offset 0x%1 — read %2 bytes of %3 selected.").arg(sOffset).arg(nDataSize).arg(nSafeRequestedSize));
     } else {
         ui->labelSelectionSummary->setText(tr("Offset 0x%1 — selected bytes: %2.").arg(sOffset).arg(nDataSize));
     }
@@ -148,11 +139,9 @@ void DialogHexSignature::adjustView()
     ui->tableWidgetBytes->horizontalHeader()->setMinimumSectionSize(nColumnWidth);
 
     const qint32 nVisibleRows = qBound(2, ui->tableWidgetBytes->rowCount(), 5);
-    const qint32 nTableHeight = ui->tableWidgetBytes->horizontalHeader()->sizeHint().height() + nVisibleRows * nRowHeight +
-                               2 * ui->tableWidgetBytes->frameWidth() + 4;
+    const qint32 nTableHeight = ui->tableWidgetBytes->horizontalHeader()->sizeHint().height() + nVisibleRows * nRowHeight + 2 * ui->tableWidgetBytes->frameWidth() + 4;
     ui->tableWidgetBytes->setMinimumHeight(nTableHeight);
     ui->tableWidgetBytes->setMaximumHeight(nTableHeight);
-
 }
 
 QString DialogHexSignature::buildSignature() const
@@ -176,8 +165,7 @@ QString DialogHexSignature::buildSignature() const
         QTableWidgetItem *pItem = ui->tableWidgetBytes->item(i / 16, i % 16);
         const bool bWildcard = pItem && pItem->data(ITEM_ROLE_WILDCARD).toBool();
         const quint8 nByte = static_cast<quint8>(m_baData.at(i));
-        const bool bPrintableAnsi = bANSI && !bWildcard && (nByte >= 0x20) && (nByte < 0x7F) && (nByte != 0x27) && (nByte != 0x22) &&
-                                     (nByte != 0x5C);
+        const bool bPrintableAnsi = bANSI && !bWildcard && (nByte >= 0x20) && (nByte < 0x7F) && (nByte != 0x27) && (nByte != 0x22) && (nByte != 0x5C);
 
         if (bPrintableAnsi) {
             sAnsiRun.append(QChar::fromLatin1(static_cast<char>(nByte)));
@@ -293,8 +281,7 @@ void DialogHexSignature::reload()
     } else if (!bValid) {
         ui->labelStatus->setText(tr("The generated signature is invalid. Choose a supported wildcard character."));
     } else {
-        ui->labelStatus->setText(
-            tr("Bytes: %1; wildcarded: %2. The signature is valid.").arg(m_baData.size()).arg(nWildcardCount));
+        ui->labelStatus->setText(tr("Bytes: %1; wildcarded: %2. The signature is valid.").arg(m_baData.size()).arg(nWildcardCount));
     }
 }
 

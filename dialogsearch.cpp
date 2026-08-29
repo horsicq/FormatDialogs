@@ -70,8 +70,7 @@ bool isOneByteType(XBinary::VT valueType)
 
 bool isHexValueType(XBinary::VT valueType)
 {
-    return (valueType == XBinary::VT_BYTE) || (valueType == XBinary::VT_WORD) || (valueType == XBinary::VT_DWORD) ||
-           (valueType == XBinary::VT_QWORD);
+    return (valueType == XBinary::VT_BYTE) || (valueType == XBinary::VT_WORD) || (valueType == XBinary::VT_DWORD) || (valueType == XBinary::VT_QWORD);
 }
 
 void setError(QString *pError, const QString &sError)
@@ -134,10 +133,8 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
     connect(ui->lineEditString, &QLineEdit::textChanged, this, &DialogSearch::checkValid);
     connect(ui->lineEditSignature, &QLineEdit::textChanged, this, &DialogSearch::checkValid);
     connect(ui->lineEditValue, &QLineEdit::textChanged, this, &DialogSearch::updateValue);
-    connect(ui->comboBoxValueType, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this,
-            [this](qint32) { updateValue(); });
-    connect(ui->comboBoxEndianness, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this,
-            [this](qint32) { updateValue(); });
+    connect(ui->comboBoxValueType, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, [this](qint32) { updateValue(); });
+    connect(ui->comboBoxEndianness, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, [this](qint32) { updateValue(); });
 
     const auto acceptIfValid = [this]() {
         QPushButton *pFindButton = ui->buttonBox->button(QDialogButtonBox::Ok);
@@ -262,8 +259,7 @@ void DialogSearch::updateValue()
     } else if ((valueType == XBinary::VT_FLOAT) || (valueType == XBinary::VT_DOUBLE)) {
         ui->lineEditValue->setPlaceholderText(tr("e.g. 3.14159"));
         ui->labelValueHelp->setText(tr("Enter a finite decimal number."));
-    } else if ((valueType == XBinary::VT_CHAR) || (valueType == XBinary::VT_SHORT) || (valueType == XBinary::VT_INT) ||
-               (valueType == XBinary::VT_INT64)) {
+    } else if ((valueType == XBinary::VT_CHAR) || (valueType == XBinary::VT_SHORT) || (valueType == XBinary::VT_INT) || (valueType == XBinary::VT_INT64)) {
         ui->lineEditValue->setPlaceholderText(tr("e.g. -42"));
         ui->labelValueHelp->setText(tr("Enter a signed decimal integer."));
     } else {

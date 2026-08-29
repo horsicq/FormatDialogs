@@ -26,12 +26,7 @@
 #include "ui_dialogeditstring.h"
 
 DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct)
-    : XShortcutsDialog(pParent, false),
-      ui(new Ui::DialogEditString),
-      m_pDevice(pDevice),
-      m_pData_struct(pData_struct),
-      m_initialData(),
-      m_nOriginalSize(0)
+    : XShortcutsDialog(pParent, false), ui(new Ui::DialogEditString), m_pDevice(pDevice), m_pData_struct(pData_struct), m_initialData(), m_nOriginalSize(0)
 {
     if (pData_struct) {
         m_initialData = *pData_struct;
@@ -48,8 +43,7 @@ DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_ST
     ui->comboBoxType->addItem(tr("ANSI / Latin-1"), static_cast<quint32>(XBinary::VT_A));
     ui->comboBoxType->addItem(tr("UTF-16 LE"), static_cast<quint32>(XBinary::VT_U));
     ui->comboBoxType->addItem(tr("UTF-8"), static_cast<quint32>(XBinary::VT_UTF8));
-    ui->comboBoxType->setCurrentIndex(
-        ui->comboBoxType->findData(static_cast<quint32>(m_initialData.valueType)));
+    ui->comboBoxType->setCurrentIndex(ui->comboBoxType->findData(static_cast<quint32>(m_initialData.valueType)));
     ui->lineEditString->setText(m_initialData.sString);
     ui->checkBoxKeepSize->setChecked(true);
     ui->checkBoxNullTerminated->setChecked(m_initialData.bIsNullTerminated);
@@ -262,11 +256,7 @@ void DialogEditString::updateState()
         pApplyButton->setEnabled(bValid);
     }
 
-    const QString sStatus = bValid ? tr("Uses %1 of %2 bytes (%3 available).")
-                                         .arg(baEncoded.size())
-                                         .arg(nMaximumSize)
-                                         .arg(nMaximumSize - baEncoded.size())
-                                   : sError;
+    const QString sStatus = bValid ? tr("Uses %1 of %2 bytes (%3 available).").arg(baEncoded.size()).arg(nMaximumSize).arg(nMaximumSize - baEncoded.size()) : sError;
     ui->labelAvailable->setText(sStatus);
     ui->lineEditString->setAccessibleDescription(tr("Text is encoded before it is written. %1").arg(sStatus));
 }

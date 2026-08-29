@@ -39,8 +39,7 @@ public:
         TYPE_ADDRESS
     };
 
-    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue = 0,
-                      XADDR nMaximumValue = XADDR_MAX - 1);
+    DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue = 0, XADDR nMaximumValue = XADDR_MAX - 1);
     DialogGoToAddress(QWidget *pParent, XADDR nMinValue, XADDR nMaxValue, TYPE type, XADDR nCurrentValue);
     ~DialogGoToAddress() override;
 

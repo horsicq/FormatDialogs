@@ -30,7 +30,7 @@
 namespace {
 constexpr qint64 MAXIMUM_CONTENT_SIZE = 64 * 1024 * 1024;
 constexpr qint64 READ_CHUNK_SIZE = 64 * 1024;
-}
+}  // namespace
 
 DialogTextInfo::DialogTextInfo(QWidget *pParent) : XShortcutsDialog(pParent, true), ui(new Ui::DialogTextInfo)
 {
@@ -198,8 +198,7 @@ bool DialogTextInfo::saveToFile(const QString &sFileName) const
     QSaveFile file(sFileName);
     const QByteArray baText = ui->textEditInfo->toPlainText().toUtf8();
 
-    return file.open(QIODevice::WriteOnly) &&
-           (file.write(baText) == baText.size()) && file.commit();
+    return file.open(QIODevice::WriteOnly) && (file.write(baText) == baText.size()) && file.commit();
 }
 
 void DialogTextInfo::adjustView()
