@@ -10,10 +10,7 @@ SOURCES += \
 FORMS += \
     $$PWD/dialogtextinfo.ui
 
-contains(XCONFIG, use_archive) {
-    DEFINES += USE_ARCHIVE
-    !contains(XCONFIG, xarchives) {
-        XCONFIG += xarchives
-        include($$PWD/../XArchive/xarchives.pri)
-    }
+!contains(XCONFIG, xzip) {
+    XCONFIG += xzip
+    include($$PWD/../XArchive/xzip.pri)
 }

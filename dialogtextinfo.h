@@ -22,9 +22,7 @@
 #define DIALOGTEXTINFO_H
 
 #include "xshortcutsdialog.h"
-#ifdef USE_ARCHIVE
-#include "xarchives.h"
-#endif
+#include "xzip.h"
 
 namespace Ui {
 class DialogTextInfo;
@@ -50,10 +48,9 @@ public:
     bool loadDevice(QIODevice *pDevice, bool bHtml = false);
     bool saveToFile(const QString &sFileName) const;
     void adjustView() override;
-#ifdef USE_ARCHIVE
     void setArchive(const QString &sFileName, const QString &sRecordFileName);
     void setArchive(QIODevice *pDevice, const QString &sRecordFileName);
-#endif
+
 private slots:
     void on_checkBoxWrap_toggled(bool bChecked);
     void onTextChanged();

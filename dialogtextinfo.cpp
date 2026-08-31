@@ -205,19 +205,19 @@ void DialogTextInfo::adjustView()
 {
     getGlobalOptions()->adjustWidget(ui->textEditInfo, XOptions::ID_VIEW_FONT_TEXTEDITS);
 }
-#ifdef USE_ARCHIVE
+
 void DialogTextInfo::setArchive(const QString &sFileName, const QString &sRecordFileName)
 {
-    const QByteArray baData = XArchives::decompress(sFileName, sRecordFileName);
+    QFile file(sFileName);
 
-    if (baData.isEmpty()) {
-        clearContent(tr("The archive record is empty or cannot be read."));
-    } else {
-        setByteArray(baData);
+    if (!file.open(QIODevice::ReadOnly)) {
+        clearContent(tr("Cannot read the selected archive."));
+        return;
     }
+
+    setArchive(&file, sRecordFileName);
 }
-#endif
-#ifdef USE_ARCHIVE
+
 void DialogTextInfo::setArchive(QIODevice *pDevice, const QString &sRecordFileName)
 {
     if (!pDevice || !pDevice->isOpen() || !pDevice->isReadable()) {
@@ -225,7 +225,8 @@ void DialogTextInfo::setArchive(QIODevice *pDevice, const QString &sRecordFileNa
         return;
     }
 
-    const QByteArray baData = XArchives::decompress(pDevice, sRecordFileName);
+    XZip zip(pDevice);
+    const QByteArray baData = zip.decompress(sRecordFileName);
 
     if (baData.isEmpty()) {
         clearContent(tr("The archive record is empty or cannot be read."));
@@ -233,7 +234,7 @@ void DialogTextInfo::setArchive(QIODevice *pDevice, const QString &sRecordFileNa
         setByteArray(baData);
     }
 }
-#endif
+
 void DialogTextInfo::on_checkBoxWrap_toggled(bool bChecked)
 {
     setWrap(bChecked);
