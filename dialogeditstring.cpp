@@ -25,6 +25,19 @@
 
 #include "ui_dialogeditstring.h"
 
+namespace {
+
+bool setValidationError(QString *pError, const QString &sError)
+{
+    if (pError) {
+        *pError = sError;
+    }
+
+    return false;
+}
+
+}  // namespace
+
 DialogEditString::DialogEditString(QWidget *pParent, QIODevice *pDevice, DATA_STRUCT *pData_struct)
     : XShortcutsDialog(pParent, false), ui(new Ui::DialogEditString), m_pDevice(pDevice), m_pData_struct(pData_struct), m_initialData(), m_nOriginalSize(0)
 {
@@ -115,38 +128,31 @@ void DialogEditString::on_checkBoxNullTerminated_toggled(bool bChecked)
 
 bool DialogEditString::configurationValid(QString *pError) const
 {
-    const auto fail = [pError](const QString &sError) {
-        if (pError) {
-            *pError = sError;
-        }
-        return false;
-    };
-
     if (!m_pData_struct) {
-        return fail(tr("String information is unavailable."));
+        return setValidationError(pError, tr("String information is unavailable."));
     }
     if (!m_pDevice) {
-        return fail(tr("The target device is unavailable."));
+        return setValidationError(pError, tr("The target device is unavailable."));
     }
     if (!m_pDevice->isOpen() || !m_pDevice->isWritable()) {
-        return fail(tr("The target device is not open for writing."));
+        return setValidationError(pError, tr("The target device is not open for writing."));
     }
     if (m_pDevice->isSequential()) {
-        return fail(tr("Sequential devices cannot be edited by offset."));
+        return setValidationError(pError, tr("Sequential devices cannot be edited by offset."));
     }
 
     const qint64 nDeviceSize = m_pDevice->size();
     if (nDeviceSize < 0) {
-        return fail(tr("The target device size is unavailable."));
+        return setValidationError(pError, tr("The target device size is unavailable."));
     }
     if ((m_initialData.nOffset < 0) || (m_initialData.nOffset > nDeviceSize)) {
-        return fail(tr("The string offset is outside the target device."));
+        return setValidationError(pError, tr("The string offset is outside the target device."));
     }
     if ((m_nOriginalSize < 0) || (m_nOriginalSize > (nDeviceSize - m_initialData.nOffset))) {
-        return fail(tr("The original string span is outside the target device."));
+        return setValidationError(pError, tr("The original string span is outside the target device."));
     }
     if ((m_initialData.nSize < 0) || (m_initialData.nSize > m_nOriginalSize)) {
-        return fail(tr("The original string size exceeds its writable span."));
+        return setValidationError(pError, tr("The original string size exceeds its writable span."));
     }
 
     return true;

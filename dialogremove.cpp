@@ -26,6 +26,19 @@
 
 #include "ui_dialogremove.h"
 
+namespace {
+
+bool setRangeError(QString *pError, const QString &sError)
+{
+    if (pError) {
+        *pError = sError;
+    }
+
+    return false;
+}
+
+}  // namespace
+
 DialogRemove::DialogRemove(QWidget *pParent, DATA *pData) : XShortcutsDialog(pParent, false), ui(new Ui::DialogRemove), m_pData(pData), m_pRemoveButton(nullptr)
 {
     ui->setupUi(this);
@@ -63,42 +76,35 @@ void DialogRemove::adjustView()
 
 bool DialogRemove::readRange(qint64 *pnOffset, qint64 *pnSize, QString *psError) const
 {
-    const auto fail = [&](const QString &sError) {
-        if (psError) {
-            *psError = sError;
-        }
-        return false;
-    };
-
     if (!m_pData || (m_pData->nMaxSize < 0)) {
-        return fail(tr("The data range is unavailable."));
+        return setRangeError(psError, tr("The data range is unavailable."));
     }
     if (m_pData->nMaxSize == 0) {
-        return fail(tr("There are no bytes to remove."));
+        return setRangeError(psError, tr("There are no bytes to remove."));
     }
     if (ui->lineEditOffset->text().trimmed().isEmpty()) {
-        return fail(tr("Enter the offset where removal should begin."));
+        return setRangeError(psError, tr("Enter the offset where removal should begin."));
     }
     if (ui->lineEditSize->text().trimmed().isEmpty()) {
-        return fail(tr("Enter the number of bytes to remove."));
+        return setRangeError(psError, tr("Enter the number of bytes to remove."));
     }
 
     const qint64 nOffset = ui->lineEditOffset->getValue_int64();
     const qint64 nSize = ui->lineEditSize->getValue_int64();
 
     if (nOffset < 0) {
-        return fail(tr("The offset cannot be negative."));
+        return setRangeError(psError, tr("The offset cannot be negative."));
     }
     if (nSize <= 0) {
-        return fail(tr("The number of bytes must be greater than zero."));
+        return setRangeError(psError, tr("The number of bytes must be greater than zero."));
     }
     if (nOffset >= m_pData->nMaxSize) {
-        return fail(tr("The offset must be before the end of the data."));
+        return setRangeError(psError, tr("The offset must be before the end of the data."));
     }
 
     const qint64 nAvailable = m_pData->nMaxSize - nOffset;
     if (nSize > nAvailable) {
-        return fail(tr("The range extends past the end of the data. At most %1 bytes can be removed from this offset.").arg(nAvailable));
+        return setRangeError(psError, tr("The range extends past the end of the data. At most %1 bytes can be removed from this offset.").arg(nAvailable));
     }
 
     if (pnOffset) {

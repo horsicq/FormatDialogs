@@ -32,6 +32,24 @@
 namespace {
 const qint32 MAX_SEARCH_TEXT_LENGTH = 256;
 
+template <typename T>
+class InvokeIfButtonEnabled {
+public:
+    InvokeIfButtonEnabled(T *pReceiver, QPushButton *pButton, void (T::*pMethod)()) : m_pReceiver(pReceiver), m_pButton(pButton), m_pMethod(pMethod) {}
+
+    void operator()() const
+    {
+        if (m_pButton && m_pButton->isEnabled()) {
+            (m_pReceiver->*m_pMethod)();
+        }
+    }
+
+private:
+    T *m_pReceiver;
+    QPushButton *m_pButton;
+    void (T::*m_pMethod)();
+};
+
 QString formatHexBytes(const QString &sHex)
 {
     const QString sUpper = sHex.toUpper();
@@ -129,24 +147,19 @@ DialogSearch::DialogSearch(QWidget *pParent, QIODevice *pDevice, XBinary::SEARCH
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogSearch::acceptSearch);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &DialogSearch::reject);
-    connect(ui->tabWidgetSearch, &QTabWidget::currentChanged, this, [this](qint32) { updateModeState(); });
+    connect(ui->tabWidgetSearch, &QTabWidget::currentChanged, this, &DialogSearch::updateModeState);
     connect(ui->lineEditString, &QLineEdit::textChanged, this, &DialogSearch::checkValid);
     connect(ui->lineEditSignature, &QLineEdit::textChanged, this, &DialogSearch::checkValid);
     connect(ui->lineEditValue, &QLineEdit::textChanged, this, &DialogSearch::updateValue);
-    connect(ui->comboBoxValueType, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, [this](qint32) { updateValue(); });
-    connect(ui->comboBoxEndianness, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, [this](qint32) { updateValue(); });
+    connect(ui->comboBoxValueType, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &DialogSearch::updateValue);
+    connect(ui->comboBoxEndianness, static_cast<void (QComboBox::*)(qint32)>(&QComboBox::currentIndexChanged), this, &DialogSearch::updateValue);
 
-    const auto acceptIfValid = [this]() {
-        QPushButton *pFindButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-        if (pFindButton && pFindButton->isEnabled()) {
-            acceptSearch();
-        }
-    };
+    QPushButton *pFindButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    const InvokeIfButtonEnabled<DialogSearch> acceptIfValid(this, pFindButton, &DialogSearch::acceptSearch);
     connect(ui->lineEditString, &QLineEdit::returnPressed, this, acceptIfValid);
     connect(ui->lineEditSignature, &QLineEdit::returnPressed, this, acceptIfValid);
     connect(ui->lineEditValue, &QLineEdit::returnPressed, this, acceptIfValid);
 
-    QPushButton *pFindButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (pFindButton) {
         pFindButton->setText(tr("Find"));
         pFindButton->setDefault(true);

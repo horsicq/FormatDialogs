@@ -38,6 +38,18 @@
 #include "xbinary.h"
 #include "xoptions.h"
 
+namespace {
+
+void flushAnsiSignatureRun(QStringList *pListTokens, QString *pAnsiRun)
+{
+    if (!pAnsiRun->isEmpty()) {
+        pListTokens->append(QStringLiteral("'") + *pAnsiRun + QStringLiteral("'"));
+        pAnsiRun->clear();
+    }
+}
+
+}  // namespace
+
 DialogHexSignature::DialogHexSignature(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize)
     : XShortcutsDialog(pParent, false), ui(new Ui::DialogHexSignature), m_pDevice(pDevice), m_nOffset(nOffset)
 {
@@ -154,13 +166,6 @@ QString DialogHexSignature::buildSignature() const
     const bool bANSI = ui->checkBoxANSI->isChecked();
     const QString sWildcard = ui->lineEditWildcard->text();
 
-    const auto flushAnsiRun = [&]() {
-        if (!sAnsiRun.isEmpty()) {
-            listTokens.append(QStringLiteral("'") + sAnsiRun + QStringLiteral("'"));
-            sAnsiRun.clear();
-        }
-    };
-
     for (qint32 i = 0; i < m_baData.size(); i++) {
         QTableWidgetItem *pItem = ui->tableWidgetBytes->item(i / 16, i % 16);
         const bool bWildcard = pItem && pItem->data(ITEM_ROLE_WILDCARD).toBool();
@@ -172,7 +177,7 @@ QString DialogHexSignature::buildSignature() const
             continue;
         }
 
-        flushAnsiRun();
+        flushAnsiSignatureRun(&listTokens, &sAnsiRun);
         if (bWildcard) {
             listTokens.append(sWildcard + sWildcard);
         } else {
@@ -184,7 +189,7 @@ QString DialogHexSignature::buildSignature() const
         }
     }
 
-    flushAnsiRun();
+    flushAnsiSignatureRun(&listTokens, &sAnsiRun);
     return bSpaces ? listTokens.join(QChar(' ')) : listTokens.join(QString());
 }
 

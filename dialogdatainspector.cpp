@@ -20,6 +20,7 @@
  */
 #include "dialogdatainspector.h"
 
+#include <functional>
 #include <limits>
 
 #include <QHeaderView>
@@ -139,6 +140,39 @@ qint64 writeExactAt(const QPointer<QIODevice> &pDevice, qint64 nOffset, const ch
 
     return nWritten;
 }
+
+class ClearDeviceAndInvoke {
+public:
+    ClearDeviceAndInvoke(QPointer<QIODevice> *pDevice, const std::function<void()> &function) : m_pDevice(pDevice), m_function(function) {}
+
+    void operator()() const
+    {
+        m_pDevice->clear();
+        m_function();
+    }
+
+private:
+    QPointer<QIODevice> *m_pDevice;
+    std::function<void()> m_function;
+};
+
+class DeferredInvocation {
+public:
+    DeferredInvocation(QObject *pContext, const std::function<void()> &function) : m_pContext(pContext), m_function(function) {}
+
+    void operator()() const
+    {
+        QObject *pContext = m_pContext.data();
+        if (pContext) {
+            QTimer::singleShot(0, pContext, m_function);
+        }
+    }
+
+private:
+    QPointer<QObject> m_pContext;
+    std::function<void()> m_function;
+};
+
 }  // namespace
 
 DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, qint64 nOffset, qint64 nSize)
@@ -182,11 +216,9 @@ DialogDataInspector::DialogDataInspector(QWidget *pParent, QIODevice *pDevice, q
     }
 
     if (pDevice) {
-        connect(pDevice, &QObject::destroyed, this, [this]() {
-            m_pDevice = nullptr;
-            showData(m_nOffset, m_nSize);
-        });
-        connect(pDevice, &QIODevice::aboutToClose, this, [this]() { QTimer::singleShot(0, this, [this]() { showData(m_nOffset, m_nSize); }); });
+        const std::function<void()> refreshData = std::bind(&DialogDataInspector::showData, this, std::cref(m_nOffset), std::cref(m_nSize));
+        connect(pDevice, &QObject::destroyed, this, ClearDeviceAndInvoke(&m_pDevice, refreshData));
+        connect(pDevice, &QIODevice::aboutToClose, this, DeferredInvocation(this, refreshData));
     }
 
     setReadonly(true);

@@ -27,6 +27,28 @@
 #include "ui_dialoggotoaddress.h"
 #include "xoptions.h"
 
+namespace {
+
+template <typename T>
+class InvokeIfButtonEnabled {
+public:
+    InvokeIfButtonEnabled(T *pReceiver, QPushButton *pButton, void (T::*pMethod)()) : m_pReceiver(pReceiver), m_pButton(pButton), m_pMethod(pMethod) {}
+
+    void operator()() const
+    {
+        if (m_pButton && m_pButton->isEnabled()) {
+            (m_pReceiver->*m_pMethod)();
+        }
+    }
+
+private:
+    T *m_pReceiver;
+    QPushButton *m_pButton;
+    void (T::*m_pMethod)();
+};
+
+}  // namespace
+
 DialogGoToAddress::DialogGoToAddress(QWidget *pParent, XBinary::_MEMORY_MAP *pMemoryMap, TYPE type, XADDR nCurrentValue, XADDR nMaximumValue)
     : XShortcutsDialog(pParent, false),
       ui(new Ui::DialogGoToAddress),
@@ -79,17 +101,12 @@ void DialogGoToAddress::initialize()
     ui->lineEditValue->setValue_uint64(m_nValue, XLineEditHEX::_MODE_HEX);
     XOptions::setMonoFont(ui->lineEditValue);
 
-    connect(ui->lineEditValue, &QLineEdit::textChanged, this, [this](const QString &) { updateState(); });
-    connect(ui->lineEditValue, &QLineEdit::returnPressed, this, [this]() {
-        QPushButton *pGoButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-        if (pGoButton && pGoButton->isEnabled()) {
-            acceptValue();
-        }
-    });
+    connect(ui->lineEditValue, &QLineEdit::textChanged, this, &DialogGoToAddress::updateState);
+    QPushButton *pGoButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    connect(ui->lineEditValue, &QLineEdit::returnPressed, this, InvokeIfButtonEnabled<DialogGoToAddress>(this, pGoButton, &DialogGoToAddress::acceptValue));
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogGoToAddress::acceptValue);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &DialogGoToAddress::reject);
 
-    QPushButton *pGoButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (pGoButton) {
         pGoButton->setText(tr("&Go to"));
         pGoButton->setDefault(true);
