@@ -1,7 +1,13 @@
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
+# XZIP_SOURCES is the ZIP/decompression core; Formats/xformats.cmake owns it.
+# XFORMATS_CORE_ONLY takes just that core and leaves XFORMATS_SOURCES
+# undefined, so whichever module composes the full XFormats (xscanengine,
+# xfileinfo, ...) still runs its own `if (NOT DEFINED XFORMATS_SOURCES)` fold.
 if (NOT DEFINED XZIP_SOURCES)
-    include(${CMAKE_CURRENT_LIST_DIR}/../XArchive/xzip.cmake)
+    set(XFORMATS_CORE_ONLY TRUE)
+    include(${CMAKE_CURRENT_LIST_DIR}/../Formats/xformats.cmake)
+    unset(XFORMATS_CORE_ONLY)
     set(DIALOGTEXTINFO_SOURCES ${DIALOGTEXTINFO_SOURCES} ${XZIP_SOURCES})
 endif()
 
