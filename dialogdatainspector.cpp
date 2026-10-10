@@ -143,7 +143,9 @@ qint64 writeExactAt(QIODevice *pDevice, qint64 nOffset, const char *pData, qint6
 
 class ClearDeviceAndInvoke {
 public:
-    ClearDeviceAndInvoke(QIODevice **pDevice, const std::function<void()> &function) : m_pDevice(pDevice), m_function(function) {}
+    ClearDeviceAndInvoke(QIODevice **pDevice, const std::function<void()> &function) : m_pDevice(pDevice), m_function(function)
+    {
+    }
 
     void operator()() const
     {
@@ -158,7 +160,9 @@ private:
 
 class DeferredInvocation {
 public:
-    DeferredInvocation(QObject *pContext, const std::function<void()> &function) : m_pContext(pContext), m_function(function) {}
+    DeferredInvocation(QObject *pContext, const std::function<void()> &function) : m_pContext(pContext), m_function(function)
+    {
+    }
 
     void operator()() const
     {

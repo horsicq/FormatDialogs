@@ -32,7 +32,9 @@ namespace {
 template <typename T>
 class InvokeIfButtonEnabled {
 public:
-    InvokeIfButtonEnabled(T *pReceiver, QPushButton *pButton, void (T::*pMethod)()) : m_pReceiver(pReceiver), m_pButton(pButton), m_pMethod(pMethod) {}
+    InvokeIfButtonEnabled(T *pReceiver, QPushButton *pButton, void (T::*pMethod)()) : m_pReceiver(pReceiver), m_pButton(pButton), m_pMethod(pMethod)
+    {
+    }
 
     void operator()() const
     {
